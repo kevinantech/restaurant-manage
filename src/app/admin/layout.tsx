@@ -2,6 +2,7 @@
 "use client";
 import { Header, Loader, Nav } from "@/components/admin";
 import { Drawer, useMediaQuery } from "@mui/material";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
@@ -50,11 +51,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { mounting } = useMounting();
   const nav = useResponsiveNav();
   const matchResponsive = useMediaQuery("(max-width:1024px)");
+  const isLogin = usePathname().includes("/login");
+
 
   /* Cambia background del body */
   useEffect(() => document.body.classList.add("bg-[#f5fbfd]"), []);
 
-  return mounting ? (
+  return isLogin ? children : mounting ? (
     <Loader />
   ) : (
     <>

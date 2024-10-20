@@ -1,4 +1,9 @@
-export type ResponseCodeType = "OK" | "UNAUTHORIZED" | "BAD REQUEST" | "NOT FOUND";
+export type ResponseCodeType =
+  | "OK"
+  | "UNAUTHORIZED"
+  | "BAD REQUEST"
+  | "NOT FOUND"
+  | "INTERNAL SERVER ERROR";
 
 export const ResponseCode: Record<
   ResponseCodeType,
@@ -22,5 +27,9 @@ export const ResponseCode: Record<
   "NOT FOUND": {
     code: "NOT FOUND",
     status: 404,
+  },
+  "INTERNAL SERVER ERROR": {
+    code: "INTERNAL SERVER ERROR",
+    status: 500,
   },
 };

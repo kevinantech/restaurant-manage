@@ -16,6 +16,6 @@ export async function POST(req: Request): Promise<ResponseModel> {
       ...ResponseCode["BAD REQUEST"],
       message: "Formato de datos incorrecto.",
     });
-  const result = await adminUseCase.auth(data.uid);
+  const result = await adminUseCase.auth(data);
   return new ResponseModel(result);
 }

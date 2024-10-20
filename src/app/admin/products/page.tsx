@@ -17,7 +17,7 @@ const ProductBar = () => {
       <PrimaryButton
         className="min-w-full semi-sm:min-w-[auto]"
         label="Añadir producto"
-        onClick={() => router.push(EAdminPaths.PRODUCTS + "/create")}
+        onClick={() => router.push("admin/products/add")}
       >
         <AddIcon />
       </PrimaryButton>

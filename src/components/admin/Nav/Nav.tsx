@@ -15,7 +15,7 @@ export interface NavProps {
 const Nav: React.FC<NavProps> = ({ onClickOnALink }) => {
   return (
     <div className="w-[17.5rem] h-screen bg-admin-1 text-white">
-      <span className="block pl-8 pt-5 pb-10 font-bold text-base">JERSEYS GOAT</span>
+      <span className="block pl-8 pt-5 pb-10 font-bold text-base">BISTRO R.M.</span>
       <span className="block pl-8 pb-4 font-semibold text-sm">ADMIN</span>
       <div className="px-4">
         <NavLink

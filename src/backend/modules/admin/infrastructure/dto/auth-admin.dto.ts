@@ -1,7 +1,8 @@
-import { IsString, Length } from "class-validator";
+import { IsEmail, IsString } from "class-validator";
 
 export class AuthAdminDto {
+  @IsEmail()
+  email!: string;
   @IsString()
-  @Length(1, 128)
-  uid!: string;
+  password!: string;
 }

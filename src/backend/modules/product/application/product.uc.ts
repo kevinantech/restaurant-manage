@@ -8,8 +8,14 @@ import { ResponseCode } from "@/backend/common/constants";
 export class ProductUseCase {
   constructor(private readonly productRepo: IProductRepository) {}
 
-  async registerProduct(name: string, unit: Units): Promise<IResponseBase<IProduct>> {
-    const productValue = new Product(name, unit);
+  async registerProduct(
+    name: string,
+    quantity: number,
+    unitContent: number,
+    unit: Units,
+    cost: number
+  ): Promise<IResponseBase<IProduct>> {
+    const productValue = new Product(name, quantity, unitContent, unit, cost);
     const result = await this.productRepo.registerProduct(productValue);
 
     if (!result) {

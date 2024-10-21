@@ -3,5 +3,4 @@ export enum Units {
   mL = "mL",
   kg = "kg",
   g = "g",
-  u = "u",
 }

@@ -3,6 +3,10 @@ import { IProduct } from "../domain/product.entity";
 
 const ProductSchema = new Schema<IProduct>(
   {
+    id: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -11,11 +15,15 @@ const ProductSchema = new Schema<IProduct>(
       type: Number,
       required: true,
     },
+    unitContent: {
+      type: Number,
+      required: true,
+    },
     unit: {
       type: String,
       required: true,
     },
-    price: {
+    cost: {
       type: Number,
       required: true,
     },

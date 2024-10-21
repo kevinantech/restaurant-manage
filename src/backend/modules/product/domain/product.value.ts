@@ -1,15 +1,26 @@
 import { Units } from "@/backend/common/constants/units-enum";
 import { IProduct } from "./product.entity";
+import { v4 as uuid } from "uuid";
 
 export class Product implements IProduct {
+  id: string;
   name: string;
   quantity: number;
+  unitContent: number;
   unit: Units;
-  price: number;
-  constructor(name: string, unit: Units) {
+  cost: number;
+  constructor(
+    name: string,
+    quantity: number,
+    unitContent: number,
+    unit: Units,
+    cost: number
+  ) {
+    this.id = uuid();
     this.name = name;
-    this.quantity = 0;
+    this.quantity = quantity;
+    this.unitContent = unitContent;
     this.unit = unit;
-    this.price = 0;
+    this.cost = cost;
   }
 }

@@ -1,4 +1,2 @@
-export * from "./useFetch";
-export * from "./useLogin";
+export * from "./useRegisterProduct";
 export * from "./usePlacerholder";
-export * from "./useSaveLeague";

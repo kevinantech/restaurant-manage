@@ -10,7 +10,7 @@ export interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onClickMobileMenu }) => {
   return (
-    <header className="h-16 bg-white shadow-md">
+    <header className="h-16 bg-slate-700 shadow-md">
       <div className="flex h-full mx-auto px-5 2xl:px-10">
         <div className="lg:hidden flex items-center w-10">
           <IconButton onClick={(e) => onClickMobileMenu(e)}>

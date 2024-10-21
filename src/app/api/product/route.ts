@@ -21,6 +21,12 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
   }
 
   await connectDatabase();
-  const result = await productUseCase.registerProduct(data.name, data.unit);
+  const result = await productUseCase.registerProduct(
+    data.name,
+    data.quantity,
+    data.unitContent,
+    data.unit,
+    data.cost
+  );
   return new ResponseModel(result);
 }

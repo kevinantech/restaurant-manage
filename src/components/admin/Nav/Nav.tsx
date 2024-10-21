@@ -14,7 +14,7 @@ export interface NavProps {
 
 const Nav: React.FC<NavProps> = ({ onClickOnALink }) => {
   return (
-    <div className="w-[17.5rem] h-screen bg-admin-1 text-white">
+    <div className="w-[17.5rem] h-screen bg-slate-800 text-white">
       <span className="block pl-8 pt-5 pb-10 font-bold text-base">BISTRO R.M.</span>
       <span className="block pl-8 pb-4 font-semibold text-sm">ADMIN</span>
       <div className="px-4">
@@ -29,22 +29,10 @@ const Nav: React.FC<NavProps> = ({ onClickOnALink }) => {
           <NavLink href={EAdminPaths.PRODUCTS} onClick={onClickOnALink}>
             Lista de Productos
           </NavLink>
-          <NavLink href={EAdminPaths.PRODUCTS + "/create"} onClick={onClickOnALink}>
+          <NavLink href={EAdminPaths.PRODUCTS + "/add"} onClick={onClickOnALink}>
             Añadir Productos
           </NavLink>
         </NavGroup>
-        <NavGroup label="Categorias" startIcon={<StyleIcon />}>
-          <NavLink href={EAdminPaths.CATEGORY + "/leagues"} onClick={onClickOnALink}>
-            Ligas
-          </NavLink>
-        </NavGroup>
-        <NavLink
-          href={EAdminPaths.SETTINGS}
-          startIcon={<SettingsRoundedIcon />}
-          onClick={onClickOnALink}
-        >
-          Opciones
-        </NavLink>
       </div>
     </div>
   );

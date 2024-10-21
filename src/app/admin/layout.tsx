@@ -53,11 +53,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const matchResponsive = useMediaQuery("(max-width:1024px)");
   const isLogin = usePathname().includes("/login");
 
-
   /* Cambia background del body */
-  useEffect(() => document.body.classList.add("bg-[#f5fbfd]"), []);
+  /* useEffect(() => document.body.classList.add("bg-[#f5fbfd]"), []); */
 
-  return isLogin ? children : mounting ? (
+  return isLogin ? (
+    children
+  ) : mounting ? (
     <Loader />
   ) : (
     <>
@@ -66,7 +67,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       ) : (
         <DesktopNav />
       )}
-      <div className="lg:ml-[17.5rem]">
+      <div className="bg-neutral-200 min-h-screen lg:ml-[17.5rem]">
         <Header onClickMobileMenu={() => nav.show()} />
         <section className="max-w-7xl mx-auto px-6 py-8">{children}</section>
       </div>

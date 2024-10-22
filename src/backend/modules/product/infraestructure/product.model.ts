@@ -11,11 +11,15 @@ const ProductSchema = new Schema<IProduct>(
       type: String,
       required: true,
     },
-    quantity: {
+    initialAmount: {
       type: Number,
       required: true,
     },
-    unitContent: {
+    currentAmount: {
+      type: Number,
+      required: true,
+    },
+    weightPerUnit: {
       type: Number,
       required: true,
     },

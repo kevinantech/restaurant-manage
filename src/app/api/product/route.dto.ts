@@ -8,11 +8,11 @@ export class ProductDto {
 
   @IsInt()
   @IsDefined()
-  quantity!: number;
+  initialAmount!: number;
 
   @IsNumber()
   @IsDefined()
-  unitContent!: number;
+  weightPerUnit!: number;
 
   @IsEnum(Units)
   @IsDefined()

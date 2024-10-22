@@ -1,8 +1,10 @@
 "use client";
+import { IProduct } from "@/backend/modules/product/domain/product.entity";
+import { API } from "@/common/constants/api-enum";
+import { ServerResponse } from "@/common/interfaces";
 import { PrimaryButton, SearchBar, Title } from "@/components/admin";
 import { productsMock } from "@/data/products.mock";
 import AddIcon from "@mui/icons-material/Add";
-import UnfoldMoreRoundedIcon from "@mui/icons-material/UnfoldMoreRounded";
 import {
   Paper,
   Table,
@@ -16,6 +18,10 @@ import {
 } from "@mui/material";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
+type R = ServerResponse<IProduct[]>;
+const fetcher = () => fetch(API.PRODUCT, { method: "GET" });
 
 const ProductBar = () => {
   const router = useRouter();
@@ -57,6 +63,17 @@ const Cell: React.FC<TableCellProps> = (props) => {
 };
 
 export default function Products() {
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    handleProducts();
+  }, []);
+
+  const handleProducts = async () => {
+    const response: R = await fetcher().then(async (res) => await res.json());
+    if (response.data) setProducts(response.data);
+  };
+
   return (
     <main className="bg-transparent">
       <Title>Lista de Productos</Title>
@@ -65,29 +82,22 @@ export default function Products() {
         <Table sx={{ minWidth: 600 }}>
           <TableHead>
             <TableRow className="bg-slate-100">
-              <Cell align="left">
-                <TableSortLabel active>Producto</TableSortLabel>
-              </Cell>
-              <Cell align="left">
-                <TableSortLabel active>Cantidad</TableSortLabel>
-              </Cell>
-              <Cell align="left">
-                <TableSortLabel active>Cont. Neto / u</TableSortLabel>
-              </Cell>
-              <Cell align="left">
-                <TableSortLabel active>Costo</TableSortLabel>
-              </Cell>
+              <Cell align="left">Producto</Cell>
+              <Cell align="left">Cantidad inicial</Cell>
+              <Cell align="left">Cantidad actual</Cell>
+              <Cell align="left">Contenido neto por unidad</Cell>
+              <Cell align="left">Costo</Cell>
               <Cell align="left"></Cell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {productsMock.map((product) => (
+            {products.map((product) => (
               <TableRow key={product.id}>
                 <Cell align="left">{product.name}</Cell>
-                <Cell align="left">{product.quantity}</Cell>
-                <Cell align="left">{`${product.unitContent} ${product.unit}`}</Cell>
+                <Cell align="left">{product.initialAmount}</Cell>
+                <Cell align="left">{product.currentAmount}</Cell>
+                <Cell align="left">{`${product.weightPerUnit} ${product.unit}`}</Cell>
                 <Cell align="left">{product.cost}</Cell>
-                <Cell align="left">{"<Funcionaliades>"}</Cell>
               </TableRow>
             ))}
           </TableBody>

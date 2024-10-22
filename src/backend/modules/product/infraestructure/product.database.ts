@@ -13,4 +13,9 @@ export class ProductDatabase implements IProductRepository {
     }
     return null;
   }
+
+  public async getProducts(): Promise<IProduct[] | null> {
+    const products = ProductModel.find();
+    return products;
+  }
 }

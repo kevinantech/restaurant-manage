@@ -10,12 +10,12 @@ export class ProductUseCase {
 
   async registerProduct(
     name: string,
-    quantity: number,
-    unitContent: number,
+    initialAmount: number,
+    weightPerUnit: number,
     unit: Units,
     cost: number
   ): Promise<IResponseBase<IProduct>> {
-    const productValue = new Product(name, quantity, unitContent, unit, cost);
+    const productValue = new Product(name, initialAmount, weightPerUnit, unit, cost);
     const result = await this.productRepo.registerProduct(productValue);
 
     if (!result) {
@@ -28,6 +28,23 @@ export class ProductUseCase {
     return {
       ...ResponseCode.OK,
       message: "Producto agregado correctamente.",
+      data: result,
+    };
+  }
+
+  async getProducts(): Promise<IResponseBase<IProduct[]>> {
+    const result = await this.productRepo.getProducts();
+
+    if (!result) {
+      return {
+        ...ResponseCode["INTERNAL SERVER ERROR"],
+        message: "Algo inesperado ocurrió.",
+      };
+    }
+
+    return {
+      ...ResponseCode.OK,
+      message: "Productos obtenidos correctamente.",
       data: result,
     };
   }

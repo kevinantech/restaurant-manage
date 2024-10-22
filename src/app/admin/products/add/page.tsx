@@ -17,8 +17,10 @@ import { useForm } from "react-hook-form";
 import styles from "./page.module.css";
 import { useRegisterProduct } from "@/hooks";
 
+export type P = Omit<IProduct, "currentAmount" | "id">;
+
 export default function RegisterProduct() {
-  const { register, handleSubmit, reset } = useForm<IProduct>();
+  const { register, handleSubmit, reset } = useForm<P>();
   const { handleRegister, loading } = useRegisterProduct();
 
   /* TODO: Add loader after submit. */
@@ -63,7 +65,7 @@ export default function RegisterProduct() {
                 fullWidth
                 type="number"
                 label="Cantidad de unidades"
-                {...register("quantity", { required: true })}
+                {...register("initialAmount", { required: true })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -71,7 +73,10 @@ export default function RegisterProduct() {
                 fullWidth
                 type="number"
                 label="Contenido neto por unidad"
-                {...register("unitContent", { required: true })}
+                {...register("weightPerUnit", { required: true })}
+                inputProps={{
+                  step: 0.01,
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

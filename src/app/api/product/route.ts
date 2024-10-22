@@ -12,6 +12,7 @@ const productUseCase = new ProductUseCase(productRepo);
 
 export async function POST(req: NextRequest): Promise<ResponseModel> {
   const data = (await req.json()) as ProductDto;
+  console.log("🚀 ~ POST ~ data:", data);
 
   if ((await validate(data)).length !== 0) {
     return new ResponseModel({
@@ -23,10 +24,16 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
   await connectDatabase();
   const result = await productUseCase.registerProduct(
     data.name,
-    data.quantity,
-    data.unitContent,
+    data.initialAmount,
+    data.weightPerUnit,
     data.unit,
     data.cost
   );
+  return new ResponseModel(result);
+}
+
+export async function GET(req: NextRequest): Promise<ResponseModel> {
+  await connectDatabase();
+  const result = await productUseCase.getProducts();
   return new ResponseModel(result);
 }

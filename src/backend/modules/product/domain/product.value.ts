@@ -5,21 +5,23 @@ import { v4 as uuid } from "uuid";
 export class Product implements IProduct {
   id: string;
   name: string;
-  quantity: number;
-  unitContent: number;
+  initialAmount: number;
+  currentAmount: number;
+  weightPerUnit: number;
   unit: Units;
   cost: number;
   constructor(
     name: string,
-    quantity: number,
-    unitContent: number,
+    initialAmount: number,
+    weigthContent: number,
     unit: Units,
     cost: number
   ) {
     this.id = uuid();
     this.name = name;
-    this.quantity = quantity;
-    this.unitContent = unitContent;
+    this.initialAmount = initialAmount;
+    this.currentAmount = initialAmount;
+    this.weightPerUnit = weigthContent;
     this.unit = unit;
     this.cost = cost;
   }

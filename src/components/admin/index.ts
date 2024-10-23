@@ -1,7 +1,4 @@
 export * from "./Header";
-export * from "./LeagueFormModal";
-export * from "./LeagueNavigationBar";
-export * from "./LeagueTable";
 export * from "./Loader";
 export * from "./Nav";
 export * from "./NavGroup";

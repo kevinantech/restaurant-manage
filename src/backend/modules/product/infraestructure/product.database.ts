@@ -3,7 +3,7 @@ import { IProductRepository } from "../domain/product.repository";
 import { ProductModel } from "./product.model";
 
 export class ProductDatabase implements IProductRepository {
-  public async registerProduct(product: IProduct): Promise<IProduct | null> {
+  public async register(product: IProduct): Promise<IProduct | null> {
     try {
       const productModel = new ProductModel(product);
       const productSaved = await productModel.save();
@@ -14,8 +14,22 @@ export class ProductDatabase implements IProductRepository {
     return null;
   }
 
-  public async getProducts(): Promise<IProduct[] | null> {
-    const products = ProductModel.find();
+  public async find(): Promise<IProduct[] | null> {
+    const products = await ProductModel.find();
     return products;
+  }
+
+  public async findById(id: string): Promise<IProduct | null> {
+    const product = await ProductModel.findOne({ id });
+    return product;
+  }
+
+  public async update(
+    id: string,
+    payload: Partial<Omit<IProduct, "id" | "_id">>
+  ): Promise<IProduct | null> {
+    await ProductModel.updateOne({ id }, payload);
+    const product = ProductModel.findOne({ id });
+    return product;
   }
 }

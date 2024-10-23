@@ -1,9 +1,6 @@
 "use client";
-import { IProduct } from "@/backend/modules/product/domain/product.entity";
-import { API } from "@/common/constants/api-enum";
-import { ServerResponse } from "@/common/interfaces";
 import { PrimaryButton, SearchBar, Title } from "@/components/admin";
-import { productsMock } from "@/data/products.mock";
+import { useProducts } from "@/hooks";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Paper,
@@ -14,14 +11,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel,
 } from "@mui/material";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-
-type R = ServerResponse<IProduct[]>;
-const fetcher = () => fetch(API.PRODUCT, { method: "GET" });
 
 const ProductBar = () => {
   const router = useRouter();
@@ -63,16 +55,7 @@ const Cell: React.FC<TableCellProps> = (props) => {
 };
 
 export default function Products() {
-  const [products, setProducts] = useState<IProduct[]>([]);
-
-  useEffect(() => {
-    handleProducts();
-  }, []);
-
-  const handleProducts = async () => {
-    const response: R = await fetcher().then(async (res) => await res.json());
-    if (response.data) setProducts(response.data);
-  };
+  const { products } = useProducts();
 
   return (
     <main className="bg-transparent">

@@ -1,1 +1,0 @@
-export { default as LeagueFormModal } from './LeagueFormModal';

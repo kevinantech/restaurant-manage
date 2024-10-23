@@ -16,7 +16,7 @@ export class ProductUseCase {
     cost: number
   ): Promise<IResponseBase<IProduct>> {
     const productValue = new Product(name, initialAmount, weightPerUnit, unit, cost);
-    const result = await this.productRepo.registerProduct(productValue);
+    const result = await this.productRepo.register(productValue);
 
     if (!result) {
       return {
@@ -33,12 +33,29 @@ export class ProductUseCase {
   }
 
   async getProducts(): Promise<IResponseBase<IProduct[]>> {
-    const result = await this.productRepo.getProducts();
+    const result = await this.productRepo.find();
 
     if (!result) {
       return {
         ...ResponseCode["INTERNAL SERVER ERROR"],
         message: "Algo inesperado ocurrió.",
+      };
+    }
+
+    return {
+      ...ResponseCode.OK,
+      message: "Productos obtenidos correctamente.",
+      data: result,
+    };
+  }
+
+  async getProduct(id: string): Promise<IResponseBase<IProduct>> {
+    const result = await this.productRepo.findById(id);
+
+    if (!result) {
+      return {
+        ...ResponseCode["BAD REQUEST"],
+        message: "Producto no encontrado.",
       };
     }
 

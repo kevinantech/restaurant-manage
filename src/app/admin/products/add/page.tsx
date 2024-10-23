@@ -48,7 +48,6 @@ export default function RegisterProduct() {
                 <InputLabel id="label-unit">Unidad regular</InputLabel>
                 <Select
                   labelId="label-unit"
-                  id="demo-simple-select"
                   label="Unidad regular"
                   defaultValue={""}
                   {...register("unit", { required: true })}
@@ -88,7 +87,10 @@ export default function RegisterProduct() {
               />
             </Grid>
           </Grid>
-          <button className="mt-8 py-2 px-5 rounded-lg font-semibold text-sm text-white bg-blue-500 shadow transition-[background] duration-150 ease-in-out hover:bg-blue-600">
+          <button
+            type="submit"
+            className="mt-8 py-2 px-5 rounded-lg font-semibold text-sm text-white bg-blue-500 shadow transition-[background] duration-150 ease-in-out hover:bg-blue-600"
+          >
             Guardar Producto
           </button>
         </form>

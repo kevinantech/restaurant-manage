@@ -1,22 +1,38 @@
-import { Equals, IsString, Length, Matches } from "class-validator";
+import { IsString, IsStrongPassword, Length, MaxLength, Validate } from "class-validator";
 
 export class CreateAdminDto {
   @IsString()
-  name!: string;
+  name: string;
 
   @IsString()
-  username!: string;
-
-  @IsString()
-  @Length(8, 30, { message: "La constrañea debe tener entre 8 y 30 caracteres." })
-  @Matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)$/, {
-    message:
-      "La contraseña debe contener al menos una mayúscula, una minúscula y un número.",
-  })
-  password!: string;
+  username: string;
 
   @IsString()
   @Length(8, 30)
-  @Equals("password", { message: "La confirmación de la contraseña no coincide." })
-  confirmPassword!: string;
+  @IsStrongPassword({
+    minLength: 0,
+    minNumbers: 1,
+    minSymbols: 0,
+    minLowercase: 1,
+    minUppercase: 1,
+  })
+  password: string;
+
+  @IsString()
+  @Length(8, 30)
+  @IsStrongPassword({
+    minLength: 0,
+    minNumbers: 1,
+    minSymbols: 0,
+    minLowercase: 1,
+    minUppercase: 1,
+  })
+  confirmPassword: string;
+
+  constructor(data: { name: string; username: string; password: string; confirmPassword: string }) {
+    this.name = data.name;
+    this.username = data.username;
+    this.password = data.password;
+    this.confirmPassword = data.confirmPassword;
+  }
 }

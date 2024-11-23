@@ -13,6 +13,12 @@ export class AdminUseCase {
     administratorsData: CreateAdminDto
   ): Promise<IResponseBase<{ sessionToken: string }>> {
     try {
+      if (administratorsData.password !== administratorsData.confirmPassword)
+        return {
+          ...ResponseCode["BAD REQUEST"],
+          message: "Las contraseñas no coinciden.",
+        };
+
       const docData = await this.adminRepository.findByUsername(administratorsData.username);
       if (docData)
         return {
@@ -34,15 +40,13 @@ export class AdminUseCase {
       const sessionToken = GeneralUtils.generateToken(
         { id: recovery._id },
         UserRole.ADMIN,
-        <string>process.env.SECRET
+        <string>process.env.TOKEN_KEY
       );
       return {
         ...ResponseCode.OK,
         data: { sessionToken },
         message: "Administrador agregado correctamente.",
       };
-
-      // TODO: Generar token de sesión.
     } catch (error: any) {
       return {
         ...ResponseCode["INTERNAL SERVER ERROR"],

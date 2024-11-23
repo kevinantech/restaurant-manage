@@ -10,8 +10,8 @@ const fontFamily = Open_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
-      <body className={`${fontFamily.className}`}>{children}</body>
+    <html lang="es" className="h-full">
+      <body className={`${fontFamily.className} h-full`}>{children}</body>
     </html>
   );
 }

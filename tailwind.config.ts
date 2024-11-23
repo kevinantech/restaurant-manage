@@ -16,6 +16,9 @@ const config: Config = {
       screens: {
         "semi-sm": "600px",
       },
+      backgroundImage: {
+        "wave-blue-2_1": "url('/wave-blue-2_1.svg')" /* only if it is inside the public folder */,
+      },
     },
   },
   plugins: [],

@@ -1,6 +1,6 @@
 import { model, models, Schema } from "mongoose";
-import { ISystemUser } from "../../shared/systemuser/domain/systemuser.entity";
 import { v4 as uuidv4 } from "uuid";
+import { ISystemUser } from "../../../shared/systemuser/domain/systemuser.entity";
 
 const AdminSchema = new Schema<ISystemUser>(
   {

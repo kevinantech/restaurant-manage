@@ -1,1 +1,1 @@
-export * from "./GradientCircularProgress";
+export * from "../frontend/components/GradientCircularProgress";

@@ -5,10 +5,14 @@ import { ResponseCode } from "@/backend/common/constants";
 import { UserRole } from "@/backend/common/constants/user-roles-enum";
 import { GeneralUtils } from "@/backend/common/utils/general.util";
 import { Admin } from "../domain/admin.value";
+import { AppConfigRepository } from "../../shared/appconfig/domain/appconfig.repository";
 export type R = { sessionToken: string };
 
 export class AdminSetup {
-  constructor(private readonly adminRepository: AdminRepository) {}
+  constructor(
+    private readonly adminRepository: AdminRepository,
+    private readonly appConfigRepository: AppConfigRepository
+  ) {}
 
   async setup(administratorsData: CreateAdminDto): Promise<IResponseBase<R>> {
     try {
@@ -18,8 +22,8 @@ export class AdminSetup {
           message: "Las contraseñas no coinciden.",
         };
 
-      const docSetupData = await this.adminRepository.findSetup();
-      if (docSetupData && docSetupData?.length > 0)
+      const configData = await this.appConfigRepository.findOne();
+      if (configData && configData.hidden["admin-setup"])
         return {
           ...ResponseCode["BAD REQUEST"],
           message: "Registro no disponible.",
@@ -43,7 +47,7 @@ export class AdminSetup {
           message: "¡Ups! Algo salió mal al guardar tu información",
         };
 
-      await this.adminRepository.registerSetup({ adminId: recovery._id, established: true });
+      await this.appConfigRepository.setup({ "admin-setup": true });
 
       const sessionToken = GeneralUtils.generateToken(
         { id: recovery._id },

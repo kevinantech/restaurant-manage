@@ -4,6 +4,7 @@ import { ResponseModel } from "@/backend/common/entity/response-base.model";
 import { AdminSetup } from "@/backend/modules/admin/application/admin-setup.uc";
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
 import { AdminDatabase } from "@/backend/modules/admin/infrastructure/admin.database";
+import { AppConfigDatabase } from "@/backend/modules/shared/appconfig/infrastructure/appconfig.database";
 import { validate } from "class-validator";
 import { NextRequest } from "next/server";
 
@@ -17,12 +18,12 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
     });
 
   await connectDatabase();
-  const result = await new AdminSetup(new AdminDatabase()).setup(data);
+  const result = await new AdminSetup(new AdminDatabase(), new AppConfigDatabase()).setup(data);
   return new ResponseModel(result);
 }
 
 export async function GET(): Promise<ResponseModel> {
   await connectDatabase();
-  const res = await new AdminDatabase().findSetup();
+  const res = await new AppConfigDatabase().findOne();
   return new ResponseModel({ ...ResponseCode.OK, message: "Ok", data: res });
 }

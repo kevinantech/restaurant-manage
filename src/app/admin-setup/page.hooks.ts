@@ -35,11 +35,11 @@ const useCreateAdmin = () => {
     try {
       toggleLoading();
       const response: R = await fetcher(data).then(async (res) => await res.json());
-      console.log("🚀 ~ handleCreateAdmin ~ response:", response);
       if (!response.data)
         throw new Error(
           typeof response.message === "string" ? response.message : "Unhandled response."
         );
+
       router.push("/admin");
     } catch (e: any) {
       console.warn(e.message);

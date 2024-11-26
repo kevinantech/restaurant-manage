@@ -10,10 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@emotion/react": "11.11.4",
-    "@emotion/styled": "11.11.0",
-    "@mui/icons-material": "5.15.14",
-    "@mui/material": "5.15.14",
+    "@emotion/react": "11.13.5",
+    "@emotion/styled": "11.13.5",
+    "@mui/icons-material": "6.1.8",
+    "@mui/material": "6.1.8",
     "@mui/x-data-grid": "^7.3.2",
     "bcrypt": "5.1.1",
     "bcryptjs": "^2.4.3",

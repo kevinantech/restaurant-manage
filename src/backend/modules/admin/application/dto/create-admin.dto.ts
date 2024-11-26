@@ -1,10 +1,12 @@
-import { IsString, IsStrongPassword, Length, MaxLength, Validate } from "class-validator";
+import { IsNotEmpty, IsString, IsStrongPassword, Length } from "class-validator";
 
 export class CreateAdminDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
+  @IsNotEmpty()
   username: string;
 
   @IsString()

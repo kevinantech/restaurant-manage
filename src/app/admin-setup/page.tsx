@@ -1,4 +1,5 @@
 "use client";
+import { GradientCircularProgress } from "@/frontend/components/GradientCircularProgress";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -13,7 +14,6 @@ import {
 import React, { ReactNode } from "react";
 import { useCreateAdmin } from "./page.hooks";
 import styles from "./page.module.css";
-import { GradientCircularProgress } from "@/components";
 
 const themeOptions: ThemeOptions = {
   typography: {
@@ -53,9 +53,9 @@ type BackdropProps = {
 const Backdrop: React.FC<BackdropProps> = ({ open }) =>
   open ? (
     <div
-      className={`${styles["form-submit-animation"]} absolute z-10 inset-0 w-full h-full m-0 rounded-lg bg-white bg-opacity-50`}
+      className={`${styles["form-submit-animation"]} absolute z-10 inset-0 flex items-center w-full h-full m-0 rounded-lg bg-white bg-opacity-50`}
     >
-      <div className="h-full w-full place-content-center place-items-center">
+      <div className="w-max my-0 mx-auto">
         <GradientCircularProgress />
       </div>
     </div>
@@ -70,7 +70,7 @@ export default function CreateAdmin() {
     <ThemeProvider theme={createTheme(themeOptions)}>
       <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
         <Container
-          className={`${styles["form-shadow"]} w-[25rem] mt-20 py-10 px-0 rounded-lg backdrop-blur bg-white bg-opacity-75`}
+          className="relative w-[25rem] mt-20 py-10 px-0 rounded-lg bg-white"
           maxWidth="xs"
         >
           <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>

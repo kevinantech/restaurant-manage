@@ -23,7 +23,7 @@ export class AdminSetup {
         };
 
       const configData = await this.appConfigRepository.findOne();
-      if (configData && configData.hidden["admin-setup"])
+      if (configData && configData.isAdminSetup)
         return {
           ...ResponseCode["BAD REQUEST"],
           message: "Registro no disponible.",
@@ -47,7 +47,7 @@ export class AdminSetup {
           message: "¡Ups! Algo salió mal al guardar tu información",
         };
 
-      await this.appConfigRepository.setup({ "admin-setup": true });
+      await this.appConfigRepository.setup(true);
 
       const sessionToken = GeneralUtils.generateToken(
         { id: recovery._id },

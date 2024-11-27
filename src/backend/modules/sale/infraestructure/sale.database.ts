@@ -15,7 +15,7 @@ export class SaleDatabase implements ISaleRepository {
   }
 
   public async find(): Promise<ISale[] | null> {
-    const sales = SaleModel.find();
+    const sales = await SaleModel.find();
     return sales;
   }
 }

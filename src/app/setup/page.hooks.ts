@@ -1,9 +1,9 @@
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
-import { API } from "@/common/constants/api-enum";
-import { ServerResponse } from "@/common/interfaces";
+import { API } from "@/frontend/common/constants/api-enum";
+import { ServerResponse } from "@/frontend/common/server-response";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 
 type R = ServerResponse<{ _id: string }>;
 const fetcher = (data: CreateAdminDto) =>
@@ -12,7 +12,7 @@ const fetcher = (data: CreateAdminDto) =>
     body: JSON.stringify(data),
   });
 
-const useCreateAdmin = () => {
+const useSetupPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const toggleLoading = () => setLoading((prevState) => !prevState);
@@ -32,7 +32,7 @@ const useCreateAdmin = () => {
   });
   const router = useRouter();
 
-  const handleCreateAdmin = async (data: CreateAdminDto) => {
+  const handleSetup = async (data: CreateAdminDto) => {
     try {
       toggleLoading();
       const response: R = await fetcher(data).then(async (res) => await res.json());
@@ -61,8 +61,8 @@ const useCreateAdmin = () => {
       dispatch: setShowPassword,
     },
     loading,
-    handleCreateAdmin,
+    handleSetup,
   };
 };
 
-export { useCreateAdmin };
+export { useSetupPage };

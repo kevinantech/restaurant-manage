@@ -12,7 +12,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import React, { ReactNode } from "react";
-import { useSetupPage } from "./page.hooks";
+import { useAuthPage } from "./page.hooks";
 import styles from "./page.module.css";
 
 const themeOptions: ThemeOptions = {
@@ -71,32 +71,21 @@ const Backdrop: React.FC<BackdropProps> = ({ open }) =>
   );
 
 export default function CreateAdmin() {
-  const { form, handleSetup, loading, showPassword } = useSetupPage();
+  const { form, handleLogin, loading, showPassword } = useAuthPage();
 
   return (
     <ThemeProvider theme={createTheme(themeOptions)}>
       <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
         <Container
-          className="relative w-[25rem] mt-10 py-10 px-0 rounded-lg bg-white"
+          className="relative w-[25rem] mt-20 py-10 px-0 rounded-lg bg-white"
           maxWidth="xs"
         >
-          <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
-          <p className="w-max text-sm mx-auto">Configuración inicial del administrador.</p>
+          <p className="w-max text-xl font-bold mb-2 mx-auto">Iniciar Sesión</p>
+          <p className="w-max mx-auto text-sm italic">Accede a tu panel de gestión.</p>
           <form
             className="flex flex-col items-center w-full max-w-xs mt-5 mx-auto"
-            onSubmit={form.handleSubmit(handleSetup)}
+            onSubmit={form.handleSubmit(handleLogin)}
           >
-            <InputBox>
-              <TextField
-                variant="standard"
-                size="small"
-                fullWidth
-                label="Nombre"
-                {...form.register("name", { required: "Este campo es obligatorio." })}
-                error={!!form.errors.name?.message}
-                helperText={form.errors.name?.message}
-              />
-            </InputBox>
             <InputBox>
               <TextField
                 variant="standard"
@@ -113,41 +102,9 @@ export default function CreateAdmin() {
                 variant="standard"
                 size="small"
                 fullWidth
-                label="Correo"
-                {...form.register("email", {
-                  required: "Este campo es obligatorio.",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Correo electrónico inválido.",
-                  },
-                })}
-                error={!!form.errors.email?.message}
-                helperText={form.errors.email?.message}
-              />
-            </InputBox>
-            <InputBox>
-              <TextField
-                variant="standard"
-                size="small"
-                fullWidth
                 label="Contraseña"
                 type={showPassword.value ? "text" : "password"}
-                {...form.register("password", {
-                  required: "Este campo es obligatorio.",
-                  minLength: {
-                    value: 8,
-                    message: "La contraseña debe tener al menos 8 caracteres.",
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: "La contraseña no puede superar los 30 caracteres.",
-                  },
-                  pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-                    message:
-                      "La contraseña debe contener al menos una mayúscula, una minúscula y un número.",
-                  },
-                })}
+                {...form.register("password", { required: "Este campo es obligatorio." })}
                 error={!!form.errors.password?.message}
                 helperText={form.errors.password?.message}
                 InputProps={{
@@ -161,24 +118,8 @@ export default function CreateAdmin() {
                 }}
               />
             </InputBox>
-            <InputBox>
-              <TextField
-                variant="standard"
-                size="small"
-                fullWidth
-                label="Confirmar Contraseña"
-                type="password"
-                {...form.register("confirmPassword", {
-                  required: "Este campo es obligatorio.",
-                  validate: (val) =>
-                    val === form.getValues("password") || "Las contraseñas no coinciden.",
-                })}
-                error={!!form.errors.confirmPassword?.message}
-                helperText={form.errors.confirmPassword?.message}
-              />
-            </InputBox>
             <Button fullWidth variant="contained" type="submit" className="mt-5 bg-[#1976d2]">
-              Registrar
+              Acceder
             </Button>
           </form>
           <Backdrop open={loading} />

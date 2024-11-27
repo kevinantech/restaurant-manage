@@ -1,6 +1,6 @@
 import { connectDatabase } from "@/backend/common/config/mongo";
 import { ResponseCode } from "@/backend/common/constants";
-import { ResponseModel } from "@/backend/common/entity/response-base.model";
+import { IResponseBase, ResponseModel } from "@/backend/common/entity/response-base.model";
 import { AdminSetup } from "@/backend/modules/admin/application/admin-setup.uc";
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
 import { AdminDatabase } from "@/backend/modules/admin/infrastructure/admin.database";
@@ -22,8 +22,22 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
   return new ResponseModel(result);
 }
 
+export type GET_SETUP_DATA = {
+  isAdminSetup: boolean;
+};
+type R = IResponseBase<GET_SETUP_DATA>;
 export async function GET(): Promise<ResponseModel> {
   await connectDatabase();
-  const res = await new AppConfigDatabase().findOne();
-  return new ResponseModel({ ...ResponseCode.OK, message: "Ok", data: res });
+  const result = await new AppConfigDatabase().findOne();
+
+  if (!result || typeof result.isAdminSetup !== "boolean")
+    return new ResponseModel({
+      ...ResponseCode["NOT FOUND"],
+      message: "El recurso no está disponible.",
+    });
+  return new ResponseModel({
+    ...ResponseCode.OK,
+    message: "Ok",
+    data: { isAdminSetup: result.isAdminSetup },
+  } as R);
 }

@@ -1,21 +1,24 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { AppConfigDatabase } from "./backend/modules/shared/appconfig/infrastructure/appconfig.database";
+import { NextRequest, NextResponse } from "next/server";
+import { GET_SETUP_DATA } from "./app/api/setup/route";
+import { API } from "./common/constants/api-enum";
+import { ServerResponse } from "./common/interfaces";
 import { FrontendRoutes } from "./frontend/common/constants/frontend-routes-enum";
-import { connectDatabase } from "./backend/common/config/mongo";
 
 enum ProtectedRoute {
-  ADMIN_SETUP = "/admin-setup",
+  SETUP = "/setup",
 }
 
 const routeHandlers: Record<
   ProtectedRoute | string,
-  (req?: NextRequest) => NextResponse | Promise<NextResponse>
+  (req: NextRequest) => NextResponse | Promise<NextResponse>
 > = {
-  [ProtectedRoute.ADMIN_SETUP]: async () => {
-    await connectDatabase();
-    const config = await new AppConfigDatabase().findOne();
-    if (config && config.isAdminSetup) return NextResponse.redirect(FrontendRoutes.DASHBOARD);
+  [ProtectedRoute.SETUP]: async (req) => {
+    const fetcher = () => fetch(`http://${req.nextUrl.host}${API.SETUP}`);
+    const res: ServerResponse<GET_SETUP_DATA> = await fetcher().then(
+      async (res) => await res.json()
+    );
+    if (res && res?.data && res.data.isAdminSetup)
+      return NextResponse.redirect(`http://${req.nextUrl.host}${FrontendRoutes.DASHBOARD}`);
     return NextResponse.next();
   },
 };
@@ -23,11 +26,11 @@ const routeHandlers: Record<
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
   const handler = routeHandlers[req.nextUrl.pathname];
-  if (handler) return handler();
+  if (handler) return handler(req);
   return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ProtectedRoute.ADMIN_SETUP,
+  matcher: ProtectedRoute.SETUP,
 };

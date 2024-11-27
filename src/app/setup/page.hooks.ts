@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 type R = ServerResponse<{ _id: string }>;
 const fetcher = (data: CreateAdminDto) =>
-  fetch(API.ADMIN, {
+  fetch(API.SETUP, {
     method: "POST",
     body: JSON.stringify(data),
   });
@@ -40,7 +40,7 @@ const useCreateAdmin = () => {
           typeof response.message === "string" ? response.message : "Unhandled response."
         );
 
-      router.push("/admin");
+      router.push("/");
     } catch (e: any) {
       console.warn(e.message);
     } finally {

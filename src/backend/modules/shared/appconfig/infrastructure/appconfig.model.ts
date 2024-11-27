@@ -18,5 +18,5 @@ const AppConfigSchema = new Schema<IAppConfig>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `AppConfigs` model once compiled. */
-const AppConfigModel = models?.AppConfig || model("AppConfigs", AppConfigSchema);
+const AppConfigModel = models?.AppConfig || model("AppConfig", AppConfigSchema);
 export { AppConfigModel };

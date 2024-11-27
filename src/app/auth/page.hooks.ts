@@ -29,8 +29,9 @@ const useAuthPage = () => {
   const handleLogin = async (data: Credentials) => {
     try {
       toggleLoading();
-      const result = await signIn("credentials", { data });
-      if (result) router.push(FrontendRoutes.DASHBOARD);
+      const result = await signIn("credentials", { redirect: false, ...data });
+      console.log("🚀 ~ handleLogin ~ result:", result);
+      /* if (result) router.push(FrontendRoutes.DASHBOARD); */
     } catch (e: any) {
       console.warn(e.message);
     } finally {

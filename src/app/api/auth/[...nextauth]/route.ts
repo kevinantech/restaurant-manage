@@ -18,7 +18,6 @@ export const authOptions: AuthOptions = {
         await connectDatabase();
         const db = new AdminDatabase();
         const userFound = await db.findByUsername(credentials.username);
-        console.log("🚀 ~ authorize ~ user:", userFound);
         if (!userFound) throw new Error("El usuario no ha sido encontrado.");
 
         const KEY = <string>process.env.PASS_ENCRIPTION_KEY;
@@ -32,15 +31,15 @@ export const authOptions: AuthOptions = {
 
         return {
           id: userFound._id,
-          name: userFound.username,
+          name: userFound.name,
           email: userFound.email,
+          username: userFound.username,
         };
       },
     }),
   ],
   pages: {
     signIn: "/auth",
-    error: undefined,
   },
 };
 

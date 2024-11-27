@@ -77,7 +77,7 @@ export default function CreateAdmin() {
     <ThemeProvider theme={createTheme(themeOptions)}>
       <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
         <Container
-          className="relative w-[25rem] mt-10 py-10 px-0 rounded-lg bg-white"
+          className="relative w-[25rem] mt-16 py-10 px-0 rounded-lg bg-white"
           maxWidth="xs"
         >
           <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>

@@ -44,6 +44,13 @@ const themeOptions: ThemeOptions = {
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "capitalize",
+        },
+      },
+    },
   },
 };
 
@@ -76,14 +83,11 @@ export default function CreateAdmin() {
   return (
     <ThemeProvider theme={createTheme(themeOptions)}>
       <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
-        <Container
-          className="relative w-[25rem] mt-20 py-10 px-0 rounded-lg bg-white"
-          maxWidth="xs"
-        >
+        <Container className="relative w-80 mt-32 py-10 px-0 rounded-lg bg-white" maxWidth="xs">
           <p className="w-max text-xl font-bold mb-2 mx-auto">Iniciar Sesión</p>
           <p className="w-max mx-auto text-sm italic">Accede a tu panel de gestión.</p>
           <form
-            className="flex flex-col items-center w-full max-w-xs mt-5 mx-auto"
+            className="self-center flex flex-col items-center max-w-[15rem] mt-8 mx-auto"
             onSubmit={form.handleSubmit(handleLogin)}
           >
             <InputBox>
@@ -118,7 +122,12 @@ export default function CreateAdmin() {
                 }}
               />
             </InputBox>
-            <Button fullWidth variant="contained" type="submit" className="mt-5 bg-[#1976d2]">
+            <Button
+              fullWidth
+              variant="contained"
+              type="submit"
+              className="text-sm mt-5 bg-[#1976d2]"
+            >
               Acceder
             </Button>
           </form>

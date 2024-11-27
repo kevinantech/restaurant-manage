@@ -70,7 +70,7 @@ export default function CreateAdmin() {
     <ThemeProvider theme={createTheme(themeOptions)}>
       <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
         <Container
-          className="relative w-[25rem] mt-20 py-10 px-0 rounded-lg bg-white"
+          className="relative w-[25rem] mt-10 py-10 px-0 rounded-lg bg-white"
           maxWidth="xs"
         >
           <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
@@ -99,6 +99,23 @@ export default function CreateAdmin() {
                 {...form.register("username", { required: "Este campo es obligatorio." })}
                 error={!!form.errors.username?.message}
                 helperText={form.errors.username?.message}
+              />
+            </InputBox>
+            <InputBox>
+              <TextField
+                variant="standard"
+                size="small"
+                fullWidth
+                label="Correo"
+                {...form.register("email", {
+                  required: "Este campo es obligatorio.",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: "Correo electrónico inválido.",
+                  },
+                })}
+                error={!!form.errors.email?.message}
+                helperText={form.errors.email?.message}
               />
             </InputBox>
             <InputBox>

@@ -1,9 +1,14 @@
-import { IsNotEmpty, IsString, IsStrongPassword, Length } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, Length } from "class-validator";
 
 export class CreateAdminDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
   @IsString()
   @IsNotEmpty()
@@ -31,8 +36,15 @@ export class CreateAdminDto {
   })
   confirmPassword: string;
 
-  constructor(data: { name: string; username: string; password: string; confirmPassword: string }) {
+  constructor(data: {
+    name: string;
+    email: string;
+    username: string;
+    password: string;
+    confirmPassword: string;
+  }) {
     this.name = data.name;
+    this.email = data.email;
     this.username = data.username;
     this.password = data.password;
     this.confirmPassword = data.confirmPassword;

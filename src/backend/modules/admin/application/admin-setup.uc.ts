@@ -38,7 +38,12 @@ export class AdminSetup {
 
       const KEY = <string>process.env.PASS_ENCRIPTION_KEY;
       const password = await GeneralUtils.encryptPassword(administratorsData.password, KEY);
-      const val = new Admin(administratorsData.name, administratorsData.username, password);
+      const val = new Admin(
+        administratorsData.name,
+        administratorsData.email,
+        administratorsData.username,
+        password
+      );
       const recovery = await this.adminRepository.register(val);
 
       if (!recovery || !recovery._id)

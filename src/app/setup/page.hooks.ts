@@ -24,6 +24,7 @@ const useCreateAdmin = () => {
   } = useForm<CreateAdminDto>({
     defaultValues: {
       name: "",
+      email: "",
       username: "",
       password: "",
       confirmPassword: "",

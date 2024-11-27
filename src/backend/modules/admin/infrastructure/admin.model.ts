@@ -8,11 +8,15 @@ const AdminSchema = new Schema<ISystemUser>(
       type: String,
       default: uuidv4,
     },
-    username: {
+    name: {
       type: String,
       required: true,
     },
-    name: {
+    email: {
+      type: String,
+      required: true,
+    },
+    username: {
       type: String,
       required: true,
     },

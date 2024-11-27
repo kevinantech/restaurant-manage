@@ -31,7 +31,7 @@ const useAuthPage = () => {
       toggleLoading();
       const result = await signIn("credentials", { redirect: false, ...data });
       console.log("🚀 ~ handleLogin ~ result:", result);
-      /* if (result) router.push(FrontendRoutes.DASHBOARD); */
+      if (result && result.ok) router.push(FrontendRoutes.DASHBOARD);
     } catch (e: any) {
       console.warn(e.message);
     } finally {

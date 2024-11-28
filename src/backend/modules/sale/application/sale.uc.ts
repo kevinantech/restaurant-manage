@@ -1,6 +1,6 @@
 import { ResponseCode } from "@/backend/common/constants";
 import { IResponseBase } from "@/backend/common/entity/response-base.model";
-import { IProductRepository } from "../../product/domain/product.repository";
+import { IProductRepository } from "../../product-entry/domain/product.repository";
 import { ISale } from "../domain/sale.entity";
 import { ISaleRepository } from "../domain/sale.repository";
 import { Sale } from "../domain/sale.value";
@@ -16,9 +16,7 @@ export class SaleUseCase {
     products: string[],
     income: number
   ): Promise<IResponseBase<ISale>> {
-    const productsObtained = await Promise.all(
-      products.map((id) => this.productRepo.findById(id))
-    );
+    const productsObtained = await Promise.all(products.map((id) => this.productRepo.findById(id)));
 
     if (productsObtained.some((product) => product === null)) {
       return {
@@ -40,10 +38,7 @@ export class SaleUseCase {
       formattedProducts.map((product) => {
         const currentAmount = product.currentAmount - 1;
 
-        console.log(
-          "🚀 ~ SaleUseCase ~ formattedProducts.map ~ currentAmount:",
-          currentAmount
-        );
+        console.log("🚀 ~ SaleUseCase ~ formattedProducts.map ~ currentAmount:", currentAmount);
         return this.productRepo.update(product.id, { currentAmount });
       })
     );

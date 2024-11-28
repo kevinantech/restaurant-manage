@@ -1,4 +1,5 @@
 import { compare, genSalt, hash } from "bcryptjs";
+import { v4 as uuid } from "uuid";
 import jwt from "jsonwebtoken";
 
 export class GeneralUtils {
@@ -22,5 +23,9 @@ export class GeneralUtils {
     expiresIn: string = "10d"
   ): string {
     return jwt.sign({ ...payload, aud }, secret, { expiresIn });
+  }
+
+  static generateId(): string {
+    return uuid();
   }
 }

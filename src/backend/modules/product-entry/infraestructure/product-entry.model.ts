@@ -1,7 +1,7 @@
 import { model, models, Schema } from "mongoose";
-import { IProduct } from "../domain/product.entity";
+import { IProductEntry } from "../domain/product-entry.entity";
 
-const ProductSchema = new Schema<IProduct>(
+const ProductEntrySchema = new Schema<IProductEntry>(
   {
     id: {
       type: String,
@@ -11,32 +11,30 @@ const ProductSchema = new Schema<IProduct>(
       type: String,
       required: true,
     },
-    initialAmount: {
-      type: Number,
-      required: true,
-    },
-    currentAmount: {
-      type: Number,
-      required: true,
-    },
-    weightPerUnit: {
-      type: Number,
-      required: true,
-    },
-    unit: {
+    category: {
       type: String,
       required: true,
     },
-    cost: {
+    unitOfMeasure: {
+      type: String,
+      required: true,
+    },
+    unitWeight: {
+      type: Number,
+      required: true,
+    },
+    stock: {
       type: Number,
       required: true,
     },
   },
   {
     versionKey: false,
+    timestamps: true,
+    _id: false,
   }
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Products` model once compiled. */
-const ProductModel = models.Products || model("Products", ProductSchema);
-export { ProductModel };
+const ProductEntryModel = models.ProductEntries || model("ProductEntries", ProductEntrySchema);
+export { ProductEntryModel };

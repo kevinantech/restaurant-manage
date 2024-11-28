@@ -1,6 +1,7 @@
 export enum Units {
-  L = "L",
-  mL = "mL",
-  kg = "kg",
-  g = "g",
+  DEFAULT = "",
+  LITER = "L",
+  MILILITER = "mL",
+  KILOGRAM = "kg",
+  GRAM = "g",
 }

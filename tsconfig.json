@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "emitDecoratorMetadata": true, // this will be required to use decorator metadata/ here is the required flag for decorators
     "experimentalDecorators": true,
     "plugins": [
       {

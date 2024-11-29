@@ -1,11 +1,13 @@
 import { model, models, Schema } from "mongoose";
 import { IProductEntry } from "../domain/product-entry.entity";
+import { Units } from "@/backend/common/constants/units-enum";
 
 const ProductEntrySchema = new Schema<IProductEntry>(
   {
     id: {
       type: String,
       required: true,
+      unique: true,
     },
     name: {
       type: String,
@@ -17,7 +19,7 @@ const ProductEntrySchema = new Schema<IProductEntry>(
     },
     unitOfMeasure: {
       type: String,
-      required: true,
+      default: Units.DEFAULT,
     },
     unitWeight: {
       type: Number,
@@ -31,10 +33,10 @@ const ProductEntrySchema = new Schema<IProductEntry>(
   {
     versionKey: false,
     timestamps: true,
-    _id: false,
   }
 );
 
-/* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Products` model once compiled. */
-const ProductEntryModel = models.ProductEntries || model("ProductEntries", ProductEntrySchema);
+/* Fixs: ⨯ OverwriteModelError: Cannot overwrite `InventoryItems` model once compiled. */
+const ProductEntryModel =
+  models.ProductEntries || model("ProductEntries", ProductEntrySchema);
 export { ProductEntryModel };

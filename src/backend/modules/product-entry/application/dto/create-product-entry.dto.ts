@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsPositive, IsString, Min } from "class-validator";
 import { ProductEntryCategory } from "../../domain/product-entry-category-enum";
 import { Units } from "@/backend/common/constants/units-enum";
 
@@ -11,10 +11,10 @@ export class CreateProductEntryDto {
   category: ProductEntryCategory;
 
   @IsEnum(Units)
-  unitOfMeausure: Units;
+  unitOfMeasure: Units;
 
   @IsNumber()
-  @Min(0)
+  @IsPositive()
   unitWeight: number;
 
   @IsNumber()
@@ -25,13 +25,13 @@ export class CreateProductEntryDto {
     name: string,
     category: ProductEntryCategory,
     unitOfMeasure: Units,
-    stock: number,
-    restockThreshold: number
+    unitWeight: number,
+    stock: number
   ) {
     this.name = name;
     this.category = category;
-    this.unitOfMeausure = unitOfMeasure;
-    this.unitWeight = restockThreshold;
+    this.unitOfMeasure = unitOfMeasure;
+    this.unitWeight = unitWeight;
     this.stock = stock;
   }
 }

@@ -1,6 +1,6 @@
 export interface ISale {
   id: string;
+  orderId: string;
   description: string;
-  products: string[];
   income: number;
 }

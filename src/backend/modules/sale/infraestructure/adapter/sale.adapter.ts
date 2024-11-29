@@ -8,7 +8,7 @@ export class SaleAdapter {
   requestOne(): ISale {
     return {
       id: this.adaptee.id,
-      orderId: this.adaptee.items,
+      orderId: this.adaptee.orderId,
       description: this.adaptee.description,
       income: this.adaptee.income,
     };

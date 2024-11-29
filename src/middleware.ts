@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GET_SETUP_DATA } from "./app/api/setup/route";
-import { API } from "./common/constants/api-enum";
-import { ServerResponse } from "./common/interfaces";
+import { API } from "@/frontend/common/constants/api-enum";
+import { ServerResponse } from "@/frontend/common/server-response";
 import { FrontendRoutes } from "./frontend/common/constants/frontend-routes-enum";
 
 enum ProtectedRoute {
@@ -18,7 +18,9 @@ const routeHandlers: Record<
       async (res) => await res.json()
     );
     if (res && res?.data && res.data.isAdminSetup)
-      return NextResponse.redirect(`http://${req.nextUrl.host}${FrontendRoutes.DASHBOARD}`);
+      return NextResponse.redirect(
+        `http://${req.nextUrl.host}${FrontendRoutes.DASHBOARD}`
+      );
     return NextResponse.next();
   },
 };

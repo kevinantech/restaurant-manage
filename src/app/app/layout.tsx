@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { Header, Loader, Nav } from "@/components/admin";
+import { Header, Nav, Loader } from "@/frontend/components";
 import { Drawer, useMediaQuery } from "@mui/material";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
  * Intern components
  */
-
 const DesktopNav = () => {
   return (
     <div className="fixed z-50 left-0">
@@ -47,18 +45,15 @@ const useMounting = () => {
   return { mounting };
 };
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { mounting } = useMounting();
   const nav = useResponsiveNav();
   const matchResponsive = useMediaQuery("(max-width:1024px)");
-  const isLogin = usePathname().includes("/login");
 
   /* Cambia background del body */
   /* useEffect(() => document.body.classList.add("bg-[#f5fbfd]"), []); */
 
-  return isLogin ? (
-    children
-  ) : mounting ? (
+  return mounting ? (
     <Loader />
   ) : (
     <>

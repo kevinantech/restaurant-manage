@@ -1,20 +1,21 @@
 import { connectDatabase } from "@/backend/common/config/mongo";
-import { ResponseCode } from "@/backend/common/constants";
 import { ResponseModel } from "@/backend/common/entity/response-base.model";
-import { ProductDatabase } from "@/backend/modules/product/infraestructure/product.database";
-import { SaleUseCase } from "@/backend/modules/sale/application/sale.uc";
+import { GetAllSales } from "@/backend/modules/sale/application/get-all-sales.uc";
 import { SaleDatabase } from "@/backend/modules/sale/infraestructure/sale.database";
-import { validate } from "class-validator";
-import { NextRequest } from "next/server";
-import { SaleDto } from "./route.dto";
 
-const productRepo = new ProductDatabase();
+export async function GET(): Promise<ResponseModel> {
+  await connectDatabase();
+  const result = await new GetAllSales(new SaleDatabase()).get();
+  return new ResponseModel(result);
+}
 
-const saleRepo = new SaleDatabase();
-const saleUseCase = new SaleUseCase(productRepo, saleRepo);
-
-export async function POST(req: NextRequest): Promise<ResponseModel> {
-  const data = (await req.json()) as SaleDto;
+/* export async function POST(req: NextRequest): Promise<ResponseModel> {
+  const reqBody = await req.json();
+  const data = new RegisterSaleDto(
+    reqBody.orderId,
+    reqBody.description,
+    reqBody.income
+  );
 
   if ((await validate(data)).length !== 0) {
     return new ResponseModel({
@@ -24,16 +25,9 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
   }
 
   await connectDatabase();
-  const result = await saleUseCase.registerSale(
-    data.description,
-    data.products,
-    data.income
-  );
+  const result = await new RegisterSale(
+    new OrderDatabase(),
+    new SaleDatabase()
+  ).register(data);
   return new ResponseModel(result);
-}
-
-export async function GET(): Promise<ResponseModel> {
-  await connectDatabase();
-  const result = await saleUseCase.getSales();
-  return new ResponseModel(result);
-}
+} */

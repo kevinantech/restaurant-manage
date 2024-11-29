@@ -8,6 +8,8 @@ import {
   Ingredient,
   IProduct,
 } from "@/backend/modules/product/domain/product.entity";
+import { Order } from "../domain/order.value";
+import { GeneralUtils } from "@/backend/common/utils/general.util";
 type OP = IProduct & { productQuantity: number };
 
 export class CreateOrder {
@@ -66,31 +68,51 @@ export class CreateOrder {
     /**
      * Confirma la disponibilidad de insumos.
      */
-    type IngrAvailability = { inventoryItemId: string; available: boolean };
-    const ingrAvailability: IngrAvailability[] = await Promise.all(
+    type OrderIngredient = { ingredientId: string; stockUpdated: number };
+    const orderIngredients: OrderIngredient[] = await Promise.all(
       necessaryIngredients.map(async (ingr) => {
         const ingredient = await this.inventoryItemRepository.findById(
           ingr.inventoryItemId
         );
         return {
-          inventoryItemId: ingr.inventoryItemId,
-          available: ingredient?.stock
-            ? ingredient.stock >= ingr.quantity
-            : false,
+          ingredientId: ingr.inventoryItemId,
+          stockUpdated: ingredient?.stock
+            ? ingredient.stock - ingr.quantity
+            : -1,
         };
       })
     );
 
-    if (ingrAvailability.some((ingr) => !ingr.available)) {
+    if (orderIngredients.some(({ stockUpdated }) => stockUpdated < 0)) {
       return {
         ...ResponseCode["NOT FOUND"],
         message: "El stock es insuficiente.",
       };
     }
 
-    /**
-     * TODO: Descontar ingredientes y registrar orden.
-     */
+    // Actualiza insumos.
+    await Promise.all(
+      orderIngredients.map(
+        async ({ ingredientId, stockUpdated }) =>
+          await this.inventoryItemRepository.update(ingredientId, {
+            stock: stockUpdated,
+          })
+      )
+    );
+
+    // Crea la orden
+    const totalAmount = orderProducts.reduce(
+      (acc: number, o) => acc + o.price * o.productQuantity,
+      0
+    );
+
+    const val = new Order(
+      GeneralUtils.generateId(),
+      data.items,
+      totalAmount,
+      new Date()
+    );
+    await this.orderRepository.add(val);
 
     return { ...ResponseCode.OK, message: "La orden ha sido creada." };
   }

@@ -1,15 +1,19 @@
-import { v4 as uuid } from "uuid";
 import { ISale } from "./sale.entity";
 
 export class Sale implements ISale {
   id: string;
+  orderId: string;
   description: string;
-  products: string[];
   income: number;
-  constructor(description: string, products: string[], income: number) {
-    this.id = uuid();
+  constructor(
+    id: string,
+    orderId: string,
+    description: string,
+    income: number
+  ) {
+    this.id = id;
+    this.orderId = orderId;
     this.description = description;
-    this.products = products;
     this.income = income;
   }
 }

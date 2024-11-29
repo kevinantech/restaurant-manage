@@ -12,7 +12,7 @@ export class ProductAdapter {
       name: this.adaptee.name,
       description: this.adaptee.description,
       ingredients: this.adaptee.ingredients,
-      price: this.adaptee.ingredients,
+      price: this.adaptee.price,
     };
   }
 

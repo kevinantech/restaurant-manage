@@ -4,12 +4,12 @@ import { ResponseCode } from "@/backend/common/constants";
 import { ResponseModel } from "@/backend/common/entity/response-base.model";
 import { ProductEntryDatabase } from "@/backend/modules/product-entry/infraestructure/product-entry.database";
 import { ProductDatabase } from "@/backend/modules/product/infrastructure/product.database";
-import { CreateOrder } from "@/backend/modules/shared/order/application/create-order.uc";
+import { CreateOrder } from "@/backend/modules/order/application/create-order.uc";
 import {
   CreateOrderDto,
   OrderItemDto,
-} from "@/backend/modules/shared/order/application/dto/create-order.dto";
-import { OrderDatabase } from "@/backend/modules/shared/order/infrastructure/order.database";
+} from "@/backend/modules/order/application/dto/create-order.dto";
+import { OrderDatabase } from "@/backend/modules/order/infrastructure/order.database";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { NextRequest } from "next/server";

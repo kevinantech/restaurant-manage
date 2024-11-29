@@ -12,7 +12,7 @@ export class OrderDatabase implements OrderRepository {
   // Obtiene una orden por su ID
   async findById(id: string): Promise<IOrder | null> {
     const doc = await OrderModel.findOne({ id });
-    return new OrderAdapter(doc).requestOne();
+    return doc ? new OrderAdapter(doc).requestOne() : null;
   }
 
   // Obtiene todas las órdenes

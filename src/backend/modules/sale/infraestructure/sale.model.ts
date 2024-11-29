@@ -7,13 +7,13 @@ const SaleSchema = new Schema<ISale>(
       type: String,
       required: true,
     },
-    description: {
+    orderId: {
       type: String,
       required: true,
     },
-    products: {
-      type: [String],
-      required: true,
+    description: {
+      type: String,
+      default: "",
     },
     income: {
       type: Number,
@@ -21,6 +21,7 @@ const SaleSchema = new Schema<ISale>(
     },
   },
   {
+    timestamps: true,
     versionKey: false,
   }
 );

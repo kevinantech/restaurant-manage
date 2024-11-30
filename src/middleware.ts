@@ -27,8 +27,8 @@ const routeHandlers: Record<
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
-  const handler = routeHandlers[req.nextUrl.pathname];
-  if (handler) return handler(req);
+  /* const handler = routeHandlers[req.nextUrl.pathname];
+  if (handler) return handler(req); */
   return NextResponse.next();
 }
 

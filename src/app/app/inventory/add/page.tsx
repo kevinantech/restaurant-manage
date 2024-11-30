@@ -93,8 +93,8 @@ export default function RegisterProduct() {
                 <Select
                   labelId="label-unitOfMeasure"
                   label="Unidad regular"
-                  defaultValue={""}
-                  {...register("unitOfMeasure", { required: true })}
+                  defaultValue={Units.DEFAULT}
+                  {...register("unitOfMeasure")}
                 >
                   <MenuItem value={Units.DEFAULT}>Defecto</MenuItem>
                   <MenuItem value={Units.KILOGRAM}>kg</MenuItem>
@@ -125,7 +125,7 @@ export default function RegisterProduct() {
             type="submit"
             className="mt-8 py-2 px-5 rounded-lg font-semibold text-sm text-white bg-blue-500 shadow transition-[background] duration-150 ease-in-out hover:bg-blue-600"
           >
-            Guardar Producto
+            Guardar Insumo
           </button>
         </form>
       </main>

@@ -1,5 +1,6 @@
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
 import { API } from "@/frontend/common/constants/api-enum";
+import { FrontendRoutes } from "@/frontend/common/constants/frontend-routes-enum";
 import { ServerResponse } from "@/frontend/common/server-response";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -35,13 +36,17 @@ const useSetupPage = () => {
   const handleSetup = async (data: CreateAdminDto) => {
     try {
       toggleLoading();
-      const response: R = await fetcher(data).then(async (res) => await res.json());
+      const response: R = await fetcher(data).then(
+        async (res) => await res.json()
+      );
       if (!response.data)
         throw new Error(
-          typeof response.message === "string" ? response.message : "Unhandled response."
+          typeof response.message === "string"
+            ? response.message
+            : "Unhandled response."
         );
 
-      router.push("/");
+      router.push(FrontendRoutes.DASHBOARD);
     } catch (e: any) {
       console.warn(e.message);
     } finally {

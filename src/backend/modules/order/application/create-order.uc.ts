@@ -10,10 +10,13 @@ import {
 } from "@/backend/modules/product/domain/product.entity";
 import { Order } from "../domain/order.value";
 import { GeneralUtils } from "@/backend/common/utils/general.util";
+import { SaleRepository } from "../../sale/domain/sale.repository";
+import { Sale } from "../../sale/domain/sale.value";
 type OP = IProduct & { productQuantity: number };
 
 export class CreateOrder {
   constructor(
+    private readonly saleRepository: SaleRepository,
     private readonly orderRepository: OrderRepository,
     private readonly productRepository: ProductRepository,
     private readonly inventoryItemRepository: ProductEntryRepository
@@ -113,6 +116,15 @@ export class CreateOrder {
       new Date()
     );
     await this.orderRepository.add(val);
+
+    const saleVal = new Sale(
+      GeneralUtils.generateId(),
+      val.id,
+      "", // TODO: Datos de la orden.
+      val.totalAmount
+    );
+
+    await this.saleRepository.save(saleVal);
 
     return { ...ResponseCode.OK, message: "La orden ha sido creada." };
   }

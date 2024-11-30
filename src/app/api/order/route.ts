@@ -8,10 +8,12 @@ import { GetAllOrders } from "@/backend/modules/order/application/get-all-orders
 import { OrderDatabase } from "@/backend/modules/order/infrastructure/order.database";
 import { ProductEntryDatabase } from "@/backend/modules/product-entry/infraestructure/product-entry.database";
 import { ProductDatabase } from "@/backend/modules/product/infrastructure/product.database";
+import { SaleDatabase } from "@/backend/modules/sale/infraestructure/sale.database";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { NextRequest } from "next/server";
 
+const saleCollection = new SaleDatabase();
 const orderCollection = new OrderDatabase();
 const productCollection = new ProductDatabase();
 const ingredientsCollection = new ProductEntryDatabase();
@@ -29,6 +31,7 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
 
   await connectDatabase();
   const result = await new CreateOrder(
+    saleCollection,
     orderCollection,
     productCollection,
     ingredientsCollection
@@ -36,7 +39,7 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
   return new ResponseModel(result);
 }
 
-export async function GET(req: NextRequest): Promise<ResponseModel> {
+export async function GET(): Promise<ResponseModel> {
   await connectDatabase();
   const result = await new GetAllOrders(orderCollection).get();
   return new ResponseModel(result);

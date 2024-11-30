@@ -22,7 +22,7 @@ const OrderBar = () => {
     <div className="flex flex-wrap gap-4 justify-between mb-5">
       <SearchBar
         className="min-w-full semi-sm:min-w-[20rem]"
-        placeholder="Buscar una venta..."
+        placeholder="Buscar una Orden..."
       />
       <PrimaryButton
         className="min-w-full semi-sm:min-w-[auto]"
@@ -68,14 +68,13 @@ export default function Orders() {
             <TableRow className="bg-slate-100">
               <Cell align="left">Referencia</Cell>
               <Cell align="left">Fecha</Cell>
-              <Cell align="left">Productos consumidos</Cell>
+              <Cell align="left">Conceptos</Cell>
               <Cell align="left">Valor total</Cell>
               <Cell align="left"></Cell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((o) => {
-              console.log("🚀 ~ {orders.map ~ o:", o);
               const formattedDate = new Intl.DateTimeFormat("en-GB").format(
                 new Date(o.date)
               );

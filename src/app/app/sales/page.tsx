@@ -23,15 +23,8 @@ const SaleBar = () => {
     <div className="flex flex-wrap gap-4 justify-between mb-5">
       <SearchBar
         className="min-w-full semi-sm:min-w-[20rem]"
-        placeholder="Buscar una venta..."
+        placeholder="Buscar una Venta..."
       />
-      <PrimaryButton
-        className="min-w-full semi-sm:min-w-[auto]"
-        label="Añadir venta"
-        onClick={() => router.push("/admin/sales/add")}
-      >
-        <AddIcon />
-      </PrimaryButton>
     </div>
   );
 };
@@ -68,7 +61,6 @@ export default function Sales() {
             <TableRow className="bg-slate-100">
               <Cell align="left">Referencia</Cell>
               <Cell align="left">Orden</Cell>
-              <Cell align="left">Descripción</Cell>
               <Cell align="left">Ingreso</Cell>
               <Cell align="left"></Cell>
             </TableRow>
@@ -78,9 +70,6 @@ export default function Sales() {
               <TableRow key={sale.id}>
                 <Cell align="left">{sale.id.slice(0, 8)}</Cell>
                 <Cell align="left">{sale.orderId.slice(0, 8)}</Cell>
-                <Cell align="left">
-                  {sale.description ? sale.description : "No hay descripción"}
-                </Cell>
                 <Cell align="left">{sale.income}</Cell>
               </TableRow>
             ))}

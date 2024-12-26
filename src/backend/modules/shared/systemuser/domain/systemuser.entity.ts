@@ -1,7 +1,7 @@
 import { UserRole } from "@/backend/common/constants/user-roles-enum";
 
 export interface ISystemUser {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   username: string;

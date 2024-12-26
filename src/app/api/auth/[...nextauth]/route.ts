@@ -1,9 +1,13 @@
 import { connectDatabase } from "@/backend/common/config/mongo";
+import { SessionUser } from "@/backend/common/entity/user";
 import { GeneralUtils } from "@/backend/common/utils/general.util";
 import { AdminDatabase } from "@/backend/modules/admin/infrastructure/admin.database";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+/**
+ * https://next-auth.js.org/configuration/providers/credentials
+ */
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
@@ -12,9 +16,9 @@ export const authOptions: AuthOptions = {
         username: {},
         password: {},
       },
-      async authorize(credentials, req) {
+      async authorize(credentials, req): Promise<SessionUser | null> {
         if (!credentials || !credentials.username || !credentials.password)
-          throw new Error("Las credenciales no están disponibles.");
+          throw new Error("Las credenciales han sido proporcionadas.");
         await connectDatabase();
         const db = new AdminDatabase();
         const userFound = await db.findByUsername(credentials.username);
@@ -30,7 +34,7 @@ export const authOptions: AuthOptions = {
         if (!matchPassword) throw new Error("Contraseña incorrecta.");
 
         return {
-          id: userFound._id,
+          id: userFound.id,
           name: userFound.name,
           email: userFound.email,
           username: userFound.username,

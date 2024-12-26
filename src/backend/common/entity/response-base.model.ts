@@ -1,5 +1,7 @@
+import { ResponseCodeType } from "../constants";
+
 export interface IResponseBase<T = any> {
-  code: string;
+  code: ResponseCodeType;
   data?: T;
   message: string | string[];
   status: number;

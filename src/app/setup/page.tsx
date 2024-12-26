@@ -12,7 +12,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import React, { ReactNode } from "react";
-import { useSetupPage } from "./page.hooks";
+import { useSetup } from "./page.hooks";
 import styles from "./page.module.css";
 
 const themeOptions: ThemeOptions = {
@@ -71,7 +71,7 @@ const Backdrop: React.FC<BackdropProps> = ({ open }) =>
   );
 
 export default function CreateAdmin() {
-  const { form, handleSetup, loading, showPassword } = useSetupPage();
+  const { form, handleSetup } = useSetup();
 
   return (
     <ThemeProvider theme={createTheme(themeOptions)}>
@@ -81,7 +81,9 @@ export default function CreateAdmin() {
           maxWidth="xs"
         >
           <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
-          <p className="w-max text-sm mx-auto">Configuración inicial del administrador.</p>
+          <p className="w-max text-sm mx-auto">
+            Configuración inicial del administrador.
+          </p>
           <form
             className="flex flex-col items-center w-full max-w-xs mt-5 mx-auto"
             onSubmit={form.handleSubmit(handleSetup)}
@@ -92,7 +94,9 @@ export default function CreateAdmin() {
                 size="small"
                 fullWidth
                 label="Nombre"
-                {...form.register("name", { required: "Este campo es obligatorio." })}
+                {...form.register("name", {
+                  required: "Este campo es obligatorio.",
+                })}
                 error={!!form.errors.name?.message}
                 helperText={form.errors.name?.message}
               />
@@ -103,7 +107,9 @@ export default function CreateAdmin() {
                 size="small"
                 fullWidth
                 label="Usuario"
-                {...form.register("username", { required: "Este campo es obligatorio." })}
+                {...form.register("username", {
+                  required: "Este campo es obligatorio.",
+                })}
                 error={!!form.errors.username?.message}
                 helperText={form.errors.username?.message}
               />
@@ -131,7 +137,7 @@ export default function CreateAdmin() {
                 size="small"
                 fullWidth
                 label="Contraseña"
-                type={showPassword.value ? "text" : "password"}
+                type={form.showPassword.value ? "text" : "password"}
                 {...form.register("password", {
                   required: "Este campo es obligatorio.",
                   minLength: {
@@ -140,7 +146,8 @@ export default function CreateAdmin() {
                   },
                   maxLength: {
                     value: 30,
-                    message: "La contraseña no puede superar los 30 caracteres.",
+                    message:
+                      "La contraseña no puede superar los 30 caracteres.",
                   },
                   pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
@@ -150,14 +157,23 @@ export default function CreateAdmin() {
                 })}
                 error={!!form.errors.password?.message}
                 helperText={form.errors.password?.message}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => showPassword.dispatch(!showPassword)}>
-                        {showPassword.value ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          disableRipple
+                          onClick={form.showPassword.toggle}
+                        >
+                          {form.showPassword.value ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
             </InputBox>
@@ -171,17 +187,23 @@ export default function CreateAdmin() {
                 {...form.register("confirmPassword", {
                   required: "Este campo es obligatorio.",
                   validate: (val) =>
-                    val === form.getValues("password") || "Las contraseñas no coinciden.",
+                    val === form.getValues("password") ||
+                    "Las contraseñas no coinciden.",
                 })}
                 error={!!form.errors.confirmPassword?.message}
                 helperText={form.errors.confirmPassword?.message}
               />
             </InputBox>
-            <Button fullWidth variant="contained" type="submit" className="mt-5 bg-[#1976d2]">
+            <Button
+              fullWidth
+              variant="contained"
+              type="submit"
+              className="mt-5 bg-[#1976d2]"
+            >
               Registrar
             </Button>
           </form>
-          <Backdrop open={loading} />
+          <Backdrop open={form.loading} />
         </Container>
       </div>
     </ThemeProvider>

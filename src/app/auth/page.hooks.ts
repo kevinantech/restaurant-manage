@@ -26,12 +26,21 @@ const useAuthPage = () => {
   });
   const router = useRouter();
 
+  /**
+   * @param data
+   * https://next-auth.js.org/getting-started/client#signin
+   */
   const handleLogin = async (data: Credentials) => {
     try {
       toggleLoading();
-      const result = await signIn("credentials", { redirect: false, ...data });
-      console.log("🚀 ~ handleLogin ~ result:", result);
-      if (result && result.ok) router.push(FrontendRoutes.DASHBOARD);
+
+      const result = await signIn("credentials", {
+        ...data,
+        callbackUrl: FrontendRoutes.DASHBOARD,
+      });
+      if (result?.error) {
+        router; /* TODO:  */
+      }
     } catch (e: any) {
       console.warn(e.message);
     } finally {

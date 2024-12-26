@@ -1,22 +1,21 @@
+import { IResponseBase } from "@/backend/common/entity/response-base.model";
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
 import { API } from "@/frontend/common/constants/api-enum";
 import { FrontendRoutes } from "@/frontend/common/constants/frontend-routes-enum";
-import { ServerResponse } from "@/frontend/common/server-response";
+import { useShowPassword } from "@/frontend/hooks";
+import { useLoading } from "@/frontend/hooks/useLoading";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-type R = ServerResponse<{ _id: string }>;
 const fetcher = (data: CreateAdminDto) =>
   fetch(API.SETUP, {
     method: "POST",
     body: JSON.stringify(data),
   });
 
-const useSetupPage = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const toggleLoading = () => setLoading((prevState) => !prevState);
+const useSetup = () => {
+  const loading = useLoading();
+  const showPassword = useShowPassword();
   const {
     register,
     handleSubmit,
@@ -35,39 +34,29 @@ const useSetupPage = () => {
 
   const handleSetup = async (data: CreateAdminDto) => {
     try {
-      toggleLoading();
-      const response: R = await fetcher(data).then(
+      loading.toggle();
+      const res: IResponseBase = await fetcher(data).then(
         async (res) => await res.json()
       );
-      if (!response.data)
-        throw new Error(
-          typeof response.message === "string"
-            ? response.message
-            : "Unhandled response."
-        );
-
-      router.push(FrontendRoutes.DASHBOARD);
+      if (res.code === "OK") router.push(FrontendRoutes.AUTH);
     } catch (e: any) {
       console.warn(e.message);
     } finally {
-      toggleLoading();
+      loading.toggle();
     }
   };
 
   return {
     form: {
-      register,
-      handleSubmit,
       errors,
       getValues,
+      handleSubmit,
+      loading: loading.value,
+      register,
+      showPassword,
     },
-    showPassword: {
-      value: showPassword,
-      dispatch: setShowPassword,
-    },
-    loading,
     handleSetup,
   };
 };
 
-export { useSetupPage };
+export { useSetup };

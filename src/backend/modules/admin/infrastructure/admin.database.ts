@@ -1,5 +1,5 @@
 import { ISystemUser } from "../../shared/systemuser/domain/systemuser.entity";
-import { AdminRepository, SystemUserInput } from "../domain/admin.repository";
+import { AdminRepository } from "../domain/admin.repository";
 import { AdminModel } from "./admin.model";
 
 export class AdminDatabase implements AdminRepository {
@@ -8,16 +8,22 @@ export class AdminDatabase implements AdminRepository {
       const doc = await AdminModel.findOne({ username });
       return doc;
     } catch (e) {
-      console.error({ at: `${__dirname} => AdminDatabase.register()`, error: e });
+      console.error({
+        at: `${__dirname} => AdminDatabase.findOne()`,
+        error: e,
+      });
     }
   }
-  async register(userData: SystemUserInput): Promise<{ _id: string } | undefined> {
+  async register(userData: ISystemUser): Promise<{ id: string } | undefined> {
     try {
       const doc = new AdminModel(userData);
       await doc.save();
-      return { _id: doc._id };
+      return { id: doc.id };
     } catch (e) {
-      console.error({ at: `${__dirname} => AdminDatabase.register()`, error: e });
+      console.error({
+        at: `${__dirname} => AdminDatabase.register()`,
+        error: e,
+      });
     }
   }
 }

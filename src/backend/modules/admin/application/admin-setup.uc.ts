@@ -1,12 +1,10 @@
-import { IResponseBase } from "@/backend/common/entity/response-base.model";
-import { AdminRepository } from "../domain/admin.repository";
-import { CreateAdminDto } from "./dto/create-admin.dto";
 import { ResponseCode } from "@/backend/common/constants";
-import { UserRole } from "@/backend/common/constants/user-roles-enum";
+import { IResponseBase } from "@/backend/common/entity/response-base.model";
 import { GeneralUtils } from "@/backend/common/utils/general.util";
-import { Admin } from "../domain/admin.value";
 import { AppConfigRepository } from "../../shared/appconfig/domain/appconfig.repository";
-export type R = { sessionToken: string };
+import { AdminRepository } from "../domain/admin.repository";
+import { Admin } from "../domain/admin.value";
+import { CreateAdminDto } from "./dto/create-admin.dto";
 
 export class AdminSetup {
   constructor(
@@ -14,7 +12,7 @@ export class AdminSetup {
     private readonly appConfigRepository: AppConfigRepository
   ) {}
 
-  async setup(administratorsData: CreateAdminDto): Promise<IResponseBase<R>> {
+  async setup(administratorsData: CreateAdminDto): Promise<IResponseBase> {
     try {
       if (administratorsData.password !== administratorsData.confirmPassword)
         return {
@@ -29,7 +27,9 @@ export class AdminSetup {
           message: "Registro no disponible.",
         };
 
-      const docData = await this.adminRepository.findByUsername(administratorsData.username);
+      const docData = await this.adminRepository.findByUsername(
+        administratorsData.username
+      );
       if (docData)
         return {
           ...ResponseCode["BAD REQUEST"],
@@ -37,8 +37,12 @@ export class AdminSetup {
         };
 
       const KEY = <string>process.env.PASS_ENCRIPTION_KEY;
-      const password = await GeneralUtils.encryptPassword(administratorsData.password, KEY);
+      const password = await GeneralUtils.encryptPassword(
+        administratorsData.password,
+        KEY
+      );
       const val = new Admin(
+        GeneralUtils.generateId(),
         administratorsData.name,
         administratorsData.email,
         administratorsData.username,
@@ -46,7 +50,7 @@ export class AdminSetup {
       );
       const recovery = await this.adminRepository.register(val);
 
-      if (!recovery || !recovery._id)
+      if (!recovery || !recovery.id)
         return {
           ...ResponseCode["INTERNAL SERVER ERROR"],
           message: "¡Ups! Algo salió mal al guardar tu información",
@@ -54,14 +58,8 @@ export class AdminSetup {
 
       await this.appConfigRepository.setup(true);
 
-      const sessionToken = GeneralUtils.generateToken(
-        { id: recovery._id },
-        UserRole.ADMIN,
-        <string>process.env.TOKEN_KEY
-      );
       return {
         ...ResponseCode.OK,
-        data: { sessionToken },
         message: "Administrador agregado correctamente.",
       };
     } catch (error: any) {

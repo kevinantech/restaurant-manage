@@ -1,12 +1,11 @@
 import { model, models, Schema } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 import { ISystemUser } from "../../shared/systemuser/domain/systemuser.entity";
 
 const AdminSchema = new Schema<ISystemUser>(
   {
-    _id: {
+    id: {
       type: String,
-      default: uuidv4,
+      required: true,
     },
     name: {
       type: String,

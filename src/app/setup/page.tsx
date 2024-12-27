@@ -8,10 +8,20 @@ import Setup from "./page.client";
 
 const domain = process.env.NEXTAUTH_URL;
 
+/**
+ * Consulta la configuración establecida.
+ * @returns Configuración del sistema
+ */
 function fetcher(): Promise<ServerResponse<GET_SETUP_DATA>> {
   return fetch(domain + API.SETUP).then((res) => res.json());
 }
 
+/**
+ * Si existe una sesion activa, no tiene sentido entrar a esta pagina,
+ * debido a que existe un administrador vigente.
+ * Si no existe registro de una configuracion inicial, esta permitido el acceso.
+ * @returns Validez de acceso.
+ */
 async function validatePass() {
   const session = await getServerSession(authOptions);
   if (session) return false;

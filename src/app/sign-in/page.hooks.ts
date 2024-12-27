@@ -9,7 +9,7 @@ export type Credentials = {
   password: string;
 };
 
-const useAuthPage = () => {
+const useSignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const toggleLoading = () => setLoading((prevState) => !prevState);
@@ -63,4 +63,4 @@ const useAuthPage = () => {
   };
 };
 
-export { useAuthPage };
+export { useSignIn };

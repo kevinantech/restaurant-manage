@@ -6,13 +6,13 @@ import { AdminRepository } from "../domain/admin.repository";
 import { Admin } from "../domain/admin.value";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 
-export class AdminSetup {
+export class RegisterAdmin {
   constructor(
     private readonly adminRepository: AdminRepository,
     private readonly appConfigRepository: AppConfigRepository
   ) {}
 
-  async setup(administratorsData: CreateAdminDto): Promise<IResponseBase> {
+  async register(administratorsData: CreateAdminDto): Promise<IResponseBase> {
     try {
       if (administratorsData.password !== administratorsData.confirmPassword)
         return {

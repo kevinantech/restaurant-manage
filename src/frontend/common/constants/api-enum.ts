@@ -1,7 +1,7 @@
 const root = "/api";
 
 export enum API {
-  SETUP = `${root}/setup`,
+  ADMIN = `${root}/admin`,
   INVENTORY = `${root}/inventory`,
   PRODUCT = `${root}/product`,
   ORDER = `${root}/order`,

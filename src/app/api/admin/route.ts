@@ -4,15 +4,13 @@ import {
   IResponseBase,
   ResponseModel,
 } from "@/backend/common/entity/response-base.model";
-import { AdminSetup } from "@/backend/modules/admin/application/admin-setup.uc";
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
+import { RegisterAdmin } from "@/backend/modules/admin/application/register-admin.uc";
 import { AdminDatabase } from "@/backend/modules/admin/infrastructure/admin.database";
 import { AppConfigDatabase } from "@/backend/modules/shared/appconfig/infrastructure/appconfig.database";
 import { validate } from "class-validator";
-import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
-/* Route designed for the fisrt setup to the admin */
 export async function POST(req: NextRequest): Promise<ResponseModel> {
   const data = new CreateAdminDto(await req.json());
   if ((await validate(data)).length !== 0)
@@ -22,18 +20,19 @@ export async function POST(req: NextRequest): Promise<ResponseModel> {
     });
 
   await connectDatabase();
-  const result = await new AdminSetup(
+  const result = await new RegisterAdmin(
     new AdminDatabase(),
     new AppConfigDatabase()
-  ).setup(data);
+  ).register(data);
 
   return new ResponseModel(result);
 }
 
-export type GET_SETUP_DATA = {
+// TODO: Move to controller for the app configuration.
+export type ADMIN_SETUP = {
   isAdminSetup: boolean;
 };
-type R = IResponseBase<GET_SETUP_DATA>;
+type R = IResponseBase<ADMIN_SETUP>;
 export async function GET(): Promise<ResponseModel> {
   await connectDatabase();
   const result = await new AppConfigDatabase().findOne();

@@ -13,10 +13,10 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { FC, ReactNode } from "react";
-import { useSetup } from "./page.hooks";
+import { useRegister } from "./page.hooks";
 import styles from "./page.module.css";
 
-const themeOptions: ThemeOptions = {
+export const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: "inherit",
   },
@@ -51,14 +51,14 @@ const themeOptions: ThemeOptions = {
 type InputBoxProps = {
   children: ReactNode;
 };
-const InputBox: FC<InputBoxProps> = ({ children }) => (
+export const InputBox: FC<InputBoxProps> = ({ children }) => (
   <div className="h-16 w-full">{children}</div>
 );
 
 type FormLoaderProps = {
   open?: boolean;
 };
-const FormLoader: FC<FormLoaderProps> = ({ open }) =>
+export const FormLoader: FC<FormLoaderProps> = ({ open }) =>
   open ? (
     <div
       className={`${styles["form-submit-animation"]} absolute z-10 inset-0 flex items-center w-full h-full m-0 rounded-lg bg-white bg-opacity-50`}
@@ -93,8 +93,8 @@ const FormFeedback: FC<FormFeedbackProps> = ({ open, onAccept }) => (
   </Backdrop>
 );
 
-export default function Setup() {
-  const { form, handleFeedback, handleSetup, openFeedback } = useSetup();
+export default function Register() {
+  const { form, handleFeedback, handleRegister, openFeedback } = useRegister();
 
   return (
     <ThemeProvider theme={createTheme(themeOptions)}>
@@ -109,7 +109,7 @@ export default function Setup() {
           </p>
           <form
             className="flex flex-col items-center w-full max-w-xs mt-5 mx-auto"
-            onSubmit={form.handleSubmit(handleSetup)}
+            onSubmit={form.handleSubmit(handleRegister)}
           >
             <InputBox>
               <TextField

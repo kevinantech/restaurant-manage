@@ -1,3 +1,4 @@
+"use client";
 import { IResponseBase } from "@/backend/common/entity/response-base.model";
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
 import { API } from "@/frontend/common/constants/api-enum";
@@ -9,12 +10,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const fetcher = (data: CreateAdminDto) =>
-  fetch(API.SETUP, {
+  fetch(API.ADMIN, {
     method: "POST",
     body: JSON.stringify(data),
   });
 
-const useSetup = () => {
+const useRegister = () => {
   const loading = useLoading();
   const showPassword = useShowPassword();
   const [openFeedback, setOpenFeedback] = useState<boolean>(false);
@@ -34,7 +35,7 @@ const useSetup = () => {
   });
   const router = useRouter();
 
-  const handleSetup = async (data: CreateAdminDto) => {
+  const handleRegister = async (data: CreateAdminDto) => {
     try {
       loading.toggle();
       const res: IResponseBase = await fetcher(data).then(
@@ -60,9 +61,9 @@ const useSetup = () => {
       showPassword,
     },
     handleFeedback,
-    handleSetup,
+    handleRegister,
     openFeedback,
   };
 };
 
-export { useSetup };
+export { useRegister };

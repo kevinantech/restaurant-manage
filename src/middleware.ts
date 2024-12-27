@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+/* import { NextRequest, NextResponse } from "next/server";
 import { GET_SETUP_DATA } from "./app/api/setup/route";
 import { API } from "@/frontend/common/constants/api-enum";
 import { ServerResponse } from "@/frontend/common/server-response";
-import { FrontendRoutes } from "./frontend/common/constants/frontend-routes-enum";
+import { FrontendRoutes } from "./frontend/common/constants/frontend-routes-enum"; */
+export { default } from "next-auth/middleware";
 
-enum ProtectedRoute {
+/* enum ProtectedRoute {
   SETUP = "/setup",
 }
 
@@ -13,6 +14,8 @@ const routeHandlers: Record<
   (req: NextRequest) => NextResponse | Promise<NextResponse>
 > = {
   [ProtectedRoute.SETUP]: async (req) => {
+    // TODO: Revisar si esta logeado.
+
     const fetcher = () => fetch(`http://${req.nextUrl.host}${API.SETUP}`);
     const res: ServerResponse<GET_SETUP_DATA> = await fetcher().then(
       async (res) => await res.json()
@@ -30,9 +33,9 @@ export async function middleware(req: NextRequest) {
   const handler = routeHandlers[req.nextUrl.pathname];
   if (handler) return handler(req);
   return NextResponse.next();
-}
+} */
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ProtectedRoute.SETUP,
+  matcher: ["/app/:path*"],
 };

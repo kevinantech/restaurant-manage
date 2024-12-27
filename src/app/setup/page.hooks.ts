@@ -5,6 +5,7 @@ import { FrontendRoutes } from "@/frontend/common/constants/frontend-routes-enum
 import { useShowPassword } from "@/frontend/hooks";
 import { useLoading } from "@/frontend/hooks/useLoading";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const fetcher = (data: CreateAdminDto) =>
@@ -16,6 +17,7 @@ const fetcher = (data: CreateAdminDto) =>
 const useSetup = () => {
   const loading = useLoading();
   const showPassword = useShowPassword();
+  const [openFeedback, setOpenFeedback] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -38,13 +40,15 @@ const useSetup = () => {
       const res: IResponseBase = await fetcher(data).then(
         async (res) => await res.json()
       );
-      if (res.code === "OK") router.push(FrontendRoutes.AUTH);
+      if (res.code === "OK") setOpenFeedback(true);
     } catch (e: any) {
       console.warn(e.message);
     } finally {
       loading.toggle();
     }
   };
+
+  const handleFeedback = () => router.push(FrontendRoutes.AUTH);
 
   return {
     form: {
@@ -55,7 +59,9 @@ const useSetup = () => {
       register,
       showPassword,
     },
+    handleFeedback,
     handleSetup,
+    openFeedback,
   };
 };
 

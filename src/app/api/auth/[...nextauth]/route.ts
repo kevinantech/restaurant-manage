@@ -9,6 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
  * https://next-auth.js.org/configuration/providers/credentials
  */
 export const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",

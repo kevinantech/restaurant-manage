@@ -20,11 +20,12 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req): Promise<SessionUser | null> {
         if (!credentials || !credentials.username || !credentials.password)
-          throw new Error("Las credenciales han sido proporcionadas.");
+          throw new Error("Las credenciales no han sido proporcionadas.");
         await connectDatabase();
         const db = new AdminDatabase();
         const userFound = await db.findByUsername(credentials.username);
-        if (!userFound) throw new Error("El usuario no ha sido encontrado.");
+        if (!userFound)
+          throw new Error("Parece que no es posible encontrar la cuenta.");
 
         const KEY = <string>process.env.PASS_ENCRIPTION_KEY;
         const matchPassword = await GeneralUtils.comparePassword(
@@ -33,7 +34,8 @@ export const authOptions: AuthOptions = {
           KEY
         );
 
-        if (!matchPassword) throw new Error("Contraseña incorrecta.");
+        if (!matchPassword)
+          throw new Error("Usuario o contraseña incorrectos.");
 
         return {
           id: userFound.id,
@@ -46,6 +48,7 @@ export const authOptions: AuthOptions = {
   ],
   pages: {
     signIn: FrontendRoutes.SIGN_IN,
+    error: undefined,
   },
 };
 

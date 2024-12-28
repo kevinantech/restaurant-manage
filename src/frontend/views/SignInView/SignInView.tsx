@@ -1,6 +1,7 @@
 "use client";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  Backdrop,
   Button,
   Container,
   createTheme,
@@ -9,6 +10,7 @@ import {
   TextField,
   ThemeProvider,
 } from "@mui/material";
+import { FC, useState, useEffect } from "react";
 import {
   FormLoader,
   InputBox,
@@ -17,7 +19,7 @@ import {
 import { useSignInView } from "./SignInView.model";
 
 export default function SignInView() {
-  const { form, handleSignIn } = useSignInView();
+  const { form, handleSignIn, error } = useSignInView();
 
   return (
     <ThemeProvider theme={createTheme(themeOptions)}>
@@ -76,6 +78,11 @@ export default function SignInView() {
                 }}
               />
             </InputBox>
+            {error?.message && (
+              <p className="self-start mt-1 font-medium text-xs text-red-600">
+                {error.message}
+              </p>
+            )}
             <Button
               fullWidth
               variant="contained"

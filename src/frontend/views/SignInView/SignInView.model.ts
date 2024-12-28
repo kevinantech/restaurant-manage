@@ -2,8 +2,10 @@ import { FrontendRoutes } from "@/frontend/common/constants";
 import { useLoading, useShowPassword } from "@/frontend/hooks";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+type E = { message: string };
 export type Credentials = {
   username: string;
   password: string;
@@ -23,6 +25,7 @@ const useSignInView = () => {
     },
   });
   const router = useRouter();
+  const [error, setError] = useState<E>();
 
   /**
    * @param data
@@ -31,14 +34,13 @@ const useSignInView = () => {
   const handleSignIn = async (data: Credentials) => {
     try {
       loading.toggle();
-
+      if (!!error) setError(undefined);
       const result = await signIn("credentials", {
         ...data,
-        callbackUrl: FrontendRoutes.DASHBOARD,
+        redirect: false,
       });
-      if (result?.error) {
-        router; /* TODO:  */
-      }
+      if (result?.ok) router.replace(FrontendRoutes.DASHBOARD);
+      else if (result?.error) setError({ message: result.error });
     } catch (e: any) {
       console.warn(e.message);
     } finally {
@@ -55,6 +57,7 @@ const useSignInView = () => {
       showPassword,
     },
     handleSignIn,
+    error,
   };
 };
 

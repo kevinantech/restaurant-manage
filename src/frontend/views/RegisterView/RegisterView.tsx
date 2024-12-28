@@ -76,7 +76,7 @@ type FormFeedbackProps = {
   onAccept: () => void;
 };
 const FormFeedback: FC<FormFeedbackProps> = ({ open, onAccept }) => (
-  <Backdrop open={open}>
+  <Backdrop open={open} className="backdrop-blur-md">
     <div className="flex flex-col bg-white pt-8 px-6 pb-4 rounded-md">
       <p className="font-semibold mb-2">✅ ¡Listo! Tu registro fue exitoso. </p>
       <p className="text-sm mb-6">

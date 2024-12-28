@@ -1,10 +1,10 @@
 import { API } from "@/frontend/common/constants/api-enum";
 import { ServerResponse } from "@/frontend/common/server-response";
+import { RegisterView } from "@/frontend/views/RegisterView";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { ADMIN_SETUP } from "../api/admin/route";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import NotFound from "../not-found";
-import Setup from "./page.client";
 
 const domain = process.env.NEXTAUTH_URL;
 
@@ -34,5 +34,5 @@ async function validatePass() {
 export default async function Page() {
   const pass = await validatePass();
 
-  return pass ? <Setup /> : <NotFound />;
+  return pass ? <RegisterView /> : <NotFound />;
 }

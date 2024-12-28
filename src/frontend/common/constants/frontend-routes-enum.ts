@@ -1,6 +1,6 @@
 const root = "/app";
 
 export enum FrontendRoutes {
-  AUTH = "/auth",
+  SIGN_IN = "/sign-in",
   DASHBOARD = root,
 }

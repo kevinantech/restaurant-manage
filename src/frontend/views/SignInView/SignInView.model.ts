@@ -1,7 +1,7 @@
-import { FrontendRoutes } from "@/frontend/common/constants/frontend-routes-enum";
+import { FrontendRoutes } from "@/frontend/common/constants";
+import { useLoading, useShowPassword } from "@/frontend/hooks";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export type Credentials = {
@@ -9,15 +9,13 @@ export type Credentials = {
   password: string;
 };
 
-const useSignIn = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const toggleLoading = () => setLoading((prevState) => !prevState);
+const useSignInView = () => {
+  const loading = useLoading();
+  const showPassword = useShowPassword();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<Credentials>({
     defaultValues: {
       username: "",
@@ -30,9 +28,9 @@ const useSignIn = () => {
    * @param data
    * https://next-auth.js.org/getting-started/client#signin
    */
-  const handleLogin = async (data: Credentials) => {
+  const handleSignIn = async (data: Credentials) => {
     try {
-      toggleLoading();
+      loading.toggle();
 
       const result = await signIn("credentials", {
         ...data,
@@ -44,7 +42,7 @@ const useSignIn = () => {
     } catch (e: any) {
       console.warn(e.message);
     } finally {
-      toggleLoading();
+      loading.toggle();
     }
   };
 
@@ -53,14 +51,11 @@ const useSignIn = () => {
       register,
       handleSubmit,
       errors,
+      loading: loading.value,
+      showPassword,
     },
-    showPassword: {
-      value: showPassword,
-      dispatch: setShowPassword,
-    },
-    loading,
-    handleLogin,
+    handleSignIn,
   };
 };
 
-export { useSignIn };
+export { useSignInView };

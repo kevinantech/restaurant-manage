@@ -2,6 +2,7 @@ import { connectDatabase } from "@/backend/common/config/mongo";
 import { SessionUser } from "@/backend/common/entity/user";
 import { GeneralUtils } from "@/backend/common/utils/general.util";
 import { AdminDatabase } from "@/backend/modules/admin/infrastructure/admin.database";
+import { FrontendRoutes } from "@/frontend/common/constants";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -44,7 +45,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/auth",
+    signIn: FrontendRoutes.SIGN_IN,
   },
 };
 

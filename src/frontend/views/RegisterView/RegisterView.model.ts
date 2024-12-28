@@ -1,10 +1,8 @@
 "use client";
 import { IResponseBase } from "@/backend/common/entity/response-base.model";
 import { CreateAdminDto } from "@/backend/modules/admin/application/dto/create-admin.dto";
-import { API } from "@/frontend/common/constants/api-enum";
-import { FrontendRoutes } from "@/frontend/common/constants/frontend-routes-enum";
-import { useShowPassword } from "@/frontend/hooks";
-import { useLoading } from "@/frontend/hooks/useLoading";
+import { API, FrontendRoutes } from "@/frontend/common/constants/";
+import { useLoading, useShowPassword } from "@/frontend/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +13,7 @@ const fetcher = (data: CreateAdminDto) =>
     body: JSON.stringify(data),
   });
 
-const useRegister = () => {
+const useRegisterView = () => {
   const loading = useLoading();
   const showPassword = useShowPassword();
   const [openFeedback, setOpenFeedback] = useState<boolean>(false);
@@ -49,7 +47,7 @@ const useRegister = () => {
     }
   };
 
-  const handleFeedback = () => router.push(FrontendRoutes.AUTH);
+  const handleFeedback = () => router.push(FrontendRoutes.SIGN_IN);
 
   return {
     form: {
@@ -66,4 +64,4 @@ const useRegister = () => {
   };
 };
 
-export { useRegister };
+export { useRegisterView };

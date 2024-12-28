@@ -13,8 +13,8 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { FC, ReactNode } from "react";
-import { useRegister } from "./page.hooks";
-import styles from "./page.module.css";
+import { useRegisterView } from "./RegisterView.model";
+import styles from "./RegisterView.module.css";
 
 export const themeOptions: ThemeOptions = {
   typography: {
@@ -93,8 +93,9 @@ const FormFeedback: FC<FormFeedbackProps> = ({ open, onAccept }) => (
   </Backdrop>
 );
 
-export default function Register() {
-  const { form, handleFeedback, handleRegister, openFeedback } = useRegister();
+export default function RegisterView() {
+  const { form, handleFeedback, handleRegister, openFeedback } =
+    useRegisterView();
 
   return (
     <ThemeProvider theme={createTheme(themeOptions)}>

@@ -5,7 +5,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Backdrop,
   Button,
-  Container,
   createTheme,
   IconButton,
   InputAdornment,
@@ -68,10 +67,7 @@ export default function RegisterView() {
   return (
     <ThemeProvider theme={createTheme(globalTheme)}>
       <div className="h-full bg-french-lilac overflow-hidden">
-        <Container
-          className="relative w-[25rem] mt-16 py-10 px-0 rounded-lg bg-white"
-          maxWidth="xs"
-        >
+        <div className="relative w-[25rem] mt-16 mx-auto py-10 px-0 rounded-lg bg-white">
           <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
           <p className="w-max text-sm mx-auto">
             Configuración inicial del administrador.
@@ -197,7 +193,7 @@ export default function RegisterView() {
           </form>
           <FormLoader open={form.loading} />
           <FormFeedback open={openFeedback} onAccept={handleFeedback} />
-        </Container>
+        </div>
       </div>
     </ThemeProvider>
   );

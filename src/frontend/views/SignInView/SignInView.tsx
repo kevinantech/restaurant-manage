@@ -4,7 +4,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockOpenRoundedIcon from "@mui/icons-material/LockOpenRounded";
 import {
   Button,
-  Container,
   createTheme,
   IconButton,
   InputAdornment,
@@ -20,10 +19,7 @@ export default function SignInView() {
   return (
     <ThemeProvider theme={createTheme(globalTheme)}>
       <div className="h-full bg-french-lilac overflow-hidden">
-        <Container
-          className="relative w-80 mt-32 py-10 px-0 rounded-lg bg-white"
-          maxWidth="xs"
-        >
+        <div className="relative max-w-xs w-80 mt-32 mx-auto py-10 px-0 rounded-lg bg-white">
           <div className="flex justify-center items-center w-16 h-16 rounded-full mx-auto my-0 bg-pompadour">
             <LockOpenRoundedIcon fontSize="large" htmlColor="#FFF" />
           </div>
@@ -91,7 +87,7 @@ export default function SignInView() {
             </Button>
           </form>
           <FormLoader open={form.loading} />
-        </Container>
+        </div>
       </div>
     </ThemeProvider>
   );

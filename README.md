@@ -37,6 +37,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-# LOG
+## LOG (Follow these steps)
 
-Button background by Prefligh was disabled (node_modules\tailwindcss\src\css\preflight.css:193:3).
+1. Button background by Prefligh was disabled (`node_modules\tailwindcss\src\css\preflight.css:193:3`).

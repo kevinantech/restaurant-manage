@@ -6,12 +6,16 @@ export const metadata: Metadata = {
   title: "Bistro",
 };
 
-const fontFamily = Open_Sans({ subsets: ["latin"] });
+const openSans = Open_Sans({ subsets: ["latin"] });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="es" className="h-full">
-      <body className={`${fontFamily.className} h-full`}>{children}</body>
+      <body className={`${openSans.className} h-full`}>{children}</body>
     </html>
   );
 }

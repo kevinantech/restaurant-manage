@@ -1,7 +1,8 @@
 "use client";
+import { globalTheme } from "@/frontend/common/constants/styles/global-theme";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import LockOpenRoundedIcon from "@mui/icons-material/LockOpenRounded";
 import {
-  Backdrop,
   Button,
   Container,
   createTheme,
@@ -10,30 +11,27 @@ import {
   TextField,
   ThemeProvider,
 } from "@mui/material";
-import { FC, useState, useEffect } from "react";
-import {
-  FormLoader,
-  InputBox,
-  themeOptions,
-} from "../RegisterView/RegisterView";
+import { FormLoader, InputBox } from "../RegisterView/RegisterView";
 import { useSignInView } from "./SignInView.model";
 
 export default function SignInView() {
   const { form, handleSignIn, error } = useSignInView();
 
   return (
-    <ThemeProvider theme={createTheme(themeOptions)}>
-      <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
+    <ThemeProvider theme={createTheme(globalTheme)}>
+      <div className="h-full bg-french-lilac overflow-hidden">
         <Container
           className="relative w-80 mt-32 py-10 px-0 rounded-lg bg-white"
           maxWidth="xs"
         >
-          <p className="w-max text-xl font-bold mb-2 mx-auto">Iniciar Sesión</p>
-          <p className="w-max mx-auto text-sm italic">
-            Accede a tu panel de gestión.
+          <div className="flex justify-center items-center w-16 h-16 rounded-full mx-auto my-0 bg-pompadour">
+            <LockOpenRoundedIcon fontSize="large" htmlColor="#FFF" />
+          </div>
+          <p className="w-max text-xl font-medium my-4 mx-auto">
+            Iniciar Sesión
           </p>
           <form
-            className="self-center flex flex-col items-center max-w-[15rem] mt-8 mx-auto"
+            className="self-center flex flex-col items-center max-w-[15rem] mx-auto"
             onSubmit={form.handleSubmit(handleSignIn)}
           >
             <InputBox>
@@ -79,7 +77,7 @@ export default function SignInView() {
               />
             </InputBox>
             {error?.message && (
-              <p className="self-start mt-1 font-medium text-xs text-red-600">
+              <p className="self-start mt-3 p-2 border border-cinnabar rounded font-medium text-xs text-cinnabar bg-[#fad7d7]">
                 {error.message}
               </p>
             )}
@@ -87,7 +85,7 @@ export default function SignInView() {
               fullWidth
               variant="contained"
               type="submit"
-              className="text-sm mt-5 capitalize bg-[#1976d2]"
+              className="text-sm mt-5"
             >
               Acceder
             </Button>

@@ -6,4 +6,9 @@ export const Color = {
   "admin-error": "#E94560",
   "admin-active-2": "rgba(255 255 255 / 0.05)",
   "admin-primary": "#2B3445",
+  "prussian-blue": "#002255",
+  "azure-radiance": "#009CFF",
+  pompadour: "#55004C",
+  "french-lilac": "#EADBF6",
+  cinnabar: "#E53935",
 };

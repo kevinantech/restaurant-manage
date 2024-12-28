@@ -1,4 +1,5 @@
 "use client";
+import { globalTheme } from "@/frontend/common/constants/styles/global-theme";
 import { GradientCircularProgress } from "@/frontend/components/GradientCircularProgress";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
@@ -9,44 +10,11 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  ThemeOptions,
   ThemeProvider,
 } from "@mui/material";
 import { FC, ReactNode } from "react";
 import { useRegisterView } from "./RegisterView.model";
 import styles from "./RegisterView.module.css";
-
-export const themeOptions: ThemeOptions = {
-  typography: {
-    fontFamily: "inherit",
-  },
-  components: {
-    MuiFormLabel: {
-      styleOverrides: {
-        root: {
-          fontSize: 14,
-          fontWeight: 600,
-        },
-      },
-    },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          fontSize: 14,
-          fontWeight: 600,
-        },
-      },
-    },
-    MuiFormHelperText: {
-      styleOverrides: {
-        root: {
-          lineHeight: 1,
-        },
-      },
-    },
-  },
-};
 
 type InputBoxProps = {
   children: ReactNode;
@@ -98,8 +66,8 @@ export default function RegisterView() {
     useRegisterView();
 
   return (
-    <ThemeProvider theme={createTheme(themeOptions)}>
-      <div className="h-full bg-wave-blue-2_1 bg-no-repeat bg-cover overflow-hidden">
+    <ThemeProvider theme={createTheme(globalTheme)}>
+      <div className="h-full bg-french-lilac overflow-hidden">
         <Container
           className="relative w-[25rem] mt-16 py-10 px-0 rounded-lg bg-white"
           maxWidth="xs"
@@ -222,7 +190,7 @@ export default function RegisterView() {
               fullWidth
               variant="contained"
               type="submit"
-              className="mt-5 bg-[#1976d2]"
+              className="mt-5"
             >
               Registrar
             </Button>

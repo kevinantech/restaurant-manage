@@ -1,18 +1,15 @@
-import type { Config } from "tailwindcss";
-const { Color } = require("./src/frontend/common/constants/styles/color.style");
+import type { Config } from 'tailwindcss';
+const { Color } = require('./app/_common/constants/styles/color.style');
 
 const config: Config = {
-  content: [
-    "./src/frontend/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ['./app/*.tsx', './app/**/*.tsx'],
   theme: {
     extend: {
       colors: {
         ...Color,
       },
       screens: {
-        "semi-sm": "600px",
+        'semi-sm': '600px',
       },
       backgroundImage: {},
     },

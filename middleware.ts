@@ -1,7 +1,7 @@
 import { WebRoutes } from 'app/_common/constants';
 import { withAuth } from 'next-auth/middleware';
 
-export default withAuth(function middleware(req) {}, {
+export default withAuth({
   pages: {
     signIn: WebRoutes.SIGN_IN,
   },

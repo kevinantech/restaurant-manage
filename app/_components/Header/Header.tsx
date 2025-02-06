@@ -1,31 +1,33 @@
-import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
-import Image from "next/image";
-import { MouseEvent } from "react";
+import MenuIcon from '@mui/icons-material/Menu';
+import { IconButton } from '@mui/material';
+import { LayoutContext } from 'app/_context/Layout';
+import { useSession } from 'next-auth/react';
+import { useContext } from 'react';
 
-export interface HeaderProps {
-  onClickMobileMenu: (e?: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
-}
+export interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({ onClickMobileMenu }) => {
+const Header: React.FC<HeaderProps> = ({}) => {
+  const {
+    menu: { open },
+  } = useContext(LayoutContext);
+
+  const { data: session, status } = useSession();
+
   return (
-    <header className="h-16 bg-slate-700 shadow-md">
-      <div className="flex h-full mx-auto px-5 2xl:px-10">
-        <div className="lg:hidden flex items-center w-10">
-          <IconButton onClick={(e) => onClickMobileMenu(e)}>
-            <MenuIcon />
-          </IconButton>
-        </div>
-        <div className="flex-1">{/* Futuro contenido */}</div>
-        <div className="flex justify-center items-center w-10">
-          <Tooltip title="User">
-            <button type="button" className="rounded-full">
-              <Image width={40} height={40} src="/account.png" alt="User" />
-            </button>
-          </Tooltip>
-        </div>
+    <header className="flex items-center h-full mx-auto px-8 text-neutral-600">
+      <div className="flex items-center mr-4 sm:mr-8 lg:hidden">
+        <IconButton className="p-0" onClick={open}>
+          <MenuIcon />
+        </IconButton>
       </div>
+      <span className="block py-5 text-base font-bold">BISTRO R.M.</span>
+      <div className="flex-1">{/* Futuro contenido */}</div>
+      <button
+        type="button"
+        className="border border-yellow-400 px-2 text-sm bg-transparent"
+      >
+        {session?.user?.name}
+      </button>
     </header>
   );
 };

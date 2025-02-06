@@ -1,10 +1,10 @@
-"use client";
-import { Color } from "@/frontend/common/constants/styles/color.style";
-import { Button } from "@mui/material";
-import { usePathname } from "next/navigation";
-import React, { useMemo, useState } from "react";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import { marginBottom } from "../NavLink/NavLink";
+'use client';
+import { Color } from 'app/_common/constants/styles/color.style';
+import { Button } from '@mui/material';
+import { usePathname } from 'next/navigation';
+import React, { useMemo, useState } from 'react';
+import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
+import { marginBottom, NavLinkProps } from '../NavLink/NavLink';
 
 export interface NavGroupProps {
   children: React.ReactNode;
@@ -12,27 +12,22 @@ export interface NavGroupProps {
   startIcon: React.ReactNode;
 }
 
-const getRandom = (): string => Math.random().toString(32).substring(2, 9);
-
 const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
+  const [isOpen, setOpen] = useState<boolean>(false);
   const path = usePathname();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const links = useMemo(() => {
-    const formattedData = React.Children.map(children, (child) => {
-      if (React.isValidElement(child) && typeof child.props.href === "string")
+  const containerId = `${label}-container`;
+  const contentId = `${label}-content`;
+  const arrowIconId = `${label}-arrow`;
+  const pathnames = useMemo(() => {
+    const hrefs = React.Children.map(children, (child) => {
+      if (React.isValidElement<NavLinkProps>(child)) {
         return child.props.href;
+      }
     });
-    const filteredData = formattedData?.filter(
-      (href) => !!href
-    ) as Array<string>;
-    return filteredData;
+    return hrefs?.filter((href) => !!href) ?? [];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const active = links?.some((href) => href === path);
-  const [key] = useState<string>([label, getRandom()].join("-"));
-  const containerId = `${key}-container`;
-  const contentId = `${key}-content`;
-  const arrowIconId = `${key}-arrow`;
+  }, [path]);
+  const active = pathnames?.some((href) => href === path);
 
   const handleClick = () => {
     const container = document.getElementById(containerId);
@@ -41,12 +36,12 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
     const arrowIcon = document.getElementById(arrowIconId);
     if (container && contentOffsetHeight && arrowIcon) {
       const newContainerHeigth =
-        contentOffsetHeight + links.length * marginBottom;
-      container.style.height = !isOpen ? `${newContainerHeigth}px` : "0px";
-      arrowIcon.style.transform = !isOpen ? "rotate(90deg)" : "";
+        contentOffsetHeight + pathnames.length * marginBottom;
+      container.style.height = !isOpen ? `${newContainerHeigth}px` : '0px';
+      arrowIcon.style.transform = !isOpen ? 'rotate(90deg)' : '';
     }
 
-    setIsOpen((state) => !state);
+    setOpen((state) => !state);
   };
 
   return (
@@ -57,35 +52,38 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
           <KeyboardArrowRightRoundedIcon
             id={arrowIconId}
             sx={{
-              color: "#FFFFFF",
-              transition: "transform 0.3s cubic-bezier(0, 0, 0.2, 1) 0ms",
+              color: '#FFFFFF',
+              transition: 'transform 0.3s cubic-bezier(0, 0, 0.2, 1) 0ms',
             }}
           />
         }
         sx={{
           height: 44,
-          width: "100%",
+          width: '100%',
           marginBottom: `${marginBottom}px`,
-          padding: "0 12px 0 16px",
+          padding: '0 12px 0 16px',
           borderRadius: 2,
-          justifyContent: "start",
-          fontFamily: "inherit",
+          justifyContent: 'start',
+          fontFamily: 'inherit',
           fontSize: 14,
-          textTransform: "none",
-          color: active ? Color["admin-active"] : "inherit",
-          "&.MuiButtonBase-root.MuiButton-root": {
-            backgroundColor: active ? "rgba(55, 63, 80, 0.6)" : "transparent",
+          textTransform: 'none',
+          color: active ? Color['admin-active'] : 'inherit',
+          '&.MuiButtonBase-root.MuiButton-root': {
+            backgroundColor: active ? 'rgba(55, 63, 80, 0.6)' : 'transparent',
           },
-          "& .MuiButton-icon": {
+          '& .MuiButton-icon': {
             marginLeft: 0,
           },
-          "& .MuiButton-endIcon": {
+          '& .MuiButton-endIcon': {
             flex: 1,
-            display: "flex",
-            flexDirection: "row-reverse",
+            display: 'flex',
+            flexDirection: 'row-reverse',
           },
-          "&:hover": {
-            backgroundColor: "transparent",
+          '& .MuiTouchRipple-root': {
+            color: Color.pompadour,
+          },
+          '&:hover': {
+            backgroundColor: 'transparent',
           },
         }}
         onClick={() => handleClick()}

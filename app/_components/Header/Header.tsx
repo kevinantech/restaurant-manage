@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
     menu: { open },
   } = useContext(LayoutContext);
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <header className="flex items-center h-full mx-auto px-8 text-neutral-600">

@@ -36,7 +36,6 @@ const useSignIn = () => {
    * https://next-auth.js.org/getting-started/client#signin
    */
   const handleSignIn = async (data: Credentials) => {
-    console.log('🚀 ~ handleSignIn ~ data:', data);
     await handler(async () => {
       const result = await signIn('credentials', { ...data, redirect: false });
       if (result?.ok) router.push(WebRoutes.DASHBOARD);

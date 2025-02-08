@@ -1,42 +1,41 @@
-import { IProductEntry } from "@/backend/modules/product-entry/domain/product-entry.entity";
-import { API } from "@/frontend/common/constants/api-enum";
-import { ServerResponse } from "@/frontend/common/server-response";
-import { useEffect, useMemo, useState } from "react";
+import { IInventoryItem } from '@/inventory/domain/inventory-item.entity';
+import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { ApiRoutes } from 'app/_common/constants';
+import { UserSession } from 'app/api/auth/[...nextauth]/route';
+import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
+import useSWR from 'swr';
 
-type R = ServerResponse<IProductEntry[]>;
 type IndexedInventoryItem = Record<
   string,
-  Omit<IProductEntry, "id" | "category" | "stock">
+  Pick<IInventoryItem, 'name' | 'unitOfMeasure' | 'unitWeight'>
 >;
-const fetcher = () => fetch(API.INVENTORY, { method: "GET" });
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+type InventoryItemsResponse = IBaseResponse<IInventoryItem[]>;
 
 const useInventory = () => {
-  const [inventory, setInventory] = useState<IProductEntry[]>([]);
-
-  const indexedInventory = useMemo<IndexedInventoryItem>(
-    () =>
-      inventory.reduce((acc, i) => {
-        acc[i.id] = {
-          name: i.name,
-          unitOfMeasure: i.unitOfMeasure,
-          unitWeight: i.unitWeight,
-        };
-        return acc;
-      }, {} as IndexedInventoryItem),
-    [inventory]
+  const { data: session } = useSession();
+  const user = session?.user as UserSession | undefined;
+  const URL = useMemo(
+    () => (user?.id ? `${ApiRoutes.INVENTORY}?userId=${user.id}` : ''),
+    [user?.id]
   );
+  const { data: response } = useSWR<InventoryItemsResponse>(URL, fetcher);
 
-  const handleInventory = async () => {
-    const response: R = await fetcher().then(async (res) => await res.json());
-    if (response.data) setInventory(response.data);
-  };
-
-  useEffect(() => {
-    handleInventory();
-  }, []);
+  const indexedInventory = useMemo<IndexedInventoryItem | undefined>(() => {
+    return response?.data?.reduce((acc, i) => {
+      acc[i.id] = {
+        name: i.name,
+        unitOfMeasure: i.unitOfMeasure,
+        unitWeight: i.unitWeight,
+      };
+      return acc;
+    }, {} as IndexedInventoryItem);
+  }, [response?.data]);
 
   return {
-    inventory,
+    inventory: response?.data,
     indexedInventory,
   };
 };

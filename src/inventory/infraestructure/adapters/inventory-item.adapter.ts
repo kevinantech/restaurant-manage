@@ -1,12 +1,12 @@
-import { IProductEntry } from "../../domain/product-entry.entity";
+import { InventoryItem } from '@/inventory/domain/inventory-item.value';
 
-export class ProductEntryAdapter {
+export class InventoryItemAdapter {
   private adaptee: any;
   constructor(adaptee: any) {
     this.adaptee = adaptee;
   }
 
-  requestOne(): IProductEntry {
+  request(): InventoryItem {
     return {
       id: this.adaptee.id,
       name: this.adaptee.name,
@@ -14,12 +14,7 @@ export class ProductEntryAdapter {
       unitOfMeasure: this.adaptee.unitOfMeasure,
       unitWeight: this.adaptee.unitWeight,
       stock: this.adaptee.stock,
+      userId: this.adaptee.userId,
     };
-  }
-
-  request(): IProductEntry[] {
-    return (this.adaptee as []).map((p) =>
-      new ProductEntryAdapter(p).requestOne()
-    );
   }
 }

@@ -50,7 +50,7 @@ const NavLink: React.FC<NavLinkProps> = ({
         width: '100%',
         marginBottom: `${marginBottom}px`,
         padding: '0 12px 0 16px',
-        borderRadius: 2,
+        borderRadius: 1,
         justifyContent: 'start',
         fontFamily: 'inherit',
         fontSize: 14,

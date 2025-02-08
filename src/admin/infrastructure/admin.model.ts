@@ -1,5 +1,5 @@
-import { model, models, Schema } from "mongoose";
-import { ISystemUser } from "../../shared/systemuser/domain/systemuser.entity";
+import { model, models, Schema } from 'mongoose';
+import { ISystemUser } from '../../shared/systemuser/domain/systemuser.entity';
 
 const AdminSchema = new Schema<ISystemUser>(
   {
@@ -30,5 +30,5 @@ const AdminSchema = new Schema<ISystemUser>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Admins` model once compiled. */
-const AdminModel = models.Admins || model("Admins", AdminSchema);
+const AdminModel = models.admins || model('admins', AdminSchema);
 export { AdminModel };

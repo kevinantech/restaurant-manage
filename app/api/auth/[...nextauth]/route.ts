@@ -1,14 +1,19 @@
 import { AdminDatabase } from '@/admin/infrastructure/admin.database';
-import { UserSession } from '@/shared/_common/entity/user-session';
 import { WebRoutes } from 'app/_common/constants';
 import { connectDB } from 'lib/mongoose/connect';
-import NextAuth, { AuthOptions } from 'next-auth';
+import NextAuth, { AuthOptions, DefaultSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { GeneralUtils } from 'utils/general.util';
 
 /**
+ * Official resources.
  * https://next-auth.js.org/configuration/providers/credentials
+ * https://next-auth.js.org/configuration/callbacks#session-callback
+ *
  */
+
+export type UserSession = DefaultSession['user'] & { id: string };
+
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -37,15 +42,34 @@ export const authOptions: AuthOptions = {
         if (!matchPassword)
           throw new Error('Usuario o contraseña incorrectos.');
 
+        /**
+         * By default NextAuth only take the name, email and image props
+         * for the session. If the prop id is setted in the return,
+         * the will take place in the token sub prop
+         *
+         * @watch session callback.
+         */
         return {
           id: userFound.id,
           name: userFound.name,
           email: userFound.email,
-          username: userFound.username,
         };
       },
     }),
   ],
+  callbacks: {
+    /**
+     * We know that the token sub prop contains the id
+     * setted in the authorize function. Then we set the data in the user session.
+     * Now we use the id in the session from the useSession.
+     */
+    session: ({ session, token }) => {
+      if (session.user && token.sub) {
+        (session.user as UserSession).id = token.sub;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: WebRoutes.SIGN_IN,
     error: undefined,

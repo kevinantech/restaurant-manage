@@ -1,7 +1,5 @@
-"use client";
-import { PrimaryButton, SearchBar, Title } from "@/frontend/components";
-import { useInventory } from "@/frontend/hooks";
-import AddIcon from "@mui/icons-material/Add";
+'use client';
+import AddIcon from '@mui/icons-material/Add';
 import {
   Paper,
   Table,
@@ -11,9 +9,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@mui/material";
+} from '@mui/material';
+import { PrimaryButton, SearchBar, Title } from 'app/_components';
+import { useInventory } from 'app/_hooks/useInventory';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 const InventoryBar = () => {
   const router = useRouter();
@@ -27,7 +27,7 @@ const InventoryBar = () => {
       <PrimaryButton
         className="min-w-full semi-sm:min-w-[auto]"
         label="Añadir insumo"
-        onClick={() => router.push("/app/inventory/add")}
+        onClick={() => router.push('/app/inventory/add')}
       >
         <AddIcon />
       </PrimaryButton>
@@ -41,10 +41,10 @@ const Cell: React.FC<TableCellProps> = (props) => {
     <TableCell
       {...otherProps}
       sx={{
-        fontFamily: "inherit",
+        fontFamily: 'inherit',
         fontWeight: 600,
-        "& span.MuiButtonBase-root.MuiTableSortLabel-root": {
-          color: "#2B3445",
+        '& span.MuiButtonBase-root.MuiTableSortLabel-root': {
+          color: '#2B3445',
         },
         ...sx,
       }}
@@ -73,14 +73,15 @@ export default function Inventory() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inventory.map((inventoryItem) => (
-              <TableRow key={inventoryItem.id}>
-                <Cell align="left">{inventoryItem.name}</Cell>
-                <Cell align="left">{inventoryItem.category}</Cell>
-                <Cell align="left">{`${inventoryItem.unitWeight} ${inventoryItem.unitOfMeasure}`}</Cell>
-                <Cell align="left">{inventoryItem.stock}</Cell>
-              </TableRow>
-            ))}
+            {!!inventory &&
+              inventory.map((inventoryItem) => (
+                <TableRow key={inventoryItem.id}>
+                  <Cell align="left">{inventoryItem.name}</Cell>
+                  <Cell align="left">{inventoryItem.category}</Cell>
+                  <Cell align="left">{`${inventoryItem.unitWeight} ${inventoryItem.unitOfMeasure}`}</Cell>
+                  <Cell align="left">{inventoryItem.stock}</Cell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -18,6 +18,5 @@ export const config = {
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-    WebRoutes.DASHBOARD,
   ],
 };

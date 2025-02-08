@@ -15,7 +15,7 @@ const Nav: React.FC<NavProps> = () => {
   const { menu } = useContext(LayoutContext);
 
   return (
-    <div className="relative min-h-screen pt-16 border-r border-r-gray-300 text-neutral-600 bg-white">
+    <div className="relative min-h-screen pt-10 lg:pt-16 border-r border-r-gray-300 text-neutral-600 bg-white">
       <p className="block lg:hidden absolute top-5 right-5">
         <CloseRoundedIcon onClick={menu.close} />
       </p>

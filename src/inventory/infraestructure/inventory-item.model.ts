@@ -1,8 +1,8 @@
-import { model, models, Schema } from "mongoose";
-import { IProductEntry } from "../domain/product-entry.entity";
-import { Units } from "@/backend/common/constants/units-enum";
+import { model, models, Schema } from 'mongoose';
+import { IInventoryItem } from '../domain/inventory-item.entity';
+import { Units } from '@/shared/_common/constants/units-enum';
 
-const ProductEntrySchema = new Schema<IProductEntry>(
+const InventoryItemSchema = new Schema<IInventoryItem>(
   {
     id: {
       type: String,
@@ -29,6 +29,10 @@ const ProductEntrySchema = new Schema<IProductEntry>(
       type: Number,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   {
     versionKey: false,
@@ -37,6 +41,6 @@ const ProductEntrySchema = new Schema<IProductEntry>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `InventoryItems` model once compiled. */
-const ProductEntryModel =
-  models.ProductEntries || model("ProductEntries", ProductEntrySchema);
-export { ProductEntryModel };
+const InventoryItemModel =
+  models.inventory_items || model('inventory_items', InventoryItemSchema);
+export { InventoryItemModel };

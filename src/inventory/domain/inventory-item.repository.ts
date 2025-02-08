@@ -1,31 +1,31 @@
-import { IProductEntry } from "./product-entry.entity";
+import { IInventoryItem } from './inventory-item.entity';
 
-export interface ProductEntryRepository {
+export interface InventoryItemRepository {
   /**
    * Encuentra un producto por su ID.
    * @param id - Identificador único del producto.
    * @returns El producto encontrado o null si no existe.
    */
-  findById(id: string): Promise<IProductEntry | null>;
+  findItemById(id: string): Promise<IInventoryItem | null>;
 
   /**
    * Guarda un nuevo producto en el repositorio.
-   * @param productEntry - Producto a guardar.
+   * @param item - Producto a guardar.
    */
-  save(productEntry: IProductEntry): Promise<void>;
+  createItem(item: IInventoryItem): Promise<void>;
 
   /**
    * Actualiza un producto existente en el repositorio.
    * @param payload - Producto con los datos actualizados.
    */
-  update(
+  updateItem(
     id: string,
-    payload: Partial<Omit<IProductEntry, "id">>
+    payload: Partial<Omit<IInventoryItem, 'id'>>
   ): Promise<void>;
 
   /**
    * Obtiene todos los productos del repositorio.
    * @returns Una lista con todos los productos.
    */
-  findAll(): Promise<IProductEntry[]>;
+  getItemsByUserId(userId: string): Promise<IInventoryItem[]>;
 }

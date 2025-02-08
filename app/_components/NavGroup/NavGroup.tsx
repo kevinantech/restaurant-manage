@@ -47,12 +47,13 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
   return (
     <>
       <Button
+        className={`${active ? 'text-white' : 'text-inherit'}`}
         startIcon={startIcon}
         endIcon={
           <KeyboardArrowRightRoundedIcon
             id={arrowIconId}
             sx={{
-              color: '#FFFFFF',
+              color: 'inherit',
               transition: 'transform 0.3s cubic-bezier(0, 0, 0.2, 1) 0ms',
             }}
           />
@@ -62,14 +63,14 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
           width: '100%',
           marginBottom: `${marginBottom}px`,
           padding: '0 12px 0 16px',
-          borderRadius: 2,
+          borderRadius: 1,
           justifyContent: 'start',
           fontFamily: 'inherit',
           fontSize: 14,
           textTransform: 'none',
-          color: active ? Color['admin-active'] : 'inherit',
+          color: 'inherit',
           '&.MuiButtonBase-root.MuiButton-root': {
-            backgroundColor: active ? 'rgba(55, 63, 80, 0.6)' : 'transparent',
+            backgroundColor: active ? Color.pompadour : 'transparent',
           },
           '& .MuiButton-icon': {
             marginLeft: 0,

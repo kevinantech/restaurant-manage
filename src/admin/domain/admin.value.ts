@@ -4,12 +4,12 @@ import {
 } from '../../shared/systemuser/domain/systemuser.entity';
 
 export class Admin implements ISystemUser {
-  id: string;
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-  role: UserRole;
+  readonly id: string;
+  readonly name: string;
+  readonly email: string;
+  readonly username: string;
+  readonly password: string;
+  readonly role: UserRole.ADMIN;
   constructor(
     id: string,
     name: string,

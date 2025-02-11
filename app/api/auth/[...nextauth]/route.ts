@@ -61,7 +61,7 @@ export const authOptions: AuthOptions = {
     /**
      * We know that the token sub prop contains the id
      * setted in the authorize function. Then we set the data in the user session.
-     * Now we use the id in the session from the useSession.
+     * Now we use the id in the session from the entire app (useSession, getServerSession).
      */
     session: ({ session, token }) => {
       if (session.user && token.sub) {

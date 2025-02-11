@@ -1,6 +1,7 @@
 import { ISystemUser } from './systemuser.entity';
 
 export interface SystemUserRepository {
+  findUserById(id: string): Promise<ISystemUser | undefined>;
   findByUsername(username: string): Promise<ISystemUser | undefined>;
-  register(userData: ISystemUser): Promise<{ id: string } | undefined>;
+  registerUser(userData: ISystemUser): Promise<{ id: string } | undefined>;
 }

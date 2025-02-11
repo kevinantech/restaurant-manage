@@ -4,6 +4,7 @@ import { GeneralUtils } from 'utils/general.util';
 import { InventoryItemRepository } from '../domain/inventory-item.repository';
 import { InventoryItem } from '../domain/inventory-item.value';
 import { CreateInventoryItemDto } from './dto/create-inventory-item.dto';
+import { SystemUserRepository } from '@/shared/systemuser/domain/systemuser.repository';
 
 /**
  * Registra insumos.
@@ -14,6 +15,7 @@ import { CreateInventoryItemDto } from './dto/create-inventory-item.dto';
  */
 export class CreateInventoryItem {
   constructor(
+    private readonly adminRepository: SystemUserRepository,
     private readonly inventoryItemRepository: InventoryItemRepository
   ) {}
 
@@ -27,10 +29,19 @@ export class CreateInventoryItem {
       data.stock,
       data.userId
     );
+
+    const userExists = await this.adminRepository.findUserById(data.userId);
+    if (!userExists) {
+      return {
+        ...ResponseCode.UNAUTHORIZED,
+        message: 'Acceso denegado',
+      };
+    }
+
     await this.inventoryItemRepository.createItem(val);
     return {
       ...ResponseCode.OK,
-      message: 'Producto agregado correctamente.',
+      message: 'Inventario agregado',
     };
   }
 }

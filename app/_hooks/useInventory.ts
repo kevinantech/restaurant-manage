@@ -15,13 +15,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 type InventoryItemsResponse = IBaseResponse<IInventoryItem[]>;
 
 const useInventory = () => {
-  const { data: session } = useSession();
-  const user = session?.user as UserSession | undefined;
-  const URL = useMemo(
-    () => (user?.id ? `${ApiRoutes.INVENTORY}?userId=${user.id}` : ''),
-    [user?.id]
+  const { data: response } = useSWR<InventoryItemsResponse>(
+    ApiRoutes.INVENTORY,
+    fetcher
   );
-  const { data: response } = useSWR<InventoryItemsResponse>(URL, fetcher);
 
   const indexedInventory = useMemo<IndexedInventoryItem | undefined>(() => {
     return response?.data?.reduce((acc, i) => {

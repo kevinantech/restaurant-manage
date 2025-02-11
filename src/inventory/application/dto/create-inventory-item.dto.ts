@@ -1,5 +1,6 @@
 import { InventoryItemCategory } from '@/inventory/domain/inventory-item-category-enum';
 import { Units } from '@/shared/_common/constants/units-enum';
+import { Transform } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -23,6 +24,7 @@ export class CreateInventoryItemDto {
 
   @IsNumber()
   @IsPositive()
+  @Transform(({ value }) => Number(value))
   unitWeight: number;
 
   @IsNumber()

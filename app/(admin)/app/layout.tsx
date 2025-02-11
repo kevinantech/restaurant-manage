@@ -43,21 +43,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <LayoutContext.Provider value={{ menu }}>
-        <div className="fixed left-0 right-0 z-10 border-b border-b-gray-300 bg-neutral-50">
+        <div className="fixed top-0 left-0 right-0 z-10 h-16">
           <Header />
         </div>
-        <div className="fixed flex w-full min-h-screen">
-          {menu.isResponsive ? (
-            <NavDrawer open={menu.isOpen} onClose={menu.close} />
-          ) : (
-            <aside className="max-w-[280px]">
-              <Nav />
-            </aside>
-          )}
-          <section className="flex-1 pt-20 pb-8 px-6 ">
-            <div className="container mx-auto">{children}</div>
-          </section>
-        </div>
+        {menu.isResponsive ? (
+          <NavDrawer open={menu.isOpen} onClose={menu.close} />
+        ) : (
+          <div className="fixed top-0 left-0 min-h-screen max-w-xs">
+            <Nav />
+          </div>
+        )}
+        <section className="mt-16 p-8 overflow-y-auto lg:ml-80">
+          <div className="container mx-auto">{children}</div>
+        </section>
       </LayoutContext.Provider>
     </SessionProvider>
   );

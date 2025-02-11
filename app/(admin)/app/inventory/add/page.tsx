@@ -1,100 +1,146 @@
-"use client";
-import { Units } from "@/backend/common/constants/units-enum";
-import { IProduct } from "@/backend/modules/product/domain/product.entity";
-import { Title } from "@/frontend/components";
-import { AdminThemeProvider } from "@/frontend/providers";
+'use client';
+import { CreateInventoryItemDto } from '@/inventory/application/dto/create-inventory-item.dto';
+import { InventoryItemCategory } from '@/inventory/domain/inventory-item-category-enum';
+import { Units } from '@/shared/_common/constants/units-enum';
 import {
   Backdrop,
+  Button,
+  createTheme,
   FormControl,
-  Grid,
+  FormHelperText,
+  Grid2,
   InputLabel,
   LinearProgress,
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import { useForm } from "react-hook-form";
-import styles from "./page.module.css";
-import { useCreateInventoryItem } from "@/frontend/hooks";
-import { CreateProductEntryDto } from "@/backend/modules/product-entry/application/dto/create-product-entry.dto";
-import { ProductEntryCategory } from "@/backend/modules/product-entry/domain/product-entry-category-enum";
+  ThemeProvider,
+} from '@mui/material';
+import { globalTheme } from 'app/_common/constants/styles/global-theme';
+import { Title } from 'app/_components';
+import { useHandler } from 'app/_hooks/useHandler';
+import { registerInventoryItem } from 'app/actions';
+import { useForm } from 'react-hook-form';
 
-export type P = Omit<IProduct, "currentAmount" | "id">;
+export type FormType = Pick<
+  CreateInventoryItemDto,
+  'name' | 'category' | 'unitOfMeasure' | 'unitWeight' | 'stock'
+>;
 
-export default function RegisterProduct() {
-  const { register, handleSubmit, reset } = useForm<CreateProductEntryDto>();
-  const { handleCreate, loading } = useCreateInventoryItem();
+const useRegisterInventory = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CreateInventoryItemDto>();
+  const { handler, isLoading, error } = useHandler();
 
-  /* TODO: Add loader after submit. */
+  const handleRegister = async (data: FormType) => {
+    await handler(async () => {
+      const response = await registerInventoryItem(data);
+      if (response.code === 'OK') return reset();
+      else if (!Array.isArray(response.message))
+        throw new Error(response.message);
+    });
+  };
+
+  return {
+    form: {
+      register,
+      handleSubmit,
+      reset,
+      errors,
+    },
+    handleRegister,
+    loading: isLoading,
+    error,
+  };
+};
+
+export default function RegisterInventory() {
+  const { form, handleRegister, loading, error } = useRegisterInventory();
+
   return (
-    <AdminThemeProvider>
-      <main className="bg-transparent">
+    <ThemeProvider theme={createTheme(globalTheme)}>
+      <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nuevo Insumo</Title>
         <form
-          onSubmit={handleSubmit(async (d) => {
-            await handleCreate(d);
-            reset();
-          })}
-          className={`${styles.shadow} py-10 px-8 md:p-12 rounded-2xl bg-white`}
+          onSubmit={form.handleSubmit(handleRegister)}
+          className="space-y-5"
         >
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6}>
+          <Grid2 container spacing={4}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
-                label="Insumo"
-                {...register("name", { required: true })}
+                label="Nombre"
+                color="secondary"
+                {...form.register('name', { required: 'Ingrese el nombre' })}
+                error={!!form.errors.name}
+                helperText={form.errors.name?.message}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
+              <FormControl
+                fullWidth
+                error={!!form.errors.category}
+                color="secondary"
+              >
                 <InputLabel id="label-category">Tipo</InputLabel>
                 <Select
                   labelId="label-category"
                   label="Tipo"
-                  defaultValue={""}
-                  {...register("category", { required: true })}
+                  defaultValue={''}
+                  {...form.register('category', {
+                    required: 'Seleccione un tipo',
+                  })}
                 >
-                  <MenuItem value={ProductEntryCategory.BEVERAGES}>
-                    {ProductEntryCategory.BEVERAGES}
+                  <MenuItem value={InventoryItemCategory.BEVERAGES}>
+                    {InventoryItemCategory.BEVERAGES}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.DAIRY}>
-                    {ProductEntryCategory.DAIRY}
+                  <MenuItem value={InventoryItemCategory.DAIRY}>
+                    {InventoryItemCategory.DAIRY}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.FROZEN}>
-                    {ProductEntryCategory.FROZEN}
+                  <MenuItem value={InventoryItemCategory.FROZEN}>
+                    {InventoryItemCategory.FROZEN}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.FRUITS}>
-                    {ProductEntryCategory.FRUITS}
+                  <MenuItem value={InventoryItemCategory.FRUITS}>
+                    {InventoryItemCategory.FRUITS}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.GRAINS}>
-                    {ProductEntryCategory.GRAINS}
+                  <MenuItem value={InventoryItemCategory.GRAINS}>
+                    {InventoryItemCategory.GRAINS}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.MEATS}>
-                    {ProductEntryCategory.MEATS}
+                  <MenuItem value={InventoryItemCategory.MEATS}>
+                    {InventoryItemCategory.MEATS}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.OILS}>
-                    {ProductEntryCategory.OILS}
+                  <MenuItem value={InventoryItemCategory.OILS}>
+                    {InventoryItemCategory.OILS}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.SPICES}>
-                    {ProductEntryCategory.SPICES}
+                  <MenuItem value={InventoryItemCategory.SPICES}>
+                    {InventoryItemCategory.SPICES}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.VEGETABLES}>
-                    {ProductEntryCategory.VEGETABLES}
+                  <MenuItem value={InventoryItemCategory.VEGETABLES}>
+                    {InventoryItemCategory.VEGETABLES}
                   </MenuItem>
-                  <MenuItem value={ProductEntryCategory.OTHERS}>
-                    {ProductEntryCategory.OTHERS}
+                  <MenuItem value={InventoryItemCategory.OTHERS}>
+                    {InventoryItemCategory.OTHERS}
                   </MenuItem>
                 </Select>
+                <FormHelperText>{form.errors.category?.message}</FormHelperText>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
+              <FormControl
+                fullWidth
+                error={!!form.errors.unitOfMeasure}
+                color="secondary"
+              >
                 <InputLabel id="label-unitOfMeasure">Unidad regular</InputLabel>
                 <Select
                   labelId="label-unitOfMeasure"
                   label="Unidad regular"
                   defaultValue={Units.DEFAULT}
-                  {...register("unitOfMeasure")}
+                  {...form.register('unitOfMeasure')}
                 >
                   <MenuItem value={Units.DEFAULT}>Defecto</MenuItem>
                   <MenuItem value={Units.KILOGRAM}>kg</MenuItem>
@@ -102,42 +148,55 @@ export default function RegisterProduct() {
                   <MenuItem value={Units.LITER}>L</MenuItem>
                   <MenuItem value={Units.MILILITER}>mL</MenuItem>
                 </Select>
+                <FormHelperText>
+                  {form.errors.unitOfMeasure?.message}
+                </FormHelperText>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
-                inputProps={{ inputMode: "decimal" }}
+                inputProps={{ inputMode: 'decimal' }}
                 label="Contenido neto por unidad"
-                {...register("unitWeight", { required: true })}
+                {...form.register('unitWeight', {
+                  required: 'Ingrese la cantidad de contenido',
+                })}
+                error={!!form.errors.unitWeight}
+                helperText={form.errors.unitWeight?.message}
+                color="secondary"
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
                 label="Stock"
-                {...register("stock", { valueAsNumber: true })}
+                {...form.register('stock', { valueAsNumber: true })}
+                error={!!form.errors.stock}
+                helperText={form.errors.stock?.message}
+                color="secondary"
               />
-            </Grid>
-          </Grid>
-          <button
-            type="submit"
-            className="mt-8 py-2 px-5 rounded-lg font-semibold text-sm text-white bg-blue-500 shadow transition-[background] duration-150 ease-in-out hover:bg-blue-600"
-          >
+            </Grid2>
+          </Grid2>
+          <Button variant="contained" type="submit">
             Guardar Insumo
-          </button>
+          </Button>
+          {!!error && (
+            <div className="w-fit py-2 px-5 border rounded-md border-red-500 text-sm text-red-700 font-medium bg-red-100">
+              {error}
+            </div>
+          )}
         </form>
       </main>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <LinearProgress
           className="absolute top-0 w-full"
-          sx={{ color: "rgb(59, 130, 246)" /* => bg-blue-500 */ }}
+          sx={{ color: 'rgb(59, 130, 246)' /* => bg-blue-500 */ }}
         />
       </Backdrop>
-    </AdminThemeProvider>
+    </ThemeProvider>
   );
 }

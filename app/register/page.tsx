@@ -1,4 +1,4 @@
-import { ProtectAuthRoutes } from 'app/_common/middlewares/protect-auth-routes';
+import { ProtectAuthRoutes } from 'app/_common/middlewares/ProtectAuthRoutes';
 import { Register } from './Register';
 
 export default async function Page() {

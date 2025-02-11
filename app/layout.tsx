@@ -14,8 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="h-full">
-      <body className={`${openSans.className} h-full`}>{children}</body>
+    <html lang="es">
+      <body className={`${openSans.className}`}>{children}</body>
     </html>
   );
 }

@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
   const { data: session } = useSession();
 
   return (
-    <header className="flex items-center h-full mx-auto px-8 text-neutral-600">
+    <header className="flex items-center h-full mx-auto px-8 border-b border-b-gray-300 text-neutral-600 bg-neutral-50">
       <div className="flex items-center mr-4 sm:mr-8 lg:hidden">
         <IconButton className="p-0" onClick={open}>
           <MenuIcon />

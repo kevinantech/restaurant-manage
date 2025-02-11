@@ -1,6 +1,6 @@
 import { ResponseCodeType } from '../constants/response-codes';
 
-export interface IBaseResponse<T = any> {
+export interface IBaseResponse<T = never> {
   code: ResponseCodeType;
   data?: T;
   message: string | string[];

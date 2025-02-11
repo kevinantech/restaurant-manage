@@ -19,8 +19,8 @@ const Nav: React.FC<NavProps> = () => {
       <p className="block lg:hidden absolute top-5 right-5">
         <CloseRoundedIcon onClick={menu.close} />
       </p>
-      <div className="px-4">
-        <span className="block p-4 text-sm font-semibold">Menu</span>
+      <div className="p-4">
+        <span className="block py-2 px-4 text-sm font-semibold">Menu</span>
         <NavLink
           href="/app/dashboard"
           startIcon={<DashboardRoundedIcon />}

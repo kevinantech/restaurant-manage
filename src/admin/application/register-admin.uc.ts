@@ -39,7 +39,7 @@ export class RegisterAdmin {
         password
       );
 
-      const recovery = await this.userRepository.register(user);
+      const recovery = await this.userRepository.registerUser(user);
 
       if (!recovery || !recovery.id)
         return {

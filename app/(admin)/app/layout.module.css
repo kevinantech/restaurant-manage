@@ -1,0 +1,10 @@
+.container {
+  display: grid;
+  grid-template:
+    [header-start] 'header header' 64px [header-end body-start]
+    'side-nav section' [body-end] / auto 1fr;
+}
+
+.body {
+  grid-area: section;
+}

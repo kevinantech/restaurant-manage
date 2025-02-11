@@ -4,6 +4,7 @@ import { Header, Nav } from 'app/_components';
 import { LayoutContext } from 'app/_context/Layout';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import styles from './layout.module.css';
 
 interface ResponsiveNavProps {
   open: boolean;
@@ -43,19 +44,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <LayoutContext.Provider value={{ menu }}>
-        <div className="fixed top-0 left-0 right-0 z-10 h-16">
-          <Header />
-        </div>
-        {menu.isResponsive ? (
-          <NavDrawer open={menu.isOpen} onClose={menu.close} />
-        ) : (
-          <div className="fixed top-0 left-0 min-h-screen max-w-xs">
-            <Nav />
+        <div className={`${styles.container} h-screen`}>
+          <div className="fixed top-0 left-0 right-0 z-10 h-16">
+            <Header />
           </div>
-        )}
-        <section className="mt-16 p-8 overflow-y-auto lg:ml-80">
-          <div className="container mx-auto">{children}</div>
-        </section>
+          {menu.isResponsive ? (
+            <NavDrawer open={menu.isOpen} onClose={menu.close} />
+          ) : (
+            <div className="fixed top-0 left-0 min-h-screen max-w-xs">
+              <Nav />
+            </div>
+          )}
+          <section className={`${styles.body} p-8 overflow-y-auto lg:ml-80`}>
+            <div className="container mx-auto">{children}</div>
+          </section>
+        </div>
       </LayoutContext.Provider>
     </SessionProvider>
   );

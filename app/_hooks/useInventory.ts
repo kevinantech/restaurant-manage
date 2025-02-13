@@ -1,18 +1,15 @@
 import { IInventoryItem } from '@/inventory/domain/inventory-item.entity';
 import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 import { ApiRoutes } from 'app/_common/constants';
-import { UserSession } from 'app/api/auth/[...nextauth]/route';
-import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 
+type InventoryItemsResponse = IBaseResponse<IInventoryItem[]>;
 type IndexedInventoryItem = Record<
   string,
-  Pick<IInventoryItem, 'name' | 'unitOfMeasure' | 'unitWeight'>
+  Pick<IInventoryItem, 'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'>
 >;
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-type InventoryItemsResponse = IBaseResponse<IInventoryItem[]>;
 
 const useInventory = () => {
   const { data: response } = useSWR<InventoryItemsResponse>(
@@ -20,20 +17,24 @@ const useInventory = () => {
     fetcher
   );
 
-  const indexedInventory = useMemo<IndexedInventoryItem | undefined>(() => {
-    return response?.data?.reduce((acc, i) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const inventory = response?.data ?? [];
+
+  const inventoryById = useMemo<IndexedInventoryItem>(() => {
+    return inventory.reduce((acc, i) => {
       acc[i.id] = {
         name: i.name,
         unitOfMeasure: i.unitOfMeasure,
-        unitWeight: i.unitWeight,
+        unitPrice: i.unitPrice,
+        stock: i.stock,
       };
       return acc;
     }, {} as IndexedInventoryItem);
-  }, [response?.data]);
+  }, [inventory]);
 
   return {
-    inventory: response?.data,
-    indexedInventory,
+    inventory,
+    inventoryById,
   };
 };
 

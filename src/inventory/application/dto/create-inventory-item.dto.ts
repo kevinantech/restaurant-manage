@@ -1,4 +1,4 @@
-import { InventoryItemCategory } from '@/inventory/domain/inventory-item-category-enum';
+import 'reflect-metadata';
 import { Units } from '@/shared/_common/constants/units-enum';
 import { Transform } from 'class-transformer';
 import {
@@ -16,16 +16,13 @@ export class CreateInventoryItemDto {
   @IsNotEmpty()
   name: string;
 
-  @IsEnum(InventoryItemCategory)
-  category: InventoryItemCategory;
-
   @IsEnum(Units)
   unitOfMeasure: Units;
 
   @IsNumber()
   @IsPositive()
   @Transform(({ value }) => Number(value))
-  unitWeight: number;
+  unitPrice: number;
 
   @IsNumber()
   @Min(0)
@@ -36,16 +33,14 @@ export class CreateInventoryItemDto {
 
   constructor(
     name: string,
-    category: InventoryItemCategory,
     unitOfMeasure: Units,
-    unitWeight: number,
+    unitPrice: number,
     stock: number,
     userId: string
   ) {
     this.name = name;
-    this.category = category;
     this.unitOfMeasure = unitOfMeasure;
-    this.unitWeight = unitWeight;
+    this.unitPrice = unitPrice;
     this.stock = stock;
     this.userId = userId;
   }

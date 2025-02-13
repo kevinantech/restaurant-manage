@@ -13,15 +13,11 @@ const InventoryItemSchema = new Schema<IInventoryItem>(
       type: String,
       required: true,
     },
-    category: {
-      type: String,
-      required: true,
-    },
     unitOfMeasure: {
       type: String,
       default: Units.DEFAULT,
     },
-    unitWeight: {
+    unitPrice: {
       type: Number,
       required: true,
     },

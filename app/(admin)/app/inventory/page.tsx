@@ -11,20 +11,18 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { SearchBar, Title } from 'app/_components';
+import { Title } from 'app/_components';
 import { useInventory } from 'app/_hooks/useInventory';
 import Link from 'next/link';
-
 import { useEffect, useState } from 'react';
 
 // Each child element must have a 44 px of height.
 const InventoryBar = () => {
   return (
     <div className="flex flex-wrap gap-4 justify-between mb-5">
-      <div className="h-10 w-full px-4 sm:w-auto border rounded-[4px] border-gray-200">
+      {/* <div className="h-10 w-full px-4 sm:w-auto border rounded-[4px] border-gray-200">
         <p className="leading-10">{'<SearchBar/>'}</p>
-      </div>
-
+      </div> */}
       <Link href="/app/inventory/add" className="w-full sm:w-auto">
         <Button
           variant="contained"
@@ -72,15 +70,14 @@ export default function Inventory() {
       <Title>Lista de Insumos</Title>
       <InventoryBar />
       <TableContainer
-        className="rounded-lg shadow-none overflow-x-auto overflow-y-auto"
+        className="border border-gray-200 shadow-none overflow-x-auto"
         component={Paper}
       >
         <Table sx={{ minWidth: 600 }}>
           <TableHead>
-            <TableRow className="font-semibold">
+            <TableRow className="font-semibold bg-neutral-100">
               <Cell align="left">Insumo</Cell>
-              <Cell align="left">Tipo</Cell>
-              <Cell align="left">Porcion</Cell>
+              <Cell align="left">Precio unitario</Cell>
               <Cell align="left">Stock</Cell>
               <Cell align="left"></Cell>
             </TableRow>
@@ -90,9 +87,8 @@ export default function Inventory() {
               inventory.map((inventoryItem) => (
                 <TableRow key={inventoryItem.id} className="font-medium">
                   <Cell align="left">{inventoryItem.name}</Cell>
-                  <Cell align="left">{inventoryItem.category}</Cell>
-                  <Cell align="left">{`${inventoryItem.unitWeight} ${inventoryItem.unitOfMeasure}`}</Cell>
-                  <Cell align="left">{inventoryItem.stock}</Cell>
+                  <Cell align="left">{`${inventoryItem.unitPrice} COP/${inventoryItem.unitOfMeasure}`}</Cell>
+                  <Cell align="left">{`${inventoryItem.stock} ${inventoryItem.unitOfMeasure}`}</Cell>
                   <Cell align="left"></Cell>
                 </TableRow>
               ))}

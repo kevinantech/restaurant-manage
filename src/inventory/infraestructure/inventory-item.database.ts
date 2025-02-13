@@ -4,7 +4,7 @@ import { InventoryItemsAdapter } from './adapters/inventory-items.adapter';
 import { InventoryItemModel } from './inventory-item.model';
 
 export class InventoryItemDatabase implements InventoryItemRepository {
-  async findItemById(id: string): Promise<IInventoryItem | null> {
+  async getItem(id: string): Promise<IInventoryItem | null> {
     return await InventoryItemModel.findOne({ id });
   }
 
@@ -15,12 +15,14 @@ export class InventoryItemDatabase implements InventoryItemRepository {
 
   async updateItem(
     id: string,
-    payload: Partial<Omit<IInventoryItem, 'id' | 'userId'>>
+    payload: Partial<
+      Pick<IInventoryItem, 'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'>
+    >
   ): Promise<void> {
     await InventoryItemModel.updateOne({ id }, payload);
   }
 
-  async getItemsByUserId(userId: string): Promise<IInventoryItem[]> {
+  async getItemsForUser(userId: string): Promise<IInventoryItem[]> {
     const docs = await InventoryItemModel.find({ userId });
     return new InventoryItemsAdapter(docs).request();
   }

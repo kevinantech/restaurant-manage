@@ -4,14 +4,10 @@ import { IInventoryItem } from '../domain/inventory-item.entity';
 import { InventoryItemRepository } from '../domain/inventory-item.repository';
 
 export class GetInventoryItems {
-  constructor(
-    private readonly inventoryItemRepository: InventoryItemRepository
-  ) {}
+  constructor(private readonly itemRepository: InventoryItemRepository) {}
 
   async get(userId: string): Promise<IBaseResponse<IInventoryItem[]>> {
-    const queryResult = await this.inventoryItemRepository.getItemsByUserId(
-      userId
-    );
+    const queryResult = await this.itemRepository.getItemsForUser(userId);
     return {
       ...ResponseCode.OK,
       data: queryResult,

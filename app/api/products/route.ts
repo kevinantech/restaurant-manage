@@ -1,11 +1,11 @@
-import { GetInventoryItems } from '@/inventory/application/get-inventory-items.uc';
-import { InventoryItemDatabase } from '@/inventory/infraestructure/inventory-item.database';
+import { GetProducts } from '@/product/application/get-products.uc';
+import { ProductDatabase } from '@/product/infrastructure/product.database';
 import { connectDB } from 'lib/mongoose/connect';
 import { session } from 'lib/nextauth/session.server';
 import { NextRequest, NextResponse } from 'next/server';
 
-const inventoryItemsRepo = new InventoryItemDatabase();
-const getInventoryItems = new GetInventoryItems(inventoryItemsRepo);
+const productRepository = new ProductDatabase();
+const getProducts = new GetProducts(productRepository);
 
 export async function GET(req: NextRequest) {
   const user = await session();
@@ -13,6 +13,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ...user.error }, { status: user.error.status });
   }
   await connectDB();
-  const res = await getInventoryItems.get(user.data.id);
+  const res = await getProducts.get(user.data.id);
   return NextResponse.json({ ...res }, { status: res.status });
 }

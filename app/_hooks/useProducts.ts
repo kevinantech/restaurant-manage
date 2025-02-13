@@ -1,38 +1,31 @@
-import { IProduct } from "@/backend/modules/product/domain/product.entity";
-import { API } from "@/frontend/common/constants/api-enum";
-import { ServerResponse } from "@/frontend/common/server-response";
-import { useEffect, useMemo, useState } from "react";
+import { IProduct } from '@/product/domain/product.entity';
+import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { ApiRoutes } from 'app/_common/constants';
+import { useMemo } from 'react';
+import useSWR from 'swr';
 
-type R = ServerResponse<IProduct[]>;
-type IndexedProducts = Record<string, Pick<IProduct, "name" | "price">>;
-const fetcher = () => fetch(API.PRODUCT, { method: "GET" });
+type ProductsResponse = IBaseResponse<IProduct[]>;
+type IndexedProducts = Record<string, Pick<IProduct, 'name' | 'price'>>;
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const useProducts = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
-
-  const indexedProducts = useMemo<IndexedProducts>(
-    () =>
-      products.reduce((acc, p) => {
-        acc[p.id] = {
-          name: p.name,
-          price: p.price,
-        };
-        return acc;
-      }, {} as IndexedProducts),
-    [products]
+  const { data: response } = useSWR<ProductsResponse>(
+    ApiRoutes.PRODUCTS,
+    fetcher
   );
 
-  const handleProducts = async () => {
-    const response: R = await fetcher().then(async (res) => await res.json());
-    if (response.data) setProducts(response.data);
-  };
-
-  useEffect(() => {
-    handleProducts();
-  }, []);
+  const indexedProducts = useMemo<IndexedProducts | undefined>(() => {
+    return response?.data?.reduce((acc, p) => {
+      acc[p.id] = {
+        name: p.name,
+        price: p.price,
+      };
+      return acc;
+    }, {} as IndexedProducts);
+  }, [response?.data]);
 
   return {
-    products,
+    products: response?.data ?? [],
     indexedProducts,
   };
 };

@@ -23,11 +23,6 @@ const useResponsive = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
   const isResponsive = useMediaQuery('(max-width:1024px)');
 
-  useEffect(() => {
-    if (!isResponsive && isOpen) setOpen(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isResponsive]);
-
   return {
     menu: {
       isOpen,
@@ -51,7 +46,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {menu.isResponsive ? (
             <NavDrawer open={menu.isOpen} onClose={menu.close} />
           ) : (
-            <div className="fixed top-0 left-0 min-h-screen max-w-xs">
+            <div className="fixed top-0 left-0 hidden lg:block min-h-screen max-w-xs">
               <Nav />
             </div>
           )}

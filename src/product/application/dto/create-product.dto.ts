@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   ArrayMinSize,
   IsArray,
@@ -18,8 +18,8 @@ export class IngredientDto {
   id: string;
 
   @IsPositive()
-  @IsInt()
-  @Min(1)
+  @IsNumber()
+  @Transform(({ value }) => Number(value))
   quantity: number;
 
   constructor(id: string, quantity: number) {

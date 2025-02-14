@@ -8,6 +8,7 @@ import {
   Button,
   createTheme,
   FormControl,
+  FormHelperText,
   Grid2,
   InputLabel,
   LinearProgress,
@@ -39,7 +40,7 @@ const useRegisterProduct = () => {
     watch,
     getValues,
   } = useForm<FormType>({
-    defaultValues: { ingredients: [{ id: '', quantity: 0 }] },
+    defaultValues: { ingredients: [{ id: '' }] },
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -104,22 +105,30 @@ export default function RegisterProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModifiedIngredients, form.ingredients.fields, inventory]);
 
-  const renderIngrendientsField = useMemo(() => {
-    return form.ingredients.fields.map((field, index) => {
+  // Manejo dinamico de los inputs
+  const renderIngrendientsField = form.ingredients.fields.map(
+    (field, index) => {
       const ingredientId = form.getValues(`ingredients.${index}.id`);
       const name = inventoryById[ingredientId]?.name;
       return (
         <div key={field.id}>
           <Grid2 container spacing={4}>
             <Grid2 size={{ xs: 12, sm: 6 }}>
-              <FormControl fullWidth>
+              <FormControl
+                fullWidth
+                error={
+                  form.errors.ingredients
+                    ? !!form.errors.ingredients[index]?.id
+                    : undefined
+                }
+              >
                 <InputLabel id="label-ingredient">Ingrediente</InputLabel>
                 <Select
                   labelId="label-ingredient"
                   label="Ingrediente"
                   defaultValue=""
                   {...form.register(`ingredients.${index}.id` as const, {
-                    required: true,
+                    required: 'Seleccione un ingrediente',
                   })}
                 >
                   {!!name && <MenuItem value={ingredientId}>{name}</MenuItem>}
@@ -135,6 +144,10 @@ export default function RegisterProduct() {
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText>
+                  {!!form.errors.ingredients &&
+                    form.errors.ingredients[index]?.id?.message}
+                </FormHelperText>
               </FormControl>
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 6 }}>
@@ -142,10 +155,22 @@ export default function RegisterProduct() {
                 fullWidth
                 label="Cantidad"
                 {...form.register(`ingredients.${index}.quantity`, {
-                  valueAsNumber: true,
+                  required: 'Ingrese la cantidad',
+                  pattern: {
+                    value: /^\d+(\.\d*)?$/,
+                    message: 'Ingrese un número valido',
+                  },
                 })}
-                error={!!form.errors.price}
-                helperText={form.errors.price?.message}
+                error={
+                  form.errors.ingredients
+                    ? !!form.errors.ingredients[index]?.quantity
+                    : false
+                }
+                helperText={
+                  form.errors.ingredients
+                    ? form.errors.ingredients[index]?.quantity?.message
+                    : undefined
+                }
               />
             </Grid2>
           </Grid2>
@@ -159,9 +184,8 @@ export default function RegisterProduct() {
           )}
         </div>
       );
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.ingredients.fields, unselectIngredients]);
+    }
+  );
 
   return (
     <ThemeProvider theme={createTheme(globalTheme)}>
@@ -176,7 +200,11 @@ export default function RegisterProduct() {
               <TextField
                 fullWidth
                 label="Producto"
-                {...form.register('name', { required: true })}
+                {...form.register('name', {
+                  required: 'Ingrese el nombre del producto',
+                })}
+                error={!!form.errors.name}
+                helperText={form.errors.name?.message}
               />
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 6 }}>
@@ -192,8 +220,12 @@ export default function RegisterProduct() {
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
+                type="number"
                 label="Precio de venta"
-                {...form.register('price', { min: 10000, valueAsNumber: true })}
+                {...form.register('price', {
+                  required: 'Ingrese el precio del producto',
+                  valueAsNumber: true,
+                })}
                 error={!!form.errors.price}
                 helperText={form.errors.price?.message}
               />

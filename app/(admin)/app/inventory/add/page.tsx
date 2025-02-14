@@ -106,10 +106,12 @@ export default function RegisterInventory() {
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
-                inputProps={{ inputMode: 'decimal' }}
+                type="number"
                 label="Precio unitario"
+                slotProps={{ htmlInput: { step: 0.1 } }}
                 {...form.register('unitPrice', {
                   required: 'Ingrese el precio',
+                  valueAsNumber: true,
                 })}
                 error={!!form.errors.unitPrice}
                 helperText={form.errors.unitPrice?.message}
@@ -119,9 +121,13 @@ export default function RegisterInventory() {
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
-                type="number"
                 label="Stock"
-                {...form.register('stock', { valueAsNumber: true })}
+                {...form.register('stock', {
+                  pattern: {
+                    value: /^\d+(\.\d*)?$/,
+                    message: 'Ingrese un número valido',
+                  },
+                })}
                 error={!!form.errors.stock}
                 helperText={form.errors.stock?.message}
                 color="secondary"

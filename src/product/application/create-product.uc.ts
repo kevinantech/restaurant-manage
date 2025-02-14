@@ -23,7 +23,7 @@ export class CreateProduct {
     }
 
     const registeredIngredients = (
-      await this.inventoryItemRepository.getItemsByUserId(data.userId)
+      await this.inventoryItemRepository.getItemsForUser(data.userId)
     ).map(({ id }) => id);
 
     if (!data.ingredients.every(({ id }) => registeredIngredients.includes(id)))

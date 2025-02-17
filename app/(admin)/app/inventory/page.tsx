@@ -16,7 +16,6 @@ import { useInventory } from 'app/_hooks/useInventory';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// Each child element must have a 44 px of height.
 const InventoryBar = () => {
   return (
     <div className="flex flex-wrap gap-4 justify-between mb-5">

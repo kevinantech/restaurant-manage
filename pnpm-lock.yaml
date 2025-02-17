@@ -14,6 +14,9 @@ importers:
       '@emotion/styled':
         specifier: 11.13.5
         version: 11.13.5(@emotion/react@11.13.5(@types/react@18.0.0)(react@18.2.0))(@types/react@18.0.0)(react@18.2.0)
+      '@hookform/resolvers':
+        specifier: ^4.0.0
+        version: 4.0.0(react-hook-form@7.51.1(react@18.2.0))
       '@mui/icons-material':
         specifier: 6.1.8
         version: 6.1.8(@mui/material@6.1.8(@emotion/react@11.13.5(@types/react@18.0.0)(react@18.2.0))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@18.0.0)(react@18.2.0))(@types/react@18.0.0)(react@18.2.0))(@types/react@18.0.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.0.0)(react@18.2.0)
@@ -71,6 +74,9 @@ importers:
       uuid:
         specifier: 9.0.1
         version: 9.0.1
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.4.2
@@ -411,6 +417,11 @@ packages:
   '@eslint/eslintrc@1.4.1':
     resolution: {integrity: sha512-XXrH9Uarn0stsyldqDYq8r++mROmWRI1xKMXa640Bb//SY1+ECYX6VzT6Lcx5frD0V30XieqJ0oX9I2Xj5aoMA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@hookform/resolvers@4.0.0':
+    resolution: {integrity: sha512-93ZueVlTaeMF0pRbrLbcnzrxeb2mGA/xyO3RgfrsKs5OCtcfjoWcdjBJm+N7096Jfg/JYlGPjuyQCgqVEodSTg==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
 
   '@humanwhocodes/config-array@0.6.0':
     resolution: {integrity: sha512-JQlEKbcgEUjBFhLIF4iqM7u/9lwgHRBcpHrmUNCALK0Q3amXN6lxdoXLnF0sm11E9VqTmBALR87IlUg1bZ8A9A==}
@@ -3573,6 +3584,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
 snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
@@ -3916,6 +3930,10 @@ snapshots:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+
+  '@hookform/resolvers@4.0.0(react-hook-form@7.51.1(react@18.2.0))':
+    dependencies:
+      react-hook-form: 7.51.1(react@18.2.0)
 
   '@humanwhocodes/config-array@0.6.0':
     dependencies:
@@ -7618,3 +7636,5 @@ snapshots:
   yn@3.1.1: {}
 
   yocto-queue@0.1.0: {}
+
+  zod@3.24.2: {}

@@ -1,7 +1,7 @@
 'use server';
-import { RegisterAdminDto } from '@/admin/application/dto/register-admin.dto';
+/* import { RegisterAdminDto } from '@/admin/application/dto/register-admin.dto';
 import { RegisterAdmin } from '@/admin/application/register-admin.uc';
-import { AdminDatabase } from '@/admin/infrastructure/admin.database';
+import { AdminRepository } from '@/admin/infrastructure/admin.database';
 import { CreateInventoryItem } from '@/inventory/application/create-inventory-item.uc';
 import { CreateInventoryItemDto } from '@/inventory/application/dto/create-inventory-item.dto';
 import { InventoryItemDatabase } from '@/inventory/infraestructure/inventory-item.database';
@@ -14,18 +14,11 @@ import { findFormatError } from '../utils/helpers/validation.helper';
 import { FormType as CreateInventoryItemFormType } from './(admin)/app/inventory/add/page';
 import { FormType as RegisterProductFormType } from './(admin)/app/products/add/page';
 
-const userRepository = new AdminDatabase();
+const userRepository = new AdminRepository();
 const productRepository = new ProductDatabase();
 const inventoryItemRepository = new InventoryItemDatabase();
 
-export const registerAdmin = async (input: RegisterAdminDto) => {
-  const formatError = await findFormatError(RegisterAdminDto, input);
-  if (formatError) return formatError;
 
-  await connectDB();
-  const result = await new RegisterAdmin(new AdminDatabase()).register(input);
-  return result;
-};
 
 export const createInventoryItem = async (
   input: CreateInventoryItemFormType
@@ -66,4 +59,4 @@ export const registerProduct = async (input: RegisterProductFormType) => {
   ).create(_input);
 
   return result;
-};
+}; */

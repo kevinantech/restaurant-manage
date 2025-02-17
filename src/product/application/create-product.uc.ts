@@ -1,16 +1,16 @@
-import { InventoryItemRepository } from '@/inventory/domain/inventory-item.repository';
+import { IInventoryRepository } from '@/inventory/domain/inventory.repository.interface';
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
 import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 import { GeneralUtils } from 'utils/general.util';
-import { ProductRepository } from '../domain/product.repository';
+import { IProductRepository } from '../domain/product.repository.interface';
 import { Product } from '../domain/product.value';
 import { CreateProductDto } from './dto/create-product.dto';
 import { SystemUserRepository } from '@/shared/systemuser/domain/systemuser.repository';
 
 export class CreateProduct {
   constructor(
-    private readonly productRepository: ProductRepository,
-    private readonly inventoryItemRepository: InventoryItemRepository,
+    private readonly productRepository: IProductRepository,
+    private readonly inventoryItemRepository: IInventoryRepository,
     private readonly userRepository: SystemUserRepository
   ) {}
   async create(data: CreateProductDto): Promise<IBaseResponse> {

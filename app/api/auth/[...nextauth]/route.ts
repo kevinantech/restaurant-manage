@@ -1,15 +1,13 @@
-import { AdminDatabase } from '@/admin/infrastructure/admin.database';
-import { WebRoutes } from 'app/_common/constants';
+import { AdminRepository } from '@/admin/infrastructure/admin.repository';
+import { WebRoutes } from 'app/routes.config';
 import { connectDB } from 'lib/mongoose/connect';
 import NextAuth, { AuthOptions, DefaultSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { GeneralUtils } from 'utils/general.util';
 
 /**
- * Official resources.
  * https://next-auth.js.org/configuration/providers/credentials
  * https://next-auth.js.org/configuration/callbacks#session-callback
- *
  */
 
 export type UserSession = DefaultSession['user'] & { id: string };
@@ -27,8 +25,8 @@ export const authOptions: AuthOptions = {
         if (!credentials || !credentials.username || !credentials.password)
           throw new Error('Las credenciales no han sido proporcionadas.');
         await connectDB();
-        const db = new AdminDatabase();
-        const userFound = await db.findByUsername(credentials.username);
+        const db = new AdminRepository();
+        const userFound = await db.getAdminByUsername(credentials.username);
         if (!userFound)
           throw new Error('Parece que no es posible encontrar la cuenta.');
 

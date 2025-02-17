@@ -1,13 +1,13 @@
-import { IInventoryItem } from '@/inventory/domain/inventory-item.entity';
+import { InventoryItem } from '@/inventory/domain/inventory-item.entity';
 import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 import { ApiRoutes } from 'app/_common/constants';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 
-type InventoryItemsResponse = IBaseResponse<IInventoryItem[]>;
+type InventoryItemsResponse = IBaseResponse<InventoryItem[]>;
 type IndexedInventoryItem = Record<
   string,
-  Pick<IInventoryItem, 'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'>
+  Pick<InventoryItem, 'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'>
 >;
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

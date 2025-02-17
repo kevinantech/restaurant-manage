@@ -1,10 +1,13 @@
 'use client';
-import { CreateInventoryItemDto } from '@/inventory/application/dto/create-inventory-item.dto';
+import {
+  CreateInventoryItemBody,
+  CreateInventoryItemBodySchema,
+} from '@/inventory/domain/inventory-item.entity';
 import { Units } from '@/shared/_common/constants/units-enum';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Backdrop,
   Button,
-  createTheme,
   FormControl,
   FormHelperText,
   Grid2,
@@ -13,18 +16,12 @@ import {
   MenuItem,
   Select,
   TextField,
-  ThemeProvider,
 } from '@mui/material';
-import { globalTheme } from 'app/_common/constants/styles/global-theme';
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
-import { createInventoryItem } from 'app/actions';
+import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { useForm } from 'react-hook-form';
-
-export type FormType = Pick<
-  CreateInventoryItemDto,
-  'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'
->;
+import { createInventoryItem } from '../actions';
 
 const useRegisterInventory = () => {
   const {
@@ -32,10 +29,12 @@ const useRegisterInventory = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateInventoryItemDto>();
+  } = useForm<CreateInventoryItemBody>({
+    resolver: zodResolver(CreateInventoryItemBodySchema),
+  });
   const { handler, isLoading, error } = useHandler();
 
-  const handleRegister = async (data: FormType) => {
+  const handleRegister = async (data: CreateInventoryItemBody) => {
     await handler(async () => {
       const response = await createInventoryItem(data);
       if (response.code === 'OK') return reset();
@@ -61,7 +60,7 @@ export default function RegisterInventory() {
   const { form, handleRegister, loading, error } = useRegisterInventory();
 
   return (
-    <ThemeProvider theme={createTheme(globalTheme)}>
+    <ThemeProvider>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nuevo Insumo</Title>
         <form
@@ -74,7 +73,7 @@ export default function RegisterInventory() {
                 fullWidth
                 label="Nombre"
                 color="secondary"
-                {...form.register('name', { required: 'Ingrese el nombre' })}
+                {...form.register('name')}
                 error={!!form.errors.name}
                 helperText={form.errors.name?.message}
               />
@@ -110,8 +109,8 @@ export default function RegisterInventory() {
                 label="Precio unitario"
                 slotProps={{ htmlInput: { step: 0.1 } }}
                 {...form.register('unitPrice', {
-                  required: 'Ingrese el precio',
-                  valueAsNumber: true,
+                  setValueAs: (value) =>
+                    !isNaN(value) ? Number(value) : undefined,
                 })}
                 error={!!form.errors.unitPrice}
                 helperText={form.errors.unitPrice?.message}
@@ -123,10 +122,8 @@ export default function RegisterInventory() {
                 fullWidth
                 label="Stock"
                 {...form.register('stock', {
-                  pattern: {
-                    value: /^\d+(\.\d*)?$/,
-                    message: 'Ingrese un número valido',
-                  },
+                  setValueAs: (value) =>
+                    !isNaN(value) ? Number(value) : undefined,
                 })}
                 error={!!form.errors.stock}
                 helperText={form.errors.stock?.message}

@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-const { Color } = require('./app/_common/constants/styles/color.style');
+const { Color } = require('./app/styles.ts');
 
 const config: Config = {
   content: ['./app/*.tsx', './app/**/*.tsx'],

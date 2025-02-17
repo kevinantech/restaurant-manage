@@ -56,7 +56,7 @@ const Cell: React.FC<TableCellProps> = ({ children, sx, ...props }) => {
 
 export default function Products() {
   const { products } = useProducts();
-  const { indexedInventory } = useInventory();
+  const { inventoryById } = useInventory();
 
   const [show, setShow] = useState(false);
 
@@ -91,18 +91,14 @@ export default function Products() {
                 <Cell align="left">{product.name}</Cell>
                 <Cell align="left">{product.description}</Cell>
                 <Cell align="left">
-                  {indexedInventory
+                  {inventoryById
                     ? product.ingredients
                         .map(({ id, quantity }) => {
-                          const ingr = indexedInventory[id];
+                          const ingr = inventoryById[id];
                           return ingr
-                            ? [
-                                ingr.name,
-                                ingr.unitWeight,
-                                ingr.unitOfMeasure,
-                                ' x ',
-                                quantity,
-                              ].join(' ')
+                            ? [ingr.name, quantity, ingr.unitOfMeasure].join(
+                                ' '
+                              )
                             : '';
                         })
                         .join(', ')

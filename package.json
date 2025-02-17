@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "11.13.5",
     "@emotion/styled": "11.13.5",
+    "@hookform/resolvers": "^4.0.0",
     "@mui/icons-material": "6.1.8",
     "@mui/material": "6.1.8",
     "@mui/x-data-grid": "^7.3.2",
@@ -30,7 +31,8 @@
     "react-hook-form": "7.51.1",
     "reflect-metadata": "^0.2.2",
     "swr": "^2.3.2",
-    "uuid": "9.0.1"
+    "uuid": "9.0.1",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",

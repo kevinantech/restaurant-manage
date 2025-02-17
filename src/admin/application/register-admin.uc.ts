@@ -1,61 +1,41 @@
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
-import { SystemUserRepository } from '@/shared/systemuser/domain/systemuser.repository';
 import { GeneralUtils } from 'utils/general.util';
-import { Admin } from '../domain/admin.value';
-import { RegisterAdminDto } from './dto/register-admin.dto';
+import { RegisterAdminBody } from '../domain/admin.entity';
+import { IAdminRepository } from '../domain/admin.repository.interface';
+import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 
-export class RegisterAdmin {
-  constructor(private readonly userRepository: SystemUserRepository) {}
+export type IRegisterAdminUseCase = ReturnType<typeof registerAdminUseCase>;
 
-  async register(userData: RegisterAdminDto): Promise<IBaseResponse> {
+export const registerAdminUseCase =
+  (repository: IAdminRepository) =>
+  async (body: RegisterAdminBody): Promise<IBaseResponse> => {
     try {
-      if (userData.password !== userData.confirmPassword)
+      const data = await repository.getAdminByUsername(body.username);
+      if (data) {
         return {
           ...ResponseCode['BAD REQUEST'],
-          message: 'Las contraseñas no coinciden.',
+          message: 'Nombre de usuario no disponible',
         };
-
-      const docData = await this.userRepository.findByUsername(
-        userData.username
-      );
-      if (docData)
-        return {
-          ...ResponseCode['BAD REQUEST'],
-          message: 'El nombre de usuario no está disponible.',
-        };
+      }
 
       const KEY = <string>process.env.PASS_ENCRIPTION_KEY;
-      const password = await GeneralUtils.encryptPassword(
-        userData.password,
-        KEY
-      );
+      const password = await GeneralUtils.encryptPassword(body.password, KEY);
 
-      const user = new Admin(
-        GeneralUtils.generateId(),
-        userData.name,
-        userData.email,
-        userData.username,
-        password
-      );
-
-      const recovery = await this.userRepository.registerUser(user);
-
-      if (!recovery || !recovery.id)
-        return {
-          ...ResponseCode['INTERNAL SERVER ERROR'],
-          message: '¡Ups! Algo salió mal al guardar tu información',
-        };
+      await repository.createAdmin({
+        name: body.name,
+        email: body.email,
+        username: body.username,
+        password,
+      });
 
       return {
         ...ResponseCode.OK,
-        message: 'Administrador agregado correctamente.',
+        message: 'Administrador agregado',
       };
-    } catch (error: any) {
+    } catch (error) {
       return {
         ...ResponseCode['INTERNAL SERVER ERROR'],
-        message: error.message,
+        message: 'Unexpected error',
       };
     }
-  }
-}
+  };

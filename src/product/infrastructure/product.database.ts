@@ -1,11 +1,11 @@
 import { IProduct } from '../domain/product.entity';
-import { ProductRepository } from '../domain/product.repository';
+import { IProductRepository } from '../domain/product.repository.interface';
 import { ProductAdapter } from './adapters/product.adapter';
 import { ProductsAdapter } from './adapters/products.adapter';
 import { ProductModel } from './product.model';
 
-export class ProductDatabase implements ProductRepository {
-  async findProductById(id: string): Promise<IProduct | null> {
+export class ProductDatabase implements IProductRepository {
+  async getProductByIdForUser(id: string): Promise<IProduct | null> {
     const doc = await ProductModel.findOne({ id });
     return new ProductAdapter(doc).request();
   }
@@ -22,7 +22,7 @@ export class ProductDatabase implements ProductRepository {
     await ProductModel.updateOne({ id }, payload);
   }
 
-  async getProductsByUserId(userId: string): Promise<IProduct[]> {
+  async getProductsForUser(userId: string): Promise<IProduct[]> {
     const docs = await ProductModel.find({ userId });
     return new ProductsAdapter(docs).request();
   }

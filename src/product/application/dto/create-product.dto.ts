@@ -2,14 +2,12 @@ import { Transform, Type } from 'class-transformer';
 import {
   ArrayMinSize,
   IsArray,
-  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
   IsUUID,
-  Min,
   ValidateNested,
 } from 'class-validator';
 
@@ -43,8 +41,8 @@ export class CreateProductDto {
   @Type(() => IngredientDto)
   ingredients: IngredientDto[];
 
+  @IsPositive()
   @IsNumber()
-  @Min(10000) // Min.precio aceptado 10000 COP
   price: number;
 
   @IsUUID()

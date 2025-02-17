@@ -1,18 +1,11 @@
 'use client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
-import {
-  Button,
-  createTheme,
-  IconButton,
-  InputAdornment,
-  TextField,
-  ThemeProvider,
-} from '@mui/material';
-import { WebRoutes } from 'app/_common/constants';
-import { globalTheme } from 'app/_common/constants/styles/global-theme';
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
+import { WebRoutes } from 'app/routes.config';
 import { useHandler } from 'app/_hooks/useHandler';
 import { usePassword } from 'app/_hooks/usePassword';
+import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -31,8 +24,8 @@ const useSignIn = () => {
   } = useForm<Credentials>();
   const router = useRouter();
   const { handler, error, isLoading } = useHandler();
+
   /**
-   * @param data
    * https://next-auth.js.org/getting-started/client#signin
    */
   const handleSignIn = async (data: Credentials) => {
@@ -69,7 +62,7 @@ const SignIn = () => {
   if (!visibility) return null;
 
   return (
-    <ThemeProvider theme={createTheme(globalTheme)}>
+    <ThemeProvider>
       <div className="min-h-screen bg-french-lilac overflow-hidden">
         <div className="relative max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
           <div className="flex justify-center items-center w-16 h-16 rounded-full mx-auto my-0 bg-pompadour">

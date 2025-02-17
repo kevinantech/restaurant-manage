@@ -1,14 +1,9 @@
-import { model, models, Schema } from 'mongoose';
-import { IInventoryItem } from '../domain/inventory-item.entity';
 import { Units } from '@/shared/_common/constants/units-enum';
+import { Model, model, models, Schema } from 'mongoose';
+import { InsertInventoryItem } from '../domain/inventory-item.entity';
 
-const InventoryItemSchema = new Schema<IInventoryItem>(
+const InventoryItemSchema = new Schema<InsertInventoryItem>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     name: {
       type: String,
       required: true,
@@ -37,6 +32,6 @@ const InventoryItemSchema = new Schema<IInventoryItem>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `InventoryItems` model once compiled. */
-const InventoryItemModel =
-  models.inventory_items || model('inventory_items', InventoryItemSchema);
+const InventoryItemModel: Model<InsertInventoryItem> =
+  models?.inventory_items || model('inventory_items', InventoryItemSchema);
 export { InventoryItemModel };

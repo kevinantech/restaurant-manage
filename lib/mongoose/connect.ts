@@ -6,8 +6,7 @@ async function connectDB(): Promise<void> {
     const dbAccess = process.env.DB_URI!;
     await mongoose.connect(dbAccess);
   } catch (error) {
-    console.log(error);
-    process.exit(1);
+    if (error instanceof Error) console.log(error.message);
   }
 }
 

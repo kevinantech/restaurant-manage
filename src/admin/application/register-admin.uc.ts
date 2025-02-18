@@ -1,5 +1,5 @@
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { GeneralUtils } from 'utils/general.util';
+import { GeneralUtils } from 'lib/general.util';
 import { RegisterAdminBody } from '../domain/admin.entity';
 import { IAdminRepository } from '../domain/admin.repository.interface';
 import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
@@ -32,7 +32,8 @@ export const registerAdminUseCase =
         ...ResponseCode.OK,
         message: 'Administrador agregado',
       };
-    } catch (error) {
+    } catch (e) {
+      if (e instanceof Error) console.log('Error', e.message);
       return {
         ...ResponseCode['INTERNAL SERVER ERROR'],
         message: 'Unexpected error',

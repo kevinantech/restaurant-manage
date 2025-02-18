@@ -1,6 +1,4 @@
 import { compare, genSalt, hash } from 'bcryptjs';
-import { v4 as uuid } from 'uuid';
-import jwt from 'jsonwebtoken';
 
 export class GeneralUtils {
   static async encryptPassword(
@@ -21,18 +19,5 @@ export class GeneralUtils {
     const pepperedPassword = password + pepper;
     const match = await compare(pepperedPassword, hash);
     return match;
-  }
-
-  static generateToken<P = any>(
-    payload: P,
-    aud: string,
-    secret: string,
-    expiresIn: string = '10d'
-  ): string {
-    return jwt.sign({ ...payload, aud }, secret, { expiresIn });
-  }
-
-  static generateId(): string {
-    return uuid();
   }
 }

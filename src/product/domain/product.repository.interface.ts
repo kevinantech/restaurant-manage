@@ -1,14 +1,16 @@
-import { IProduct } from './product.entity';
+import { InsertProduct, Product } from './product.entity';
 
 export interface IProductRepository {
-  getProductsForUser(userId: string): Promise<IProduct[]>;
+  getProductsForUser(userId: string): Promise<Product[]>;
 
-  getProductByIdForUser(id: string, userId: string): Promise<IProduct | null>;
+  getProductById(id: string): Promise<Product | undefined>;
 
-  createProduct(product: IProduct): Promise<void>;
+  createProduct(body: InsertProduct): Promise<void>;
 
   updateProduct(
     id: string,
-    payload: Partial<Omit<IProduct, 'id' | 'userId'>>
+    payload: Partial<
+      Pick<InsertProduct, 'name' | 'description' | 'price' | 'recipe'>
+    >
   ): Promise<void>;
 }

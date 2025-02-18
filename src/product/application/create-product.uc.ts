@@ -1,49 +1,54 @@
 import { IInventoryRepository } from '@/inventory/domain/inventory.repository.interface';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
 import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
-import { GeneralUtils } from 'utils/general.util';
+import { CreateProductBody } from '../domain/product.entity';
 import { IProductRepository } from '../domain/product.repository.interface';
-import { Product } from '../domain/product.value';
-import { CreateProductDto } from './dto/create-product.dto';
-import { SystemUserRepository } from '@/shared/systemuser/domain/systemuser.repository';
+import { ResponseCode } from '@/shared/_common/constants/response-codes';
 
-export class CreateProduct {
-  constructor(
-    private readonly productRepository: IProductRepository,
-    private readonly inventoryItemRepository: IInventoryRepository,
-    private readonly userRepository: SystemUserRepository
-  ) {}
-  async create(data: CreateProductDto): Promise<IBaseResponse> {
-    const userExists = await this.userRepository.findUserById(data.userId);
-    if (!userExists) {
+export type ICreateProductUseCase = ReturnType<typeof createProductUseCase>;
+
+export const createProductUseCase =
+  (
+    productRepository: IProductRepository,
+    itemsRepository: IInventoryRepository
+  ) =>
+  async (body: CreateProductBody, userId: string): Promise<IBaseResponse> => {
+    try {
+      const ingredientsFound = (
+        await Promise.all(
+          body.recipe.map(({ id }) => {
+            return itemsRepository.getItemById(id);
+          })
+        )
+      ).filter((ingr) => !!ingr);
+
+      if (ingredientsFound.some((ingr) => ingr.userId !== userId)) {
+        return {
+          ...ResponseCode['FORBIDDEN'],
+          message: 'No tienes permisos para crear este producto',
+        };
+      }
+
+      if (ingredientsFound.length !== body.recipe.length) {
+        return {
+          ...ResponseCode['BAD REQUEST'],
+          message: 'Uno o más ingredientes no están disponibles',
+        };
+      }
+
+      await productRepository.createProduct({
+        ...body,
+        userId,
+      });
+
       return {
-        ...ResponseCode.UNAUTHORIZED,
-        message: 'Acceso denegado',
+        ...ResponseCode.OK,
+        message: 'Producto agregado',
+      };
+    } catch (e) {
+      if (e instanceof Error) console.log('Error', e.message);
+      return {
+        ...ResponseCode['INTERNAL SERVER ERROR'],
+        message: 'Unexpected error',
       };
     }
-
-    const registeredIngredients = (
-      await this.inventoryItemRepository.getItemsForUser(data.userId)
-    ).map(({ id }) => id);
-
-    if (!data.ingredients.every(({ id }) => registeredIngredients.includes(id)))
-      return {
-        ...ResponseCode['BAD REQUEST'],
-        message: 'Uno o más ingredientes no están disponibles',
-      };
-
-    const product = new Product(
-      GeneralUtils.generateId(),
-      data.name,
-      data.description,
-      data.ingredients,
-      data.price,
-      data.userId
-    );
-    await this.productRepository.createProduct(product);
-    return {
-      ...ResponseCode.OK,
-      message: 'Producto agregado',
-    };
-  }
-}
+  };

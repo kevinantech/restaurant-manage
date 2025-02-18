@@ -1,12 +1,13 @@
 'use client';
 import {
-  CreateProductDto,
-  IngredientDto,
-} from '@/product/application/dto/create-product.dto';
+  CreateProductBody,
+  CreateProductBodySchema,
+  ProductRecipe,
+} from '@/product/domain/product.entity';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Backdrop,
   Button,
-  createTheme,
   FormControl,
   FormHelperText,
   Grid2,
@@ -15,20 +16,15 @@ import {
   MenuItem,
   Select,
   TextField,
-  ThemeProvider,
 } from '@mui/material';
 import { globalTheme } from 'app/_common/constants/styles/global-theme';
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useInventory } from 'app/_hooks/useInventory';
-import { registerProduct } from 'app/actions';
+import { createProduct } from '../actions';
 import { useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-
-export type FormType = Pick<
-  CreateProductDto,
-  'name' | 'description' | 'ingredients' | 'price'
->;
+import { ThemeProvider } from 'app/_providers/ThemeProvider';
 
 const useRegisterProduct = () => {
   const {
@@ -39,25 +35,26 @@ const useRegisterProduct = () => {
     control,
     watch,
     getValues,
-  } = useForm<FormType>({
-    defaultValues: { ingredients: [{ id: '' }] },
+  } = useForm<CreateProductBody>({
+    defaultValues: { recipe: [{ id: '' }] },
+    resolver: zodResolver(CreateProductBodySchema),
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'ingredients',
+    name: 'recipe',
   });
   const { handler, isLoading, error } = useHandler();
 
-  const handleRegister = async (data: FormType) => {
+  const handleRegister = async (body: CreateProductBody) => {
     await handler(async () => {
-      const response = await registerProduct(data);
+      const response = await createProduct(body);
       if (response.code === 'OK') return reset();
       else if (!Array.isArray(response.message))
         throw new Error(response.message);
     });
   };
 
-  const handleAppendIngredient = () => append({ id: '' } as IngredientDto);
+  const handleAppendIngredient = () => append({ id: '' } as ProductRecipe);
 
   return {
     form: {
@@ -66,8 +63,8 @@ const useRegisterProduct = () => {
       reset,
       errors,
       getValues,
-      ingredients: {
-        value: watch('ingredients'),
+      recipe: {
+        value: watch('recipe'),
         fields,
         remove,
       },
@@ -85,7 +82,7 @@ export default function RegisterProduct() {
   const { inventory, inventoryById } = useInventory();
 
   /**
-   * form.ingredients.values contains the updated ingredients. But without reference updating.
+   * form.recipe.values contains the updated ingredients. But without reference updating.
    * Then, use the watch prop from useForm, for array values dont allow to update the view,
    * because always holds the same reference.
    * This state forces the trigger.
@@ -97,98 +94,88 @@ export default function RegisterProduct() {
   const unselectIngredients = useMemo(() => {
     return inventory.filter(
       (item) =>
-        form.ingredients.value
+        form.recipe.value
           .map((ingredient) => ingredient.id)
           .includes(item.id) === false
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModifiedIngredients, form.ingredients.fields, inventory]);
+  }, [isModifiedIngredients, form.recipe.fields, inventory]);
 
   // Manejo dinamico de los inputs
-  const renderIngrendientsField = form.ingredients.fields.map(
-    (field, index) => {
-      const ingredientId = form.getValues(`ingredients.${index}.id`);
-      const name = inventoryById[ingredientId]?.name;
-      return (
-        <div key={field.id}>
-          <Grid2 container spacing={4}>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
-              <FormControl
-                fullWidth
-                error={
-                  form.errors.ingredients
-                    ? !!form.errors.ingredients[index]?.id
-                    : undefined
-                }
-              >
-                <InputLabel id="label-ingredient">Ingrediente</InputLabel>
-                <Select
-                  labelId="label-ingredient"
-                  label="Ingrediente"
-                  defaultValue=""
-                  {...form.register(`ingredients.${index}.id` as const, {
-                    required: 'Seleccione un ingrediente',
-                  })}
-                >
-                  {!!name && <MenuItem value={ingredientId}>{name}</MenuItem>}
-                  {unselectIngredients.map(({ id, name }) => (
-                    <MenuItem
-                      key={`${field.id}-${id}`}
-                      value={id}
-                      onClick={
-                        triggerIngredientsModified /* When one option is clicked, the picked ingredients changes */
-                      }
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>
-                  {!!form.errors.ingredients &&
-                    form.errors.ingredients[index]?.id?.message}
-                </FormHelperText>
-              </FormControl>
-            </Grid2>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
-              <TextField
-                fullWidth
-                label="Cantidad"
-                {...form.register(`ingredients.${index}.quantity`, {
-                  required: 'Ingrese la cantidad',
-                  pattern: {
-                    value: /^\d+(\.\d*)?$/,
-                    message: 'Ingrese un número valido',
-                  },
-                })}
-                error={
-                  form.errors.ingredients
-                    ? !!form.errors.ingredients[index]?.quantity
-                    : false
-                }
-                helperText={
-                  form.errors.ingredients
-                    ? form.errors.ingredients[index]?.quantity?.message
-                    : undefined
-                }
-              />
-            </Grid2>
-          </Grid2>
-          {index !== 0 && (
-            <button
-              onClick={() => form.ingredients.remove(index)}
-              className="mt-1 ml-2 text-sm text-red-600 font-medium underline bg-transparent"
+  const renderIngrendientsField = form.recipe.fields.map((field, index) => {
+    const ingredientId = form.getValues(`recipe.${index}.id`);
+    const name = inventoryById[ingredientId]?.name;
+    return (
+      <div key={field.id}>
+        <Grid2 container spacing={4}>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
+            <FormControl
+              fullWidth
+              error={
+                form.errors.recipe ? !!form.errors.recipe[index]?.id : undefined
+              }
             >
-              Remover
-            </button>
-          )}
-        </div>
-      );
-    }
-  );
+              <InputLabel id="label-ingredient">Ingrediente</InputLabel>
+              <Select
+                labelId="label-ingredient"
+                label="Ingrediente"
+                defaultValue=""
+                {...form.register(`recipe.${index}.id` as const)}
+              >
+                {!!name && <MenuItem value={ingredientId}>{name}</MenuItem>}
+                {unselectIngredients.map(({ id, name }) => (
+                  <MenuItem
+                    key={`${field.id}-${id}`}
+                    value={id}
+                    onClick={
+                      triggerIngredientsModified /* When one option is clicked, the picked ingredients changes */
+                    }
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>
+                {!!form.errors.recipe && form.errors.recipe[index]?.id?.message}
+              </FormHelperText>
+            </FormControl>
+          </Grid2>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
+            <TextField
+              fullWidth
+              label="Cantidad"
+              {...form.register(`recipe.${index}.quantity`, {
+                setValueAs: (value) =>
+                  !isNaN(value) ? Number(value) : undefined,
+              })}
+              error={
+                form.errors.recipe
+                  ? !!form.errors.recipe[index]?.quantity
+                  : false
+              }
+              helperText={
+                form.errors.recipe
+                  ? form.errors.recipe[index]?.quantity?.message
+                  : undefined
+              }
+            />
+          </Grid2>
+        </Grid2>
+        {index !== 0 && (
+          <button
+            onClick={() => form.recipe.remove(index)}
+            className="mt-1 ml-2 text-sm text-red-600 font-medium underline bg-transparent"
+          >
+            Remover
+          </button>
+        )}
+      </div>
+    );
+  });
 
   return (
-    <ThemeProvider theme={createTheme(globalTheme)}>
+    <ThemeProvider>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nuevo Producto</Title>
         <form
@@ -223,8 +210,8 @@ export default function RegisterProduct() {
                 type="number"
                 label="Precio de venta"
                 {...form.register('price', {
-                  required: 'Ingrese el precio del producto',
-                  valueAsNumber: true,
+                  setValueAs: (value) =>
+                    !isNaN(value) ? Number(value) : undefined,
                 })}
                 error={!!form.errors.price}
                 helperText={form.errors.price?.message}

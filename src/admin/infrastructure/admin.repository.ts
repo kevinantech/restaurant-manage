@@ -17,8 +17,7 @@ export class AdminRepository implements IAdminRepository {
   }
   async createAdmin(body: InsertAdmin): Promise<void> {
     try {
-      const doc = new AdminModel(body);
-      await doc.save();
+      await new AdminModel(body).save();
     } catch (e) {
       if (e instanceof Error) console.log(e);
     }

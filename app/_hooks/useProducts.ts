@@ -1,11 +1,11 @@
-import { IProduct } from '@/product/domain/product.entity';
+import { Product } from '@/product/domain/product.entity';
 import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 import { ApiRoutes } from 'app/_common/constants';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 
-type ProductsResponse = IBaseResponse<IProduct[]>;
-type IndexedProducts = Record<string, Pick<IProduct, 'name' | 'price'>>;
+type ProductsResponse = IBaseResponse<Product[]>;
+type IndexedProducts = Record<string, Pick<Product, 'name' | 'price'>>;
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const useProducts = () => {
@@ -14,7 +14,7 @@ const useProducts = () => {
     fetcher
   );
 
-  const indexedProducts = useMemo<IndexedProducts | undefined>(() => {
+  const productsById = useMemo<IndexedProducts | undefined>(() => {
     return response?.data?.reduce((acc, p) => {
       acc[p.id] = {
         name: p.name,
@@ -26,7 +26,7 @@ const useProducts = () => {
 
   return {
     products: response?.data ?? [],
-    indexedProducts,
+    productsById,
   };
 };
 

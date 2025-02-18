@@ -1,13 +1,14 @@
-import { model, models, Schema, SchemaDefinitionProperty } from 'mongoose';
-import { Ingredient, IProduct } from '../domain/product.entity';
+import {
+  Model,
+  model,
+  models,
+  Schema,
+  SchemaDefinitionProperty,
+} from 'mongoose';
+import { InsertProduct, ProductRecipe } from '../domain/product.entity';
 
-const ProductSchema = new Schema<IProduct>(
+const ProductSchema = new Schema<InsertProduct>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     name: {
       type: String,
       required: true,
@@ -16,7 +17,7 @@ const ProductSchema = new Schema<IProduct>(
       type: String,
       default: '',
     },
-    ingredients: {
+    recipe: {
       type: [
         {
           id: {
@@ -27,7 +28,7 @@ const ProductSchema = new Schema<IProduct>(
             type: Number,
             required: true,
           },
-        } as Record<keyof Ingredient, SchemaDefinitionProperty>,
+        } as Record<keyof ProductRecipe, SchemaDefinitionProperty>,
       ],
       required: true,
     },
@@ -47,5 +48,6 @@ const ProductSchema = new Schema<IProduct>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Products` model once compiled. */
-const ProductModel = models.products || model('products', ProductSchema);
+const ProductModel: Model<InsertProduct> =
+  models?.products || model('products', ProductSchema);
 export { ProductModel };

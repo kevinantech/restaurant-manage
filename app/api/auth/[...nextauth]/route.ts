@@ -1,9 +1,9 @@
 import { AdminRepository } from '@/admin/infrastructure/admin.repository';
 import { WebRoutes } from 'app/routes.config';
-import { connectDB } from 'lib/mongoose/connect';
+import { dbConnect } from 'lib/mongoose/connect';
 import NextAuth, { AuthOptions, DefaultSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { GeneralUtils } from 'utils/general.util';
+import { GeneralUtils } from 'lib/general.util';
 
 /**
  * https://next-auth.js.org/configuration/providers/credentials
@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req): Promise<UserSession | null> {
         if (!credentials || !credentials.username || !credentials.password)
           throw new Error('Las credenciales no han sido proporcionadas.');
-        await connectDB();
+        await dbConnect();
         const db = new AdminRepository();
         const userFound = await db.getAdminByUsername(credentials.username);
         if (!userFound)

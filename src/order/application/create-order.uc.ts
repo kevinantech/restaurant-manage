@@ -1,49 +1,57 @@
-import { InventoryItem } from '@/inventory/domain/inventory-item.value';
 import { IInventoryRepository } from '@/inventory/domain/inventory.repository.interface';
-import { IProduct } from '@/product/domain/product.entity';
+import { Product, ProductRecipe } from '@/product/domain/product.entity';
 import { IProductRepository } from '@/product/domain/product.repository.interface';
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { GeneralUtils } from 'utils/general.util';
+import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 import {
   CreateOrderBody,
-  OrderItem,
-  OrderItemBody,
+  OrderProduct,
+  OrderProductBody,
 } from '../domain/order.entity';
 import { IOrderRepository } from '../domain/order.repository.interface';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
 
 export type ICreateOrderUseCase = ReturnType<typeof createOrderUseCase>;
+type ExtendedOrderProduct = OrderProduct & { recipe: ProductRecipe[] };
+type IngredientsById = { [id: string]: { quantity: number } };
+type ProductComposition = { recipe: ProductRecipe[]; quantity: number };
 
-export const getRequiredIngredients = (
-  products: Pick<IProduct, 'ingredients'>[]
-) => {
-  const ingredientsById: { [id: string]: { quantity: number } } = {};
-  for (const product of products) {
-    for (const ingredient of product.ingredients) {
-      if (!ingredientsById[ingredient.id]) {
-        ingredientsById[ingredient.id] = { quantity: ingredient.quantity };
-      } else {
-        ingredientsById[ingredient.id].quantity += ingredient.quantity;
-      }
-    }
-  }
-  return ingredientsById;
-};
-
-export const getOrderItems = (products: IProduct[], items: OrderItemBody[]) => {
-  const _items: OrderItem[] = [];
-  for (const productOrder of items) {
-    for (const product of products) {
-      if (productOrder.productId === product.id) {
-        _items.push({
-          productId: product.id,
-          productPrice: product.price,
-          quantity: productOrder.quantity,
+export const getExtendedOrderProducts = (
+  productsFromRepo: Product[],
+  productsFromBody: OrderProductBody[]
+): ExtendedOrderProduct[] => {
+  const result: ExtendedOrderProduct[] = [];
+  for (const productBody of productsFromBody) {
+    for (const productRepo of productsFromRepo) {
+      if (productBody.id === productRepo.id) {
+        result.push({
+          id: productRepo.id,
+          recipe: productRepo.recipe,
+          quantity: productBody.quantity,
+          unitPrice: productRepo.price,
         });
       }
     }
   }
-  return _items;
+  return result;
+};
+
+export const getOrderIngredients = (
+  products: ProductComposition[]
+): IngredientsById => {
+  const ingredientsById: IngredientsById = {};
+  for (const product of products) {
+    for (const ingredient of product.recipe) {
+      if (!ingredientsById[ingredient.id]) {
+        ingredientsById[ingredient.id] = {
+          quantity: ingredient.quantity * product.quantity,
+        };
+      } else {
+        ingredientsById[ingredient.id].quantity +=
+          ingredient.quantity * product.quantity;
+      }
+    }
+  }
+  return ingredientsById;
 };
 
 export const createOrderUseCase =
@@ -54,39 +62,52 @@ export const createOrderUseCase =
   ) =>
   async (body: CreateOrderBody, userId: string): Promise<IBaseResponse> => {
     try {
-      const productsId = body.items.map((item) => item.productId);
+      const productsFound = (
+        await Promise.all(
+          body.products.map((product) => {
+            return productRepository.getProductById(product.id);
+          })
+        )
+      ).filter((product) => !!product);
 
-      const products = await Promise.all(
-        productsId.map((productId) => {
-          return productRepository.getProductByIdForUser(productId, userId);
-        })
-      );
-
-      if (products.some((product) => product === null)) {
+      if (productsFound.some((product) => product.userId !== userId)) {
         return {
-          ...ResponseCode['NOT FOUND'],
-          message: 'Product not found',
+          ...ResponseCode['FORBIDDEN'],
+          message: 'No tienes permisos para crear esta orden',
         };
       }
 
-      const requiredIngr = getRequiredIngredients(products as IProduct[]);
-      const requiredIngrIds = Object.keys(requiredIngr);
-      const ingredients = await Promise.all(
-        requiredIngrIds.map((id) => {
-          return inventoryRepository.getItemByIdForUser(id, userId);
-        })
-      );
-
-      if (ingredients.some((ingr) => ingr === null)) {
+      if (productsFound.length !== body.products.length) {
         return {
           ...ResponseCode['NOT FOUND'],
-          message: 'Ingredient not found',
+          message: 'Uno o más productos no estan disponibles',
         };
       }
 
-      const _ingredients = ingredients as InventoryItem[];
-      const isStockInsufficient = _ingredients.some(
-        (ingr) => ingr.stock < requiredIngr[ingr.id].quantity
+      const extendedOrderProducts = getExtendedOrderProducts(
+        productsFound,
+        body.products
+      );
+
+      const requiredIngredients = getOrderIngredients(extendedOrderProducts);
+      const requiredIngredientsIds = Object.keys(requiredIngredients);
+      const ingredients = (
+        await Promise.all(
+          requiredIngredientsIds.map((id) =>
+            inventoryRepository.getItemById(id)
+          )
+        )
+      ).filter((ingr) => !!ingr);
+
+      if (ingredients.length !== requiredIngredientsIds.length) {
+        return {
+          ...ResponseCode['BAD REQUEST'],
+          message: 'Error al obtener los insumos',
+        };
+      }
+
+      const isStockInsufficient = ingredients.some(
+        (ingr) => ingr.stock < requiredIngredients[ingr.id].quantity
       );
 
       if (isStockInsufficient) {
@@ -96,29 +117,29 @@ export const createOrderUseCase =
         };
       }
 
+      const totalAmount = extendedOrderProducts.reduce(
+        (acc: number, { unitPrice, quantity }) => {
+          return acc + unitPrice * quantity;
+        },
+        0
+      );
+
       await Promise.all(
-        _ingredients.map(async (ingr) => {
-          await inventoryRepository.updateItemForUser(
-            ingr.id,
-            {
-              stock: ingr.stock - requiredIngr[ingr.id].quantity,
-            },
-            userId
-          );
+        ingredients.map((ingr) => {
+          return inventoryRepository.updateItem(ingr.id, {
+            stock: ingr.stock - requiredIngredients[ingr.id].quantity,
+          });
         })
       );
 
-      const items = getOrderItems(products as IProduct[], body.items);
-      const totalAmount = items.reduce((acc: number, item) => {
-        return acc + item.productPrice * item.quantity;
-      }, 0);
-
       await orderRepository.createOrder({
-        id: GeneralUtils.generateId(),
-        items,
+        products: extendedOrderProducts.map((product) => ({
+          id: product.id,
+          quantity: product.quantity,
+          unitPrice: product.unitPrice,
+        })),
         totalAmount,
-        date: new Date(),
-        organizationId: userId,
+        userId,
       });
 
       return {

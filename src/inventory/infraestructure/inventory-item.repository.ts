@@ -10,7 +10,7 @@ import { InventoryItemModel } from './inventory-item.model';
 const InventoryItemsSchema = z.array(InventoryItemSchema);
 
 export class InventoryItemRepository implements IInventoryRepository {
-  async getItemByIdForUser(id: string): Promise<InventoryItem | undefined> {
+  async getItemById(id: string): Promise<InventoryItem | undefined> {
     try {
       const doc = await InventoryItemModel.findById(id).lean();
       const { data } = InventoryItemSchema.safeParse({
@@ -26,21 +26,22 @@ export class InventoryItemRepository implements IInventoryRepository {
 
   async createItem(body: InsertInventoryItem): Promise<void> {
     try {
-      const docRef = new InventoryItemModel(body);
-      await docRef.save();
+      await new InventoryItemModel(body).save();
     } catch (e) {
       if (e instanceof Error) console.log(e.message);
     }
   }
-
-  // TODO: Ref
-  async updateItemForUser(
+  async updateItem(
     id: string,
     payload: Partial<
       Pick<InventoryItem, 'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'>
     >
   ): Promise<void> {
-    await InventoryItemModel.updateOne({ id }, payload);
+    try {
+      await InventoryItemModel.updateOne({ _id: id }, payload);
+    } catch (e) {
+      if (e instanceof Error) console.log(e.message);
+    }
   }
 
   async getItemsForUser(userId: string): Promise<InventoryItem[]> {

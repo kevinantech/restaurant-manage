@@ -92,7 +92,7 @@ export default function Products() {
                 <Cell align="left">{product.description}</Cell>
                 <Cell align="left">
                   {inventoryById
-                    ? product.ingredients
+                    ? product.recipe
                         .map(({ id, quantity }) => {
                           const ingr = inventoryById[id];
                           return ingr

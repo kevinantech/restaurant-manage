@@ -16,7 +16,8 @@ export const createInventoryItemUseCase =
     try {
       await itemsRepository.createItem({ ...body, userId });
       return { ...ResponseCode.OK, message: 'Inventario agregado' };
-    } catch (error) {
+    } catch (e) {
+      if (e instanceof Error) console.log('Error', e.message);
       return {
         ...ResponseCode['INTERNAL SERVER ERROR'],
         message: 'Unexpected error',

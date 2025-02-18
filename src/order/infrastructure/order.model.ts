@@ -1,34 +1,35 @@
-import { model, models, Schema, SchemaDefinitionProperty } from "mongoose";
-import { IOrder, IOrderItem } from "../domain/order.entity";
+import {
+  Model,
+  model,
+  models,
+  Schema,
+  SchemaDefinitionProperty,
+} from 'mongoose';
+import { InsertOrder, OrderProduct } from '../domain/order.entity';
 
-const OrderSchema = new Schema<IOrder>(
+const OrderSchema = new Schema<InsertOrder>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    items: {
+    products: {
       type: [
         {
-          productId: {
+          id: {
             type: String,
+            required: true,
+          },
+          unitPrice: {
+            type: Number,
             required: true,
           },
           quantity: {
             type: Number,
             required: true,
           },
-        } as Record<keyof IOrderItem, SchemaDefinitionProperty>,
+        } as Record<keyof OrderProduct, SchemaDefinitionProperty>,
       ],
       required: true,
     },
     totalAmount: {
       type: Number,
-      required: true,
-    },
-    date: {
-      type: Date,
       required: true,
     },
   },
@@ -39,5 +40,6 @@ const OrderSchema = new Schema<IOrder>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Orders` model once compiled. */
-const OrderModel = models.Orders || model("Orders", OrderSchema);
+const OrderModel: Model<InsertOrder> =
+  models.Orders || model('Orders', OrderSchema);
 export { OrderModel };

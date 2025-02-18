@@ -1,8 +1,8 @@
 'use client';
 import {
-  createOrderBody,
   CreateOrderBody,
-  OrderItemBody,
+  CreateOrderBodySchema,
+  OrderProductBody,
 } from '@/order/domain/order.entity';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -24,6 +24,7 @@ import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { createOrder } from '../actions';
+import { useProducts } from 'app/_hooks/useProducts';
 
 const useCreateOrder = () => {
   const {
@@ -33,9 +34,13 @@ const useCreateOrder = () => {
     formState: { errors },
     control,
   } = useForm<CreateOrderBody>({
-    resolver: zodResolver(createOrderBody),
+    resolver: zodResolver(CreateOrderBodySchema),
+    defaultValues: { products: [{ id: '' } as OrderProductBody] },
   });
-  const { fields, append, remove } = useFieldArray({ control, name: 'items' });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'products',
+  });
   const { handler, isLoading, error } = useHandler();
 
   const handleCreate = async (data: CreateOrderBody) => {
@@ -47,8 +52,7 @@ const useCreateOrder = () => {
     });
   };
 
-  const handleAppendProduct = () =>
-    append({ productId: '', quantity: 0 } as OrderItemBody);
+  const handleAppendProduct = () => append({ id: '' } as OrderProductBody);
 
   return {
     form: {
@@ -69,7 +73,7 @@ const useCreateOrder = () => {
 
 export default function CreateOrder() {
   const { form, handleCreate, handleAppendProduct, loading } = useCreateOrder();
-  /* const { products } = useProducts(); */
+  const { products } = useProducts();
 
   const renderProductsField = form.products.fields.map((field, index) => {
     return (
@@ -79,8 +83,8 @@ export default function CreateOrder() {
             <FormControl
               fullWidth
               error={
-                form.errors.items
-                  ? !!form.errors.items[index]?.productId
+                form.errors.products
+                  ? !!form.errors.products[index]?.id
                   : undefined
               }
             >
@@ -89,17 +93,18 @@ export default function CreateOrder() {
                 labelId="label-product"
                 label="Producto"
                 defaultValue=""
-                {...form.register(`items.${index}.productId` as const)}
+                {...form.register(`products.${index}.id` as const)}
               >
-                {[{ id: '', name: 'Selecciona un producto' }].map(
-                  ({ id, name }) => (
-                    <MenuItem key={`${field.id}-${id}`}>{name}</MenuItem>
-                  )
-                )}
+                <MenuItem value="">Selecciona un producto</MenuItem>
+                {products.map(({ id, name }) => (
+                  <MenuItem key={`${field.id}-${id}`} value={id}>
+                    {name}
+                  </MenuItem>
+                ))}
               </Select>
               <FormHelperText>
-                {!!form.errors.items &&
-                  form.errors.items[index]?.productId?.message}
+                {!!form.errors.products &&
+                  form.errors.products[index]?.id?.message}
               </FormHelperText>
             </FormControl>
           </Grid2>
@@ -108,16 +113,18 @@ export default function CreateOrder() {
               fullWidth
               type="number"
               label="Cantidad"
-              {...form.register(`items.${index}.quantity`, {
+              {...form.register(`products.${index}.quantity`, {
                 setValueAs: (value) =>
                   !isNaN(value) ? Number(value) : undefined,
               })}
               error={
-                form.errors.items ? !!form.errors.items[index]?.quantity : false
+                form.errors.products
+                  ? !!form.errors.products[index]?.quantity
+                  : false
               }
               helperText={
-                form.errors.items
-                  ? form.errors.items[index]?.quantity?.message
+                form.errors.products
+                  ? form.errors.products[index]?.quantity?.message
                   : undefined
               }
             />

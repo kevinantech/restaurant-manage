@@ -12,13 +12,13 @@ export const getInventoryItemsUseCase =
   async (userId: string): Promise<IBaseResponse<InventoryItem[]>> => {
     try {
       const queryResult = await itemRepository.getItemsForUser(userId);
-      console.log('🚀 ~ queryResult:', queryResult);
       return {
         ...ResponseCode.OK,
         data: queryResult,
         message: 'Consulta exitosa',
       };
     } catch (e) {
+      if (e instanceof Error) console.log('Error', e.message);
       return {
         ...ResponseCode['INTERNAL SERVER ERROR'],
         message: 'Unexpected error',

@@ -3,6 +3,7 @@ export type ResponseCodeType =
   | 'UNAUTHORIZED'
   | 'BAD REQUEST'
   | 'NOT FOUND'
+  | 'FORBIDDEN'
   | 'INTERNAL SERVER ERROR';
 
 export const ResponseCode: Record<
@@ -27,6 +28,10 @@ export const ResponseCode: Record<
   'NOT FOUND': {
     code: 'NOT FOUND',
     status: 404,
+  },
+  FORBIDDEN: {
+    code: 'FORBIDDEN',
+    status: 403,
   },
   'INTERNAL SERVER ERROR': {
     code: 'INTERNAL SERVER ERROR',

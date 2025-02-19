@@ -7,4 +7,5 @@ export enum WebRoutes {
 export enum ApiRoutes {
   INVENTORY = '/api/inventory',
   PRODUCTS = '/api/products',
+  ORDERS = '/api/orders',
 }

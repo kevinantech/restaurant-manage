@@ -1,7 +1,6 @@
-import { InsertOrder } from './order.entity';
+import { InsertOrder, Order } from './order.entity';
 
 export interface IOrderRepository {
+  getOrdersForUser(userId: string): Promise<Order[]>;
   createOrder(body: InsertOrder): Promise<void>;
-  /* findById(id: string): Promise<IOrder | null>; // Obtiene una orden por su ID
-  findAll(): Promise<IOrder[]>; */ // Obtiene todas las órdenes
 }

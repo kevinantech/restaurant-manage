@@ -1,5 +1,5 @@
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { IBaseResponse } from '@/shared/entity/base-response';
 import { InventoryItem } from '../domain/inventory-item.entity';
 import { IInventoryRepository } from '../domain/inventory.repository.interface';
 

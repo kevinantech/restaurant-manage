@@ -7,7 +7,7 @@ import {
 import { InventoryItemRepository } from '@/inventory/infraestructure/inventory-item.repository';
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
 import { dbConnect } from 'lib/mongoose/connect';
-import { session } from 'lib/nextauth/session.server';
+import { session } from 'lib/next-auth/session.server';
 
 const itemsRepository = new InventoryItemRepository();
 

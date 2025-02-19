@@ -1,7 +1,7 @@
 import { getProductsUseCase } from '@/product/application/get-products.uc';
 import { ProductRepository } from '@/product/infrastructure/product.repository';
 import { dbConnect } from 'lib/mongoose/connect';
-import { session } from 'lib/nextauth/session.server';
+import { session } from 'lib/next-auth/session.server';
 import { NextResponse } from 'next/server';
 
 const productRepository = new ProductRepository();

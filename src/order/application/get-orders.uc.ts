@@ -1,19 +1,23 @@
-import { ResponseCode } from '@/backend/common/constants';
-import { IOrder } from '../domain/order.entity';
-import { OrderRepository } from '../domain/order.repository';
-import { BaseResponse } from '@/backend/common/entity/response-base.model';
+import { IBaseResponse } from '@/shared/entity/base-response';
+import { IOrderRepository } from '../domain/order.repository.interface';
+import { ResponseCode } from '@/shared/_common/constants/response-codes';
+import { Order } from '../domain/order.entity';
+import { ServerErrorResponse } from '@/shared/entity/common-responses';
 
-export class GetAllOrders {
-  constructor(private readonly orderDatabase: OrderRepository) {}
-  async get(): Promise<BaseResponse<IOrder[]>> {
-    const orders = await this.orderDatabase.findAll();
+export type IGetOrdersUseCase = ReturnType<typeof getOrdersUseCase>;
 
-    if (!orders)
+export const getOrdersUseCase =
+  (orderRepository: IOrderRepository) =>
+  async (userId: string): Promise<IBaseResponse<Order[]>> => {
+    try {
+      const queryResult = await orderRepository.getOrdersForUser(userId);
       return {
-        ...ResponseCode['NOT FOUND'],
-        message: 'Recurso no disponible.',
+        ...ResponseCode.OK,
+        data: queryResult,
+        message: 'Órdenes obtenidas',
       };
-
-    return { ...ResponseCode.OK, data: orders, message: 'Consulta exitosa.' };
-  }
-}
+    } catch (e) {
+      if (e instanceof Error) console.log(e.message);
+      return ServerErrorResponse;
+    }
+  };

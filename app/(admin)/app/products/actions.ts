@@ -8,7 +8,7 @@ import {
 import { ProductRepository } from '@/product/infrastructure/product.repository';
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
 import { dbConnect } from 'lib/mongoose/connect';
-import { session } from 'lib/nextauth/session.server';
+import { session } from 'lib/next-auth/session.server';
 
 const itemsRepository = new InventoryItemRepository();
 const productRepository = new ProductRepository();

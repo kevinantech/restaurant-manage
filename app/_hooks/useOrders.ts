@@ -1,25 +1,18 @@
-import { IOrder } from "@/backend/modules/order/domain/order.entity";
-import { ServerResponse } from "@/frontend/common/server-response";
-import { API } from "@/frontend/common/constants/api-enum";
-import { useEffect, useState } from "react";
+import { Order } from '@/order/domain/order.entity';
+import { IBaseResponse } from '@/shared/entity/base-response';
+import { ApiRoutes } from 'app/routes.config';
+import useSWR from 'swr';
 
-type R = ServerResponse<IOrder[]>;
-const fetcher = () => fetch(API.ORDER, { method: "GET" });
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const useOrders = () => {
-  const [orders, setOrders] = useState<IOrder[]>([]);
-
-  const handleOrders = async () => {
-    const response: R = await fetcher().then(async (res) => await res.json());
-    if (response.data) setOrders(response.data);
-  };
-
-  useEffect(() => {
-    handleOrders();
-  }, []);
+  const { data: response } = useSWR<IBaseResponse<Order[]>>(
+    ApiRoutes.ORDERS,
+    fetcher
+  );
 
   return {
-    orders,
+    orders: response?.data ?? [],
   };
 };
 

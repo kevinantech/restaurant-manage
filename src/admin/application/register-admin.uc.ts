@@ -2,7 +2,7 @@ import { ResponseCode } from '@/shared/_common/constants/response-codes';
 import { GeneralUtils } from 'lib/general.util';
 import { RegisterAdminBody } from '../domain/admin.entity';
 import { IAdminRepository } from '../domain/admin.repository.interface';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { IBaseResponse } from '@/shared/entity/base-response';
 
 export type IRegisterAdminUseCase = ReturnType<typeof registerAdminUseCase>;
 

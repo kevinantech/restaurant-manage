@@ -1,5 +1,4 @@
 'use server';
-
 import { InventoryItemRepository } from '@/inventory/infraestructure/inventory-item.repository';
 import { createOrderUseCase } from '@/order/application/create-order.uc';
 import {
@@ -9,9 +8,9 @@ import {
 import { OrderRepository } from '@/order/infrastructure/order.repository';
 import { ProductRepository } from '@/product/infrastructure/product.repository';
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { IBaseResponse } from '@/shared/entity/base-response';
 import { dbConnect } from 'lib/mongoose/connect';
-import { session } from 'lib/nextauth/session.server';
+import { session } from 'lib/next-auth/session.server';
 
 export const createOrder = async (
   body: CreateOrderBody

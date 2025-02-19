@@ -1,7 +1,7 @@
 import { getInventoryItemsUseCase } from '@/inventory/application/get-inventory-items.uc';
 import { InventoryItemRepository } from '@/inventory/infraestructure/inventory-item.repository';
 import { dbConnect } from 'lib/mongoose/connect';
-import { session } from 'lib/nextauth/session.server';
+import { session } from 'lib/next-auth/session.server';
 import { NextResponse } from 'next/server';
 
 const itemsRepository = new InventoryItemRepository();

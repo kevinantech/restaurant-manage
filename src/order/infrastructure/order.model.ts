@@ -32,6 +32,10 @@ const OrderSchema = new Schema<InsertOrder>(
       type: Number,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   {
     versionKey: false,
@@ -41,5 +45,5 @@ const OrderSchema = new Schema<InsertOrder>(
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Orders` model once compiled. */
 const OrderModel: Model<InsertOrder> =
-  models.Orders || model('Orders', OrderSchema);
+  models?.orders || model('orders', OrderSchema);
 export { OrderModel };

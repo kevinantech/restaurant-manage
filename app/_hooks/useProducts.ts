@@ -1,5 +1,5 @@
 import { Product } from '@/product/domain/product.entity';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { IBaseResponse } from '@/shared/entity/base-response';
 import { ApiRoutes } from 'app/_common/constants';
 import { useMemo } from 'react';
 import useSWR from 'swr';
@@ -26,7 +26,7 @@ const useProducts = () => {
 
   return {
     products: response?.data ?? [],
-    productsById,
+    productsById: productsById ?? {},
   };
 };
 

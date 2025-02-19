@@ -2,7 +2,7 @@ import { IInventoryRepository } from '@/inventory/domain/inventory.repository.in
 import { Product, ProductRecipe } from '@/product/domain/product.entity';
 import { IProductRepository } from '@/product/domain/product.repository.interface';
 import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/_common/entity/base-response.model';
+import { IBaseResponse } from '@/shared/entity/base-response';
 import {
   CreateOrderBody,
   OrderProduct,

@@ -2,7 +2,6 @@
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
-import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { LayoutContext } from 'app/_context/Layout';
 import React, { useContext } from 'react';
@@ -52,13 +51,13 @@ const Nav: React.FC<NavProps> = () => {
             Añadir Orden
           </NavLink>
         </NavGroup>
-        <NavLink
+        {/* <NavLink
           href="/app/sales"
           startIcon={<MonetizationOnRoundedIcon />}
           onClick={menu.close}
         >
           Ventas
-        </NavLink>
+        </NavLink> */}
       </div>
     </div>
   );

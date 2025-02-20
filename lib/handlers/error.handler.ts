@@ -4,6 +4,7 @@ import { NotFoundError } from 'lib/errors/not-found.error';
 import { ValidationError } from 'lib/errors/validation.error';
 import { COMMON_MESSAGE, ResponseFactory } from 'lib/http/response.factory';
 import { ResponseBodyFactory } from '../http/response-body.factory';
+import { AuthenticationError } from 'lib/errors/authentication.error';
 
 interface IErrorHandler {
   handle(error: unknown): any;
@@ -19,7 +20,8 @@ export class ActionErrorHandler implements IErrorHandler {
       this.error instanceof ValidationError ||
       this.error instanceof ConflictError ||
       this.error instanceof NotFoundError ||
-      this.error instanceof ForbiddenError
+      this.error instanceof ForbiddenError ||
+      this.error instanceof AuthenticationError // If it's a custom error, it's already handled in the response factory
     ) {
       return ResponseBodyFactory.error(this.error.message);
     }

@@ -5,22 +5,18 @@ import {
   RegisterAdminBodySchema,
 } from '@/admin/domain/admin.entity';
 import { AdminRepository } from '@/admin/infrastructure/admin.repository';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
+import { ActionErrorHandler } from 'lib/handlers/error.handler';
+import { ValidationError } from 'lib/errors/validation.error';
 import { dbConnect } from 'lib/mongoose/connect';
 
-const adminRepository = new AdminRepository();
-
 export const registerAdmin = async (body: RegisterAdminBody) => {
-  const { data } = RegisterAdminBodySchema.safeParse(body);
-  if (!data) {
-    return {
-      ...ResponseCode['BAD REQUEST'],
-      message: 'Formato inválido',
-    };
+  try {
+    const { success } = RegisterAdminBodySchema.safeParse(body);
+    if (!success) throw new ValidationError();
+    await dbConnect();
+    const register = registerAdminUseCase(new AdminRepository());
+    return await register(body);
+  } catch (error) {
+    return new ActionErrorHandler(error).handle();
   }
-
-  await dbConnect();
-  const _registerAdminUseCase = registerAdminUseCase(adminRepository);
-  const result = await _registerAdminUseCase(body);
-  return result;
 };

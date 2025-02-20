@@ -7,32 +7,28 @@ import {
 } from '@/order/domain/order.entity';
 import { OrderRepository } from '@/order/infrastructure/order.repository';
 import { ProductRepository } from '@/product/infrastructure/product.repository';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/entity/base-response';
+import { AuthenticationError } from 'lib/errors/authentication.error';
+import { ValidationError } from 'lib/errors/validation.error';
+import { ActionErrorHandler } from 'lib/handlers/error.handler';
 import { dbConnect } from 'lib/mongoose/connect';
 import { session } from 'lib/next-auth/session.server';
 
-export const createOrder = async (
-  body: CreateOrderBody
-): Promise<IBaseResponse> => {
-  const user = await session();
-  if (user.status === 'unauthenticated') return user.error;
-  const { data } = CreateOrderBodySchema.safeParse(body);
+export const createOrder = async (body: CreateOrderBody) => {
+  try {
+    const user = await session();
+    if (!user) throw new AuthenticationError();
 
-  if (!data) {
-    return {
-      ...ResponseCode['BAD REQUEST'],
-      message: 'Formato inválido',
-    };
+    const { success } = CreateOrderBodySchema.safeParse(body);
+    if (!success) throw new ValidationError();
+
+    await dbConnect();
+    const _createOrder = createOrderUseCase(
+      new OrderRepository(),
+      new ProductRepository(),
+      new InventoryItemRepository()
+    );
+    return await _createOrder(body, user.id);
+  } catch (error) {
+    return new ActionErrorHandler(error).handle();
   }
-
-  await dbConnect();
-  const _createOrder = createOrderUseCase(
-    new OrderRepository(),
-    new ProductRepository(),
-    new InventoryItemRepository()
-  );
-
-  const result = await _createOrder(data, user.data.id);
-  return result;
 };

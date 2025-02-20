@@ -1,10 +1,13 @@
 import { IInventoryRepository } from '@/inventory/domain/inventory.repository.interface';
 import { Product, ProductRecipe } from '@/product/domain/product.entity';
 import { IProductRepository } from '@/product/domain/product.repository.interface';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/entity/base-response';
+import { ConflictError } from 'lib/errors/conflict.error';
+import { ForbiddenError } from 'lib/errors/forbidden.error';
+import { NotFoundError } from 'lib/errors/not-found.error';
+import { ResponseBodyFactory } from 'lib/http/response-body.factory';
 import {
   CreateOrderBody,
+  InsertOrder,
   OrderProduct,
   OrderProductBody,
 } from '../domain/order.entity';
@@ -60,97 +63,74 @@ export const createOrderUseCase =
     productRepository: IProductRepository,
     inventoryRepository: IInventoryRepository
   ) =>
-  async (body: CreateOrderBody, userId: string): Promise<IBaseResponse> => {
-    try {
-      const productsFound = (
-        await Promise.all(
-          body.products.map((product) => {
-            return productRepository.getProductById(product.id);
-          })
-        )
-      ).filter((product) => !!product);
-
-      if (productsFound.some((product) => product.userId !== userId)) {
-        return {
-          ...ResponseCode['FORBIDDEN'],
-          message: 'No tienes permisos para crear esta orden',
-        };
-      }
-
-      if (productsFound.length !== body.products.length) {
-        return {
-          ...ResponseCode['NOT FOUND'],
-          message: 'Uno o más productos no estan disponibles',
-        };
-      }
-
-      const extendedOrderProducts = getExtendedOrderProducts(
-        productsFound,
-        body.products
-      );
-
-      const requiredIngredients = getOrderIngredients(extendedOrderProducts);
-      const requiredIngredientsIds = Object.keys(requiredIngredients);
-      const ingredients = (
-        await Promise.all(
-          requiredIngredientsIds.map((id) =>
-            inventoryRepository.getItemById(id)
-          )
-        )
-      ).filter((ingr) => !!ingr);
-
-      if (ingredients.length !== requiredIngredientsIds.length) {
-        return {
-          ...ResponseCode['BAD REQUEST'],
-          message: 'Error al obtener los insumos',
-        };
-      }
-
-      const isStockInsufficient = ingredients.some(
-        (ingr) => ingr.stock < requiredIngredients[ingr.id].quantity
-      );
-
-      if (isStockInsufficient) {
-        return {
-          ...ResponseCode['BAD REQUEST'],
-          message: 'No hay suficientes insumos',
-        };
-      }
-
-      const totalAmount = extendedOrderProducts.reduce(
-        (acc: number, { unitPrice, quantity }) => {
-          return acc + unitPrice * quantity;
-        },
-        0
-      );
-
+  async (body: CreateOrderBody, userId: string) => {
+    const productsFound = (
       await Promise.all(
-        ingredients.map((ingr) => {
-          return inventoryRepository.updateItem(ingr.id, {
-            stock: ingr.stock - requiredIngredients[ingr.id].quantity,
-          });
+        body.products.map((product) => {
+          return productRepository.getProductById(product.id);
         })
-      );
+      )
+    ).filter((product) => !!product);
 
-      await orderRepository.createOrder({
-        products: extendedOrderProducts.map((product) => ({
-          id: product.id,
-          quantity: product.quantity,
-          unitPrice: product.unitPrice,
-        })),
-        totalAmount,
-        userId,
-      });
-
-      return {
-        ...ResponseCode['OK'],
-        message: 'Orden creada',
-      };
-    } catch (e: unknown) {
-      if (e instanceof Error) console.log('Error', e.message);
-      return {
-        ...ResponseCode['INTERNAL SERVER ERROR'],
-        message: 'Unexpected error',
-      };
+    if (productsFound.some((product) => product.userId !== userId)) {
+      throw new ForbiddenError('No tienes permisos para crear esta orden');
     }
+
+    if (productsFound.length !== body.products.length) {
+      throw new NotFoundError('No fue posible obtener todos los productos');
+    }
+
+    const extendedOrderProducts = getExtendedOrderProducts(
+      productsFound,
+      body.products
+    );
+
+    const requiredIngredients = getOrderIngredients(extendedOrderProducts);
+    const requiredIngredientsIds = Object.keys(requiredIngredients);
+    const ingredients = (
+      await Promise.all(
+        requiredIngredientsIds.map((id) => inventoryRepository.getItemById(id))
+      )
+    ).filter((ingr) => !!ingr);
+
+    if (ingredients.length !== requiredIngredientsIds.length) {
+      throw new NotFoundError('No fue posible obtener todos los ingredientes');
+    }
+
+    if (ingredients.some((ingr) => ingr.userId !== userId)) {
+      throw new ForbiddenError('No tienes permisos para crear esta orden');
+    }
+
+    const isStockInsufficient = ingredients.some(
+      (ingr) => ingr.stock < requiredIngredients[ingr.id].quantity
+    );
+
+    if (isStockInsufficient) throw new ConflictError('Stock insuficiente');
+
+    const totalAmount = extendedOrderProducts.reduce(
+      (acc: number, { unitPrice, quantity }) => {
+        return acc + unitPrice * quantity;
+      },
+      0
+    );
+
+    await Promise.all(
+      ingredients.map((ingr) => {
+        return inventoryRepository.updateItem(ingr.id, {
+          stock: ingr.stock - requiredIngredients[ingr.id].quantity,
+        });
+      })
+    );
+
+    await orderRepository.createOrder({
+      products: extendedOrderProducts.map((product) => ({
+        id: product.id,
+        quantity: product.quantity,
+        unitPrice: product.unitPrice,
+      })),
+      totalAmount,
+      userId,
+    } as InsertOrder);
+
+    return ResponseBodyFactory.success({});
   };

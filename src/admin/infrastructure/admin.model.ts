@@ -1,4 +1,4 @@
-import { model, Model, models, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
 import { InsertAdmin } from '../domain/admin.entity';
 
 const AdminSchema = new Schema<InsertAdmin>(
@@ -26,6 +26,8 @@ const AdminSchema = new Schema<InsertAdmin>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Admins` model once compiled. */
-const AdminModel: Model<InsertAdmin> =
-  models?.admins || model('admins', AdminSchema);
+const _AdminModel = model('admins', AdminSchema);
+type AdminModelType = typeof _AdminModel;
+
+const AdminModel: AdminModelType = models?.admins || _AdminModel;
 export { AdminModel };

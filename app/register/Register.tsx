@@ -3,7 +3,6 @@ import {
   RegisterAdminBody,
   RegisterAdminBodySchema,
 } from '@/admin/domain/admin.entity';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
@@ -80,7 +79,7 @@ const useRegister = () => {
   const handleRegister = async (data: RegisterAdminBody) => {
     await handler(async () => {
       const result = await registerAdmin(data);
-      if (result.code === ResponseCode.OK.code) setOpenFeedback(true);
+      if (result.status == 'success') setOpenFeedback(true);
     });
   };
 

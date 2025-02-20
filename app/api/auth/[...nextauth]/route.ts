@@ -10,7 +10,11 @@ import { GeneralUtils } from 'lib/general.util';
  * https://next-auth.js.org/configuration/callbacks#session-callback
  */
 
-export type UserSession = DefaultSession['user'] & { id: string };
+export type UserSession = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,

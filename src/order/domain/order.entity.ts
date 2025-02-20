@@ -16,11 +16,11 @@ export const InsertOrderSchema = z.object({
   products: z.array(OrderProductSchema),
   totalAmount: z.number(),
   userId: z.string(),
+  createdAt: z.date(),
 });
 
 export const OrderSchema = InsertOrderSchema.extend({
   id: z.string(),
-  createdAt: z.date(),
 });
 
 export const OrderProductBodySchema = z.object({

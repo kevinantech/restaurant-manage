@@ -6,30 +6,27 @@ import {
   CreateProductBodySchema,
 } from '@/product/domain/product.entity';
 import { ProductRepository } from '@/product/infrastructure/product.repository';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
+import { AuthenticationError } from 'lib/errors/authentication.error';
+import { ValidationError } from 'lib/errors/validation.error';
+import { ActionErrorHandler } from 'lib/handlers/error.handler';
 import { dbConnect } from 'lib/mongoose/connect';
 import { session } from 'lib/next-auth/session.server';
 
-const itemsRepository = new InventoryItemRepository();
-const productRepository = new ProductRepository();
-
 export const createProduct = async (body: CreateProductBody) => {
-  const user = await session();
-  if (user.status === 'unauthenticated') return user.error;
+  try {
+    const user = await session();
+    if (!user) throw new AuthenticationError();
 
-  const { data } = CreateProductBodySchema.safeParse(body);
-  if (!data) {
-    return {
-      ...ResponseCode['BAD REQUEST'],
-      message: 'Formato inválido',
-    };
+    const { success } = CreateProductBodySchema.safeParse(body);
+    if (!success) throw new ValidationError();
+
+    await dbConnect();
+    const _createProduct = createProductUseCase(
+      new ProductRepository(),
+      new InventoryItemRepository()
+    );
+    return await _createProduct(body, user.id);
+  } catch (error) {
+    return new ActionErrorHandler(error).handle();
   }
-
-  await dbConnect();
-  const _createProduct = createProductUseCase(
-    productRepository,
-    itemsRepository
-  );
-  const result = await _createProduct(data, user.data.id);
-  return result;
 };

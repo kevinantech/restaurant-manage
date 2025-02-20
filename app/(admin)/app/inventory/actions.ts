@@ -5,26 +5,25 @@ import {
   CreateInventoryItemBodySchema,
 } from '@/inventory/domain/inventory-item.entity';
 import { InventoryItemRepository } from '@/inventory/infraestructure/inventory-item.repository';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
+import { AuthenticationError } from 'lib/errors/authentication.error';
+import { ValidationError } from 'lib/errors/validation.error';
+import { ActionErrorHandler } from 'lib/handlers/error.handler';
 import { dbConnect } from 'lib/mongoose/connect';
 import { session } from 'lib/next-auth/session.server';
 
-const itemsRepository = new InventoryItemRepository();
-
 export const createInventoryItem = async (body: CreateInventoryItemBody) => {
-  const user = await session();
-  if (user.status === 'unauthenticated') return user.error;
+  try {
+    const user = await session();
+    if (!user) throw new AuthenticationError();
 
-  const { data } = CreateInventoryItemBodySchema.safeParse(body);
-  if (!data) {
-    return {
-      ...ResponseCode['BAD REQUEST'],
-      message: 'Formato inválido',
-    };
+    const { success } = CreateInventoryItemBodySchema.safeParse(body);
+    if (!success) throw new ValidationError();
+
+    await dbConnect();
+    const itemsRepository = new InventoryItemRepository();
+    const _createInventoryItem = createInventoryItemUseCase(itemsRepository);
+    return await _createInventoryItem(body, user.id);
+  } catch (error) {
+    return new ActionErrorHandler(error).handle();
   }
-
-  await dbConnect();
-  const _createInventoryItem = createInventoryItemUseCase(itemsRepository);
-  const result = await _createInventoryItem(body, user.data.id);
-  return result;
 };

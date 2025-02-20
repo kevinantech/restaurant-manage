@@ -3,7 +3,7 @@ import {
   CreateInventoryItemBody,
   CreateInventoryItemBodySchema,
 } from '@/inventory/domain/inventory-item.entity';
-import { Units } from '@/shared/_common/constants/units-enum';
+import { Units } from '@/inventory/domain/units-enum';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Backdrop,
@@ -37,9 +37,10 @@ const useRegisterInventory = () => {
   const handleRegister = async (data: CreateInventoryItemBody) => {
     await handler(async () => {
       const response = await createInventoryItem(data);
-      if (response.code === 'OK') return reset();
-      else if (!Array.isArray(response.message))
+      if (response.status === 'success') return reset();
+      else if (response.status === 'error' && response.message) {
         throw new Error(response.message);
+      }
     });
   };
 

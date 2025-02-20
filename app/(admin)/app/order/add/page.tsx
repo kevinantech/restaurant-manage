@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Backdrop,
   Button,
-  createTheme,
   FormControl,
   FormHelperText,
   Grid2,
@@ -17,14 +16,13 @@ import {
   MenuItem,
   Select,
   TextField,
-  ThemeProvider,
 } from '@mui/material';
-import { globalTheme } from 'app/_common/constants/styles/global-theme';
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
+import { useProducts } from 'app/_hooks/useProducts';
+import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { createOrder } from '../actions';
-import { useProducts } from 'app/_hooks/useProducts';
 
 const useCreateOrder = () => {
   const {
@@ -46,9 +44,10 @@ const useCreateOrder = () => {
   const handleCreate = async (data: CreateOrderBody) => {
     await handler(async () => {
       const response = await createOrder(data);
-      if (response.code === 'OK') reset();
-      else if (!Array.isArray(response.message))
+      if (response.status === 'success') reset();
+      else if (response.status === 'error' && response.message) {
         throw new Error(response.message);
+      }
     });
   };
 
@@ -143,7 +142,7 @@ export default function CreateOrder() {
   });
 
   return (
-    <ThemeProvider theme={createTheme(globalTheme)}>
+    <ThemeProvider>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nueva Orden</Title>
         <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-5">

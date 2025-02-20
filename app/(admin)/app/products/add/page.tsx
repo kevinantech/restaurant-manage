@@ -17,14 +17,13 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { globalTheme } from 'app/_common/constants/styles/global-theme';
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useInventory } from 'app/_hooks/useInventory';
-import { createProduct } from '../actions';
+import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { ThemeProvider } from 'app/_providers/ThemeProvider';
+import { createProduct } from '../actions';
 
 const useRegisterProduct = () => {
   const {
@@ -48,9 +47,10 @@ const useRegisterProduct = () => {
   const handleRegister = async (body: CreateProductBody) => {
     await handler(async () => {
       const response = await createProduct(body);
-      if (response.code === 'OK') return reset();
-      else if (!Array.isArray(response.message))
+      if (response.status === 'success') return reset();
+      else if (response.status === 'error' && response.message) {
         throw new Error(response.message);
+      }
     });
   };
 

@@ -1,4 +1,4 @@
-import { Units } from '@/shared/_common/constants/units-enum';
+import { Units } from './units-enum';
 import { z } from 'zod';
 
 export type CreateInventoryItemBody = z.infer<

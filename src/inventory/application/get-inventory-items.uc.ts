@@ -1,6 +1,4 @@
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
-import { IBaseResponse } from '@/shared/entity/base-response';
-import { InventoryItem } from '../domain/inventory-item.entity';
+import { ResponseBodyFactory } from 'lib/http/response-body.factory';
 import { IInventoryRepository } from '../domain/inventory.repository.interface';
 
 export type IGetInventoryItemsUseCase = ReturnType<
@@ -8,21 +6,7 @@ export type IGetInventoryItemsUseCase = ReturnType<
 >;
 
 export const getInventoryItemsUseCase =
-  (itemRepository: IInventoryRepository) =>
-  async (userId: string): Promise<IBaseResponse<InventoryItem[]>> => {
-    try {
-      const queryResult = await itemRepository.getItemsForUser(userId);
-      return {
-        ...ResponseCode.OK,
-        data: queryResult,
-        message: 'Consulta exitosa',
-      };
-    } catch (e) {
-      if (e instanceof Error) console.log('Error', e.message);
-      return {
-        ...ResponseCode['INTERNAL SERVER ERROR'],
-        message: 'Unexpected error',
-        data: [],
-      };
-    }
+  (itemRepository: IInventoryRepository) => async (userId: string) => {
+    const queryResult = await itemRepository.getItemsForUser(userId);
+    return ResponseBodyFactory.success({ data: queryResult });
   };

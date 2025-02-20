@@ -1,5 +1,5 @@
-import { Units } from '@/shared/_common/constants/units-enum';
-import { Model, model, models, Schema } from 'mongoose';
+import { Units } from '../domain/units-enum';
+import { model, models, Schema } from 'mongoose';
 import { InsertInventoryItem } from '../domain/inventory-item.entity';
 
 const InventoryItemSchema = new Schema<InsertInventoryItem>(
@@ -31,7 +31,10 @@ const InventoryItemSchema = new Schema<InsertInventoryItem>(
   }
 );
 
+const _InventoryItemModel = model('inventory_items', InventoryItemSchema);
+type InventoryItemModelType = typeof _InventoryItemModel;
+
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `InventoryItems` model once compiled. */
-const InventoryItemModel: Model<InsertInventoryItem> =
-  models?.inventory_items || model('inventory_items', InventoryItemSchema);
+const InventoryItemModel: InventoryItemModelType =
+  models?.inventory_items || _InventoryItemModel;
 export { InventoryItemModel };

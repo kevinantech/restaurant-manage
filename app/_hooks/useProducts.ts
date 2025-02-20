@@ -1,10 +1,10 @@
 import { Product } from '@/product/domain/product.entity';
-import { IBaseResponse } from '@/shared/entity/base-response';
 import { ApiRoutes } from 'app/_common/constants';
+import { ResponseBody } from 'lib/http/response-body.factory';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 
-type ProductsResponse = IBaseResponse<Product[]>;
+type ProductsResponse = ResponseBody<Product[]>;
 type IndexedProducts = Record<string, Pick<Product, 'name' | 'price'>>;
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

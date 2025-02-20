@@ -1,10 +1,10 @@
 import { InventoryItem } from '@/inventory/domain/inventory-item.entity';
-import { IBaseResponse } from '@/shared/entity/base-response';
 import { ApiRoutes } from 'app/_common/constants';
+import { ResponseBody } from 'lib/http/response-body.factory';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 
-type InventoryItemsResponse = IBaseResponse<InventoryItem[]>;
+type InventoryItemsResponse = ResponseBody<InventoryItem[]>;
 type IndexedInventoryItem = Record<
   string,
   Pick<InventoryItem, 'name' | 'unitOfMeasure' | 'unitPrice' | 'stock'>

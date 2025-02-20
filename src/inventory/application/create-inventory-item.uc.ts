@@ -1,7 +1,6 @@
-import { IBaseResponse } from '@/shared/entity/base-response';
-import { IInventoryRepository } from '../domain/inventory.repository.interface';
+import { ResponseBodyFactory } from 'lib/http/response-body.factory';
 import { CreateInventoryItemBody } from '../domain/inventory-item.entity';
-import { ResponseCode } from '@/shared/_common/constants/response-codes';
+import { IInventoryRepository } from '../domain/inventory.repository.interface';
 
 export type ICreateInventoryItemUseCase = ReturnType<
   typeof createInventoryItemUseCase
@@ -9,18 +8,7 @@ export type ICreateInventoryItemUseCase = ReturnType<
 
 export const createInventoryItemUseCase =
   (itemsRepository: IInventoryRepository) =>
-  async (
-    body: CreateInventoryItemBody,
-    userId: string
-  ): Promise<IBaseResponse> => {
-    try {
-      await itemsRepository.createItem({ ...body, userId });
-      return { ...ResponseCode.OK, message: 'Inventario agregado' };
-    } catch (e) {
-      if (e instanceof Error) console.log('Error', e.message);
-      return {
-        ...ResponseCode['INTERNAL SERVER ERROR'],
-        message: 'Unexpected error',
-      };
-    }
+  async (body: CreateInventoryItemBody, userId: string) => {
+    await itemsRepository.createItem({ ...body, userId });
+    return ResponseBodyFactory.success({});
   };

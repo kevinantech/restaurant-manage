@@ -1,4 +1,10 @@
-import { model, models, Schema, SchemaDefinitionProperty } from 'mongoose';
+import {
+  Model,
+  model,
+  models,
+  Schema,
+  SchemaDefinitionProperty,
+} from 'mongoose';
 import { InsertOrder, OrderProduct } from '../domain/order.entity';
 
 const OrderSchema = new Schema<InsertOrder>(
@@ -37,9 +43,7 @@ const OrderSchema = new Schema<InsertOrder>(
   }
 );
 
-const _OrderModel = model('orders', OrderSchema);
-type OrderModelType = typeof _OrderModel;
-
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Orders` model once compiled. */
-const OrderModel: OrderModelType = models?.orders || _OrderModel;
+const OrderModel: Model<InsertOrder> =
+  models?.orders || model('orders', OrderSchema);
 export { OrderModel };

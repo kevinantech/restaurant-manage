@@ -1,8 +1,8 @@
-"use client";
-import SearchIcon from "@mui/icons-material/Search";
-import { TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import React, { ChangeEvent } from "react";
+'use client';
+import SearchIcon from '@mui/icons-material/Search';
+import { TextField } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import React, { ChangeEvent } from 'react';
 
 export interface SearchBarProps {
   className?: string;
@@ -10,7 +10,16 @@ export interface SearchBarProps {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ className, placeholder, onChange }) => {
+/**
+ * @todo READJUST TO THE NEW VERSION
+ * @param param0
+ * @returns
+ */
+const SearchBar: React.FC<SearchBarProps> = ({
+  className,
+  placeholder,
+  onChange,
+}) => {
   return (
     <TextField
       className={`bg-white ${className}`}
@@ -24,19 +33,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ className, placeholder, onChange 
       variant="outlined"
       placeholder={placeholder}
       sx={{
-        height: "2.75rem",
+        height: '2.75rem',
         borderRadius: 2,
-        "& .MuiInputBase-root.MuiOutlinedInput-root": {
-          height: "100%",
-          fontFamily: "inherit",
+        '& .MuiInputBase-root.MuiOutlinedInput-root': {
+          height: '100%',
+          fontFamily: 'inherit',
           fontSize: 14,
-          "& fieldset": {
-            border: "none",
+          '& fieldset': {
+            border: 'none',
           },
-          "& input": {
+          '& input': {
             paddingTop: 0,
             paddingBottom: 0,
-            "&::placeholder": {
+            '&::placeholder': {
               fontWeight: 600,
             },
           },

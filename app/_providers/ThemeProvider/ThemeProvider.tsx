@@ -1,8 +1,11 @@
 'use client';
-import { ThemeProvider as _ThemeProvider, createTheme } from '@mui/material';
-import { ThemeOptions } from '@mui/material';
-import { Open_Sans } from 'next/font/google';
+import {
+  ThemeProvider as _ThemeProvider,
+  createTheme,
+  ThemeOptions,
+} from '@mui/material';
 import { Color } from 'app/styles';
+import { Open_Sans } from 'next/font/google';
 import colors from 'tailwindcss/colors';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
@@ -50,6 +53,9 @@ const theme: ThemeOptions = {
       },
     },
     MuiMenuItem: {
+      defaultProps: {
+        disableRipple: true,
+      },
       styleOverrides: {
         root: {
           fontSize: 14,

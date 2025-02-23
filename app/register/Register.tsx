@@ -21,7 +21,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerAdmin } from './actions';
 import styles from './page.module.css';
-import { ThemeProvider } from 'app/_providers/ThemeProvider';
 
 type FormLoaderProps = {
   open?: boolean;
@@ -114,95 +113,93 @@ const Register = () => {
   if (!visibility) return null;
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-french-lilac overflow-hidden">
-        <div className="relative max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
-          <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
-          <p className="block sm:hidden text-center text-sm">
-            Únete a la experiencia 🚀
-          </p>
-          <p className="hidden sm:block text-center text-sm">
-            Crea tu cuenta, únete a la experiencia 🚀
-          </p>
-          <form
-            className="mt-5 space-y-4"
-            onSubmit={form.handleSubmit(handleRegister)}
-          >
-            <TextField
-              variant="standard"
-              size="small"
-              fullWidth
-              label="Nombre"
-              {...form.register('name')}
-              error={!!form.errors.name?.message}
-              helperText={form.errors.name?.message}
-            />
-            <TextField
-              variant="standard"
-              size="small"
-              fullWidth
-              label="Usuario"
-              {...form.register('username')}
-              error={!!form.errors.username?.message}
-              helperText={form.errors.username?.message}
-            />
-            <TextField
-              variant="standard"
-              size="small"
-              fullWidth
-              label="Correo"
-              {...form.register('email')}
-              error={!!form.errors.email?.message}
-              helperText={form.errors.email?.message}
-            />
-            <TextField
-              variant="standard"
-              size="small"
-              fullWidth
-              label="Contraseña"
-              type={password.type}
-              {...form.register('password')}
-              error={!!form.errors.password?.message}
-              helperText={form.errors.password?.message}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton disableRipple onClick={password.toggle}>
-                        {password.type === 'text' ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-            <TextField
-              variant="standard"
-              size="small"
-              fullWidth
-              label="Confirmar Contraseña"
-              type="password"
-              {...form.register('confirmPassword')}
-              error={!!form.errors.confirmPassword?.message}
-              helperText={form.errors.confirmPassword?.message}
-            />
-            <div>
-              <div className="mt-6">
-                <Button fullWidth variant="contained" type="submit">
-                  Registrar
-                </Button>
-              </div>
+    <div className="min-h-screen bg-french-lilac overflow-hidden">
+      <div className="relative max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
+        <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
+        <p className="block sm:hidden text-center text-sm">
+          Únete a la experiencia 🚀
+        </p>
+        <p className="hidden sm:block text-center text-sm">
+          Crea tu cuenta, únete a la experiencia 🚀
+        </p>
+        <form
+          className="mt-5 space-y-4"
+          onSubmit={form.handleSubmit(handleRegister)}
+        >
+          <TextField
+            variant="standard"
+            size="small"
+            fullWidth
+            label="Nombre"
+            {...form.register('name')}
+            error={!!form.errors.name?.message}
+            helperText={form.errors.name?.message}
+          />
+          <TextField
+            variant="standard"
+            size="small"
+            fullWidth
+            label="Usuario"
+            {...form.register('username')}
+            error={!!form.errors.username?.message}
+            helperText={form.errors.username?.message}
+          />
+          <TextField
+            variant="standard"
+            size="small"
+            fullWidth
+            label="Correo"
+            {...form.register('email')}
+            error={!!form.errors.email?.message}
+            helperText={form.errors.email?.message}
+          />
+          <TextField
+            variant="standard"
+            size="small"
+            fullWidth
+            label="Contraseña"
+            type={password.type}
+            {...form.register('password')}
+            error={!!form.errors.password?.message}
+            helperText={form.errors.password?.message}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton disableRipple onClick={password.toggle}>
+                      {password.type === 'text' ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+          <TextField
+            variant="standard"
+            size="small"
+            fullWidth
+            label="Confirmar Contraseña"
+            type="password"
+            {...form.register('confirmPassword')}
+            error={!!form.errors.confirmPassword?.message}
+            helperText={form.errors.confirmPassword?.message}
+          />
+          <div>
+            <div className="mt-6">
+              <Button fullWidth variant="contained" type="submit">
+                Registrar
+              </Button>
             </div>
-          </form>
-          <FormLoader open={isLoading} />
-          <FormFeedback open={openFeedback} onAccept={handleFeedback} />
-        </div>
+          </div>
+        </form>
+        <FormLoader open={isLoading} />
+        <FormFeedback open={openFeedback} onAccept={handleFeedback} />
       </div>
-    </ThemeProvider>
+    </div>
   );
 };
 

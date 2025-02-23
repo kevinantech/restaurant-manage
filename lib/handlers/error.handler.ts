@@ -1,10 +1,7 @@
-import { ConflictError } from 'lib/errors/conflict.error';
-import { ForbiddenError } from 'lib/errors/forbidden.error';
-import { NotFoundError } from 'lib/errors/not-found.error';
-import { ValidationError } from 'lib/errors/validation.error';
-import { COMMON_MESSAGE, ResponseFactory } from 'lib/http/response.factory';
+import { RouteError } from 'lib/errors/route.error';
+import { COMMON_MESSAGE, HTTP_STATUS } from 'lib/http/http-status';
+import { NextResponse } from 'next/server';
 import { ResponseBodyFactory } from '../http/response-body.factory';
-import { AuthenticationError } from 'lib/errors/authentication.error';
 
 interface IErrorHandler {
   handle(error: unknown): any;
@@ -16,13 +13,7 @@ interface IErrorHandler {
 export class ActionErrorHandler implements IErrorHandler {
   constructor(private readonly error: unknown) {}
   handle() {
-    if (
-      this.error instanceof ValidationError ||
-      this.error instanceof ConflictError ||
-      this.error instanceof NotFoundError ||
-      this.error instanceof ForbiddenError ||
-      this.error instanceof AuthenticationError // If it's a custom error, it's already handled in the response factory
-    ) {
+    if (this.error instanceof RouteError) {
       return ResponseBodyFactory.error(this.error.message);
     }
 
@@ -36,6 +27,16 @@ export class ActionErrorHandler implements IErrorHandler {
 export class RouteErrorHandler implements IErrorHandler {
   constructor(private readonly error: unknown) {}
   handle() {
-    return new ResponseFactory().InternalServerError();
+    if (this.error instanceof RouteError) {
+      return NextResponse.json(
+        { ...ResponseBodyFactory.error(this.error.message) },
+        { status: this.error.status }
+      );
+    }
+
+    return NextResponse.json(
+      { ...ResponseBodyFactory.error(COMMON_MESSAGE.INTERNAL_SERVER_ERROR) },
+      { status: HTTP_STATUS.INTERNAL_SERVER_ERROR }
+    );
   }
 }

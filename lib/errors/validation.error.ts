@@ -1,5 +1,8 @@
-export class ValidationError extends Error {
+import { HTTP_STATUS } from 'lib/http/http-status';
+import { RouteError } from './route.error';
+
+export class ValidationError extends RouteError {
   constructor(message = 'Formato inválido') {
-    super(message);
+    super(HTTP_STATUS.BAD_REQUEST, message);
   }
 }

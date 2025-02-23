@@ -20,7 +20,6 @@ import {
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useProducts } from 'app/_hooks/useProducts';
-import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { createOrder } from '../actions';
 
@@ -142,7 +141,7 @@ export default function CreateOrder() {
   });
 
   return (
-    <ThemeProvider>
+    <>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nueva Orden</Title>
         <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-5">
@@ -167,6 +166,6 @@ export default function CreateOrder() {
       >
         <LinearProgress className="absolute top-0 w-full" />
       </Backdrop>
-    </ThemeProvider>
+    </>
   );
 }

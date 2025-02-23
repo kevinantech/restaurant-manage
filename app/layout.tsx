@@ -1,6 +1,7 @@
 import { Open_Sans } from 'next/font/google';
 import type { Metadata } from 'next';
 import './globals.css';
+import { ThemeProvider } from './_providers/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'Bistro',
@@ -15,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${openSans.className}`}>{children}</body>
+      <body className={`${openSans.className}`}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

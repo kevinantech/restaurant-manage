@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
-import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { useForm } from 'react-hook-form';
 import { createInventoryItem } from '../actions';
 
@@ -61,7 +60,7 @@ export default function RegisterInventory() {
   const { form, handleRegister, loading, error } = useRegisterInventory();
 
   return (
-    <ThemeProvider>
+    <>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nuevo Insumo</Title>
         <form
@@ -148,6 +147,6 @@ export default function RegisterInventory() {
       >
         <LinearProgress className="absolute top-0 w-full" />
       </Backdrop>
-    </ThemeProvider>
+    </>
   );
 }

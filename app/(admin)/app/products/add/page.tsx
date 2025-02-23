@@ -20,7 +20,6 @@ import {
 import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useInventory } from 'app/_hooks/useInventory';
-import { ThemeProvider } from 'app/_providers/ThemeProvider';
 import { useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { createProduct } from '../actions';
@@ -175,7 +174,7 @@ export default function RegisterProduct() {
   });
 
   return (
-    <ThemeProvider>
+    <>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nuevo Producto</Title>
         <form
@@ -248,6 +247,6 @@ export default function RegisterProduct() {
       >
         <LinearProgress className="absolute top-0 w-full" />
       </Backdrop>
-    </ThemeProvider>
+    </>
   );
 }

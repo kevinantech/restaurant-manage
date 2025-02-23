@@ -8,7 +8,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const useOrders = () => {
   const { data: response } = useSWR<ResponseBody<Order[]>>(
     ApiRoutes.ORDERS,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
 
   return {

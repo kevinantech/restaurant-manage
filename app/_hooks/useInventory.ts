@@ -14,7 +14,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const useInventory = () => {
   const { data: response } = useSWR<InventoryItemsResponse>(
     ApiRoutes.INVENTORY,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

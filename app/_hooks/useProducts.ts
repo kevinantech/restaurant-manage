@@ -11,7 +11,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const useProducts = () => {
   const { data: response } = useSWR<ProductsResponse>(
     ApiRoutes.PRODUCTS,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
 
   const productsById = useMemo<IndexedProducts | undefined>(() => {

@@ -1,9 +1,9 @@
 'use client';
-import { Color } from 'app/_common/constants/styles/color.style';
+import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import { Button } from '@mui/material';
+import { Color } from 'app/styles';
 import { usePathname } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
-import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import { marginBottom, NavLinkProps } from '../NavLink/NavLink';
 
 export interface NavGroupProps {

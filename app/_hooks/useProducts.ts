@@ -1,5 +1,5 @@
 import { Product } from '@/product/domain/product.entity';
-import { ApiRoutes } from 'app/_common/constants';
+import { ApiRoutes } from 'app/routes.config';
 import { ResponseBody } from 'lib/http/response-body.factory';
 import { useMemo } from 'react';
 import useSWR from 'swr';

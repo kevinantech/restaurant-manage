@@ -12,10 +12,10 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
-import { WebRoutes } from 'app/_common/constants';
 import { GradientCircularProgress } from 'app/_components/GradientCircularProgress';
 import { useHandler } from 'app/_hooks/useHandler';
 import { usePassword } from 'app/_hooks/usePassword';
+import { WebRoutes } from 'app/routes.config';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';

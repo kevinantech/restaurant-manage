@@ -1,9 +1,9 @@
 'use client';
 import { Button } from '@mui/material';
-import { Color } from 'app/_common/constants/styles/color.style';
+import { Color } from 'app/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { MouseEvent, ReactNode, useMemo } from 'react';
-import colors from 'tailwindcss/colors'; // Default colors from tailwind.
+import colors from 'tailwindcss/colors';
 import styles from './NavLink.module.css';
 
 export const marginBottom = 4;

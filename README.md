@@ -1,5 +1,3 @@
-#### Authors: KEVIN ANDRES GOMEZ MEZA, BORIS DAVID BELLO DEL RIO
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -16,11 +14,19 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The package manager initially used was pnpm.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Environment Variables
+
+`NEXTAUTH_URL` https://next-auth.js.org/configuration/options#nextauth_url
+
+`NEXTAUTH_SECRET` Used to encrypt the NextAuth.js JWT https://next-auth.js.org/configuration/options#nextauth_secret
+
+`MONGODB_URI` Allows connecting to MongoDB
+
+`PASS_ENCRYPTION_KEY` Paper for the password hashing
 
 ## Learn More
 
@@ -37,6 +43,9 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-## LOG (Follow these steps)
+## Autor
 
-1. Button background by Prefligh was disabled (`node_modules\tailwindcss\src\css\preflight.css:193:3`).
+👤 **Kevin Gomez**  
+📧 Email: [kgomezm.dev@gmail.com](mailto:kgomezm.dev@gmail.com)  
+🔗 LinkedIn: [linkedin.com/in/kevinandresgom](https://linkedin.com/in/kevinandresgom)  
+🐙 GitHub: [github.com/kevinantech](https://github.com/kevinantech)

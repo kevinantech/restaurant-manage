@@ -1,5 +1,23 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Mockups
+
+![Mockup 1](./public/mockups/mockup-1.png)
+
+![Mockup 2](./public/mockups/mockup-2.png)
+
+![Mockup 3](./public/mockups/mockup-3.png)
+
+![Mockup 4](./public/mockups/mockup-4.png)
+
+![Mockup 5](./public/mockups/mockup-5.png)
+
+![Mockup 6](./public/mockups/mockup-6.png)
+
+![Mockup 7](./public/mockups/mockup-7.png)
+
+![Mockup 8](./public/mockups/mockup-8.png)
+
 ## Getting Started
 
 First, run the development server:

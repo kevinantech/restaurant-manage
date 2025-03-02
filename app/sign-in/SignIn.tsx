@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormLoader } from '../register/Register';
+import Link from 'next/link';
 export type Credentials = {
   username: string;
   password: string;
@@ -121,6 +122,12 @@ const SignIn = () => {
               </Button>
             </div>
           </div>
+          <p className="text-center text-sm">
+            ¿No tienes cuenta?{' '}
+            <Link href={WebRoutes.REGISTER} className="text-blue-500">
+              Regístrate
+            </Link>
+          </p>
         </form>
         <FormLoader open={isLoading} />
       </div>

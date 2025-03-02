@@ -147,7 +147,7 @@ export default function CreateOrder() {
         <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-5">
           {renderProductsField}
           <div className="flex gap-2">
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" className="bg-pompadour">
               Registrar Orden
             </Button>
             <Button

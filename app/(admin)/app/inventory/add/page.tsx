@@ -131,7 +131,7 @@ export default function RegisterInventory() {
               />
             </Grid2>
           </Grid2>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" className="bg-pompadour">
             Guardar Insumo
           </Button>
           {!!error && (

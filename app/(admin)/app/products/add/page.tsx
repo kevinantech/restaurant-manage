@@ -223,7 +223,7 @@ export default function RegisterProduct() {
           </div>
           {renderIngrendientsField}
           <div className="flex gap-2">
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" className="bg-pompadour">
               Guardar Producto
             </Button>
             <Button

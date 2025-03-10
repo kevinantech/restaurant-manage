@@ -22,7 +22,7 @@ export const getProductsUseCase =
     });
 
     // Extract the ingredients from the products query without duplicates
-    const _recipeItems = [...queryResult[0].recipe];
+    const _recipeItems = [...queryResult[0]?.recipe];
     for (let i = 1; i < queryResult.length; i++) {
       for (const recipeItem of queryResult[i].recipe) {
         let isDuplicated = false;

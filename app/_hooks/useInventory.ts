@@ -1,9 +1,7 @@
-import { InventoryItem } from '@/inventory/domain/inventory-item.entity';
+import { IGetInventoryItemsUseCase } from '@/inventory/application/get-inventory-items.uc';
 import { ApiRoutes } from 'app/routes.config';
-import { ResponseBody } from 'lib/http/response-body.factory';
 import useSWRInfinite from 'swr/infinite';
 
-type InventoryItemsResponse = ResponseBody<InventoryItem[]>;
 const getKey = (pageIndex: number /* , previousPageData: any */) => {
   return `${ApiRoutes.INVENTORY}?page=${pageIndex + 1}&limit=10`;
 };
@@ -15,7 +13,10 @@ const useInventory = () => {
     data: responses,
     size,
     setSize,
-  } = useSWRInfinite<InventoryItemsResponse>(getKey, fetcher);
+  } = useSWRInfinite<Awaited<ReturnType<IGetInventoryItemsUseCase>>>(
+    getKey,
+    fetcher
+  );
 
   const handleNext = () => {
     if (

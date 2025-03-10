@@ -12,10 +12,9 @@ import {
   TableRow,
 } from '@mui/material';
 import { Title } from 'app/_components';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useProducts } from 'app/_hooks/useProducts';
 import { useOrders } from 'app/_hooks/useOrders';
+import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 const OrderBar = () => {
   return (
@@ -56,16 +55,24 @@ const Cell: React.FC<TableCellProps> = (props) => {
 };
 
 export default function Orders() {
-  const { orders } = useOrders();
-  const { productsById } = useProducts();
-  const [show, setShow] = useState(false);
+  const { responses, handleNext } = useOrders();
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!show) setShow(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && loaderRef.current) handleNext();
+      },
+      { threshold: 1 }
+    );
 
-  if (!show) return null;
+    if (loaderRef.current) observer.observe(loaderRef.current);
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [handleNext]);
 
   return (
     <main>
@@ -82,31 +89,37 @@ export default function Orders() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((o) => {
-              const formattedDate = new Intl.DateTimeFormat('en-GB').format(
-                new Date(o.createdAt)
-              );
-              return (
-                <TableRow key={o.id}>
-                  <Cell align="left">{formattedDate}</Cell>
-                  <Cell align="left">
-                    {o.products
-                      .map(({ id }) => {
-                        const p = productsById[id];
-                        return p
-                          ? [p.name, ' - ', p.price.toString(), 'COP'].join(' ')
-                          : '';
-                      })
-                      .join(', ')}
-                  </Cell>
-                  <Cell align="left">{o.totalAmount}</Cell>
-                  <Cell align="left"></Cell>
-                </TableRow>
-              );
-            })}
+            {!!responses &&
+              responses.map((response) =>
+                response.data?.map((order) => {
+                  const formattedDate = new Intl.DateTimeFormat('en-GB').format(
+                    new Date(order.createdAt)
+                  );
+                  return (
+                    <TableRow key={order.id}>
+                      <Cell align="left">{formattedDate}</Cell>
+                      <Cell align="left">
+                        {order.products
+                          .map((product) =>
+                            [
+                              product.name,
+                              ' - ',
+                              product.unitPrice.toString(),
+                              'COP',
+                            ].join(' ')
+                          )
+                          .join(', ')}
+                      </Cell>
+                      <Cell align="left">{order.totalAmount}</Cell>
+                      <Cell align="left"></Cell>
+                    </TableRow>
+                  );
+                })
+              )}
           </TableBody>
         </Table>
       </TableContainer>
+      <div ref={loaderRef}></div>
     </main>
   );
 }

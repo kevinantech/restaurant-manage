@@ -1,10 +1,12 @@
 import { z } from 'zod';
-
 export type Order = z.infer<typeof OrderSchema>;
 export type InsertOrder = z.infer<typeof InsertOrderSchema>;
 export type OrderProduct = z.infer<typeof OrderProductSchema>;
 export type OrderProductBody = z.infer<typeof OrderProductBodySchema>;
 export type CreateOrderBody = z.infer<typeof CreateOrderBodySchema>;
+export type OrderWithExtendedProducts = z.infer<
+  typeof OrderWithExtendedProductsSchema
+>;
 
 export const OrderProductSchema = z.object({
   id: z.string(),
@@ -30,4 +32,15 @@ export const OrderProductBodySchema = z.object({
 
 export const CreateOrderBodySchema = z.object({
   products: z.array(OrderProductBodySchema).min(1).max(20),
+});
+
+export const OrderWithExtendedProductsSchema = OrderSchema.extend({
+  products: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      quantity: z.number(),
+      unitPrice: z.number(),
+    })
+  ),
 });

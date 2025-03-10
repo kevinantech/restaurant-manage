@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       new OrderRepository(),
       new ProductRepository()
     );
-    const res = await getOrders(user.id);
+    const res = await getOrders(user.id, page, limit);
     return NextResponse.json({ ...res });
   } catch (error) {
     return new RouteErrorHandler(error).handle();

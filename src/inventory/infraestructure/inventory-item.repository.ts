@@ -51,7 +51,7 @@ export class InventoryItemRepository implements IInventoryRepository {
     }));
   }
 
-  async getTotalItemsForUser({ userId }: { userId: string }): Promise<number> {
-    return InventoryItemModel.countDocuments({ userId });
+  async getTotalItemsForUser(filter: { userId: string }): Promise<number> {
+    return InventoryItemModel.countDocuments(filter);
   }
 }

@@ -24,12 +24,8 @@ export class ProductRepository implements IProductRepository {
     }));
   }
 
-  async getTotalProductsForUser({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<number> {
-    return ProductModel.countDocuments({ userId });
+  async getTotalProductsForUser(filter: { userId: string }): Promise<number> {
+    return ProductModel.countDocuments(filter);
   }
 
   async getProductById(id: string): Promise<Product | undefined> {

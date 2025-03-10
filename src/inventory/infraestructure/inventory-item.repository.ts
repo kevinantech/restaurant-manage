@@ -32,8 +32,15 @@ export class InventoryItemRepository implements IInventoryRepository {
     await InventoryItemModel.updateOne({ _id: id }, payload);
   }
 
-  async getItemsForUser(userId: string): Promise<InventoryItem[]> {
-    const docs = await InventoryItemModel.find({ userId });
+  async getItemsForUser(
+    filter: { userId: string },
+    page: number,
+    limit: number
+  ): Promise<InventoryItem[]> {
+    const docs = await InventoryItemModel.find(filter)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
     return docs.map((doc) => ({
       id: doc.id,
       name: doc.name,
@@ -42,5 +49,9 @@ export class InventoryItemRepository implements IInventoryRepository {
       stock: doc.stock,
       userId: doc.userId,
     }));
+  }
+
+  async getTotalItemsForUser({ userId }: { userId: string }): Promise<number> {
+    return InventoryItemModel.countDocuments({ userId });
   }
 }

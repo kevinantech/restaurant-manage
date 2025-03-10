@@ -13,8 +13,9 @@ import {
 } from '@mui/material';
 import { Title } from 'app/_components';
 import { useInventory } from 'app/_hooks/useInventory';
+import { unitName } from 'lib/units.util';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 const InventoryBar = () => {
   return (
@@ -54,15 +55,27 @@ const Cell: React.FC<TableCellProps> = ({ children, sx, ...props }) => {
 };
 
 export default function Inventory() {
-  const { inventory } = useInventory();
-  const [show, setShow] = useState(false);
+  const { responses, handleNext } = useInventory();
+  const loaderRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Pagination manages through intersection observer.
+   */
   useEffect(() => {
-    if (!show) setShow(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && loaderRef.current) handleNext();
+      },
+      { threshold: 1 }
+    );
 
-  if (!show) return null;
+    if (loaderRef.current) observer.observe(loaderRef.current);
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [handleNext]);
 
   return (
     <main>
@@ -82,18 +95,26 @@ export default function Inventory() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {!!inventory &&
-              inventory.map((inventoryItem) => (
-                <TableRow key={inventoryItem.id} className="font-medium">
-                  <Cell align="left">{inventoryItem.name}</Cell>
-                  <Cell align="left">{`${inventoryItem.unitPrice} COP/${inventoryItem.unitOfMeasure}`}</Cell>
-                  <Cell align="left">{`${inventoryItem.stock} ${inventoryItem.unitOfMeasure}`}</Cell>
-                  <Cell align="left"></Cell>
-                </TableRow>
-              ))}
+            {!!responses &&
+              responses.map((response) =>
+                response.data?.map((inventoryItem) => (
+                  <TableRow key={inventoryItem.id} className="font-medium">
+                    <Cell align="left">{inventoryItem.name}</Cell>
+                    <Cell align="left">{`${
+                      inventoryItem.unitPrice
+                    } COP/${unitName(inventoryItem.unitOfMeasure)}`}</Cell>
+                    <Cell align="left">{`${inventoryItem.stock} ${unitName(
+                      inventoryItem.unitOfMeasure,
+                      inventoryItem.stock !== 1
+                    )}`}</Cell>
+                    <Cell align="left"></Cell>
+                  </TableRow>
+                ))
+              )}
           </TableBody>
         </Table>
       </TableContainer>
+      {!!responses && <div ref={loaderRef}></div>}
     </main>
   );
 }

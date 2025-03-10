@@ -1,7 +1,13 @@
 import { InsertInventoryItem, InventoryItem } from './inventory-item.entity';
 
 export interface IInventoryRepository {
-  getItemsForUser(userId: string): Promise<InventoryItem[]>;
+  getItemsForUser(
+    filter: { userId: string },
+    page: number,
+    limit: number
+  ): Promise<InventoryItem[]>;
+
+  getTotalItemsForUser(filter: { userId: string }): Promise<number>;
 
   getItemById(id: string): Promise<InventoryItem | undefined>;
 

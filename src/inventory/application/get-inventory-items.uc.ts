@@ -6,7 +6,25 @@ export type IGetInventoryItemsUseCase = ReturnType<
 >;
 
 export const getInventoryItemsUseCase =
-  (itemRepository: IInventoryRepository) => async (userId: string) => {
-    const queryResult = await itemRepository.getItemsForUser(userId);
-    return ResponseBodyFactory.success({ data: queryResult });
+  (itemRepository: IInventoryRepository) =>
+  async (userId: string, page: number, limit: number) => {
+    const queryResult = await itemRepository.getItemsForUser(
+      { userId },
+      page,
+      limit
+    );
+
+    const totalDocuments = await itemRepository.getTotalItemsForUser({
+      userId,
+    });
+
+    return ResponseBodyFactory.success({
+      data: queryResult,
+      pagination: {
+        pageIndex: page,
+        pageSize: queryResult.length,
+        totalDocuments,
+        totalPages: Math.ceil(totalDocuments / limit),
+      },
+    });
   };

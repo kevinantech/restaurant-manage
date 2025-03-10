@@ -10,7 +10,8 @@ const InventoryItemSchema = new Schema<InsertInventoryItem>(
     },
     unitOfMeasure: {
       type: String,
-      default: Units.DEFAULT,
+      enum: Units,
+      required: true,
     },
     unitPrice: {
       type: Number,

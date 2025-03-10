@@ -1,7 +1,13 @@
 import { InsertProduct, Product } from './product.entity';
 
 export interface IProductRepository {
-  getProductsForUser(userId: string): Promise<Product[]>;
+  getProductsForUser(
+    filter: { userId: string },
+    page: number,
+    limit: number
+  ): Promise<Product[]>;
+
+  getTotalProductsForUser(filter: { userId: string }): Promise<number>;
 
   getProductById(id: string): Promise<Product | undefined>;
 

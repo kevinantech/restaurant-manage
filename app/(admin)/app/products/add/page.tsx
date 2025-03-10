@@ -23,6 +23,7 @@ import { useInventory } from 'app/_hooks/useInventory';
 import { useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { createProduct } from '../actions';
+import { unitName } from 'lib/units.util';
 
 const useRegisterProduct = () => {
   const {
@@ -105,6 +106,7 @@ export default function RegisterProduct() {
   const renderIngrendientsField = form.recipe.fields.map((field, index) => {
     const ingredientId = form.getValues(`recipe.${index}.id`);
     const name = inventoryById[ingredientId]?.name;
+    const unitOfMeasure = inventoryById[ingredientId]?.unitOfMeasure;
     return (
       <div key={field.id}>
         <Grid2 container spacing={4}>
@@ -143,7 +145,11 @@ export default function RegisterProduct() {
           <Grid2 size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
-              label="Cantidad"
+              label={
+                unitOfMeasure
+                  ? `Cantidad de ${unitName(unitOfMeasure, true)}`
+                  : 'Cantidad'
+              }
               {...form.register(`recipe.${index}.quantity`, {
                 setValueAs: (value) =>
                   !isNaN(value) ? Number(value) : undefined,

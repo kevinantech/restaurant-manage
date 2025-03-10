@@ -7,8 +7,8 @@ export type ICreateInventoryItemUseCase = ReturnType<
 >;
 
 export const createInventoryItemUseCase =
-  (itemsRepository: IInventoryRepository) =>
+  (itemRepository: IInventoryRepository) =>
   async (body: CreateInventoryItemBody, userId: string) => {
-    await itemsRepository.createItem({ ...body, userId });
+    await itemRepository.createItem({ ...body, userId });
     return ResponseBodyFactory.success({});
   };

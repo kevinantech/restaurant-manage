@@ -5,6 +5,7 @@ import { Color } from 'app/styles';
 import { usePathname } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import { marginBottom, NavLinkProps } from '../NavLink/NavLink';
+import colors from 'tailwindcss/colors';
 
 export interface NavGroupProps {
   children: React.ReactNode;
@@ -47,7 +48,6 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
   return (
     <>
       <Button
-        className={`${active ? 'text-white' : 'text-inherit'}`}
         startIcon={startIcon}
         endIcon={
           <KeyboardArrowRightRoundedIcon
@@ -71,6 +71,7 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
           color: 'inherit',
           '&.MuiButtonBase-root.MuiButton-root': {
             backgroundColor: active ? Color.pompadour : 'transparent',
+            color: active ? colors.white : 'inherit',
           },
           '& .MuiButton-icon': {
             marginLeft: 0,
@@ -87,7 +88,7 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
             backgroundColor: 'transparent',
           },
         }}
-        onClick={() => handleClick()}
+        onClick={handleClick}
       >
         {label}
       </Button>

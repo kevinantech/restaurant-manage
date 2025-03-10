@@ -21,6 +21,8 @@ import { Title } from 'app/_components';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useForm } from 'react-hook-form';
 import { createInventoryItem } from '../actions';
+import { GeneralUtils } from 'lib/general.util';
+import { unitName } from 'lib/units.util';
 
 const useRegisterInventory = () => {
   const {
@@ -28,7 +30,11 @@ const useRegisterInventory = () => {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm<CreateInventoryItemBody>({
+    defaultValues: {
+      unitOfMeasure: Units.DEFAULT,
+    },
     resolver: zodResolver(CreateInventoryItemBodySchema),
   });
   const { handler, isLoading, error } = useHandler();
@@ -45,6 +51,9 @@ const useRegisterInventory = () => {
 
   return {
     form: {
+      values: {
+        unitOfMeasure: watch('unitOfMeasure'),
+      },
       register,
       handleSubmit,
       reset,
@@ -93,9 +102,7 @@ export default function RegisterInventory() {
                 >
                   <MenuItem value={Units.DEFAULT}>UNIDAD</MenuItem>
                   <MenuItem value={Units.KILOGRAM}>KG</MenuItem>
-                  <MenuItem value={Units.GRAM}>G</MenuItem>
                   <MenuItem value={Units.LITER}>L</MenuItem>
-                  <MenuItem value={Units.MILILITER}>ML</MenuItem>
                 </Select>
                 <FormHelperText>
                   {form.errors.unitOfMeasure?.message}
@@ -106,7 +113,9 @@ export default function RegisterInventory() {
               <TextField
                 fullWidth
                 type="number"
-                label="Precio unitario"
+                label={`Precio unitario × ${unitName(
+                  form.values.unitOfMeasure
+                )}`}
                 slotProps={{ htmlInput: { step: 0.1 } }}
                 {...form.register('unitPrice', {
                   setValueAs: (value) =>

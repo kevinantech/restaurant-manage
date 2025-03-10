@@ -3,6 +3,35 @@ import { IProductRepository } from '../domain/product.repository.interface';
 import { ProductModel } from './product.model';
 
 export class ProductRepository implements IProductRepository {
+  async getProductsForUser(
+    { userId }: { userId: string },
+    page: number,
+    limit: number
+  ): Promise<Product[]> {
+    const docs = await ProductModel.find({ userId })
+      .skip((page - 1) * limit)
+      .limit(limit);
+    return docs.map((doc) => ({
+      id: doc.id,
+      name: doc.name,
+      description: doc.description,
+      recipe: doc.recipe.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+      price: doc.price,
+      userId: doc.userId,
+    }));
+  }
+
+  async getTotalProductsForUser({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<number> {
+    return ProductModel.countDocuments({ userId });
+  }
+
   async getProductById(id: string): Promise<Product | undefined> {
     const doc = await ProductModel.findById(id);
     return doc
@@ -28,17 +57,5 @@ export class ProductRepository implements IProductRepository {
     >
   ): Promise<void> {
     await ProductModel.updateOne({ _id: id }, payload);
-  }
-
-  async getProductsForUser(userId: string): Promise<Product[]> {
-    const docs = await ProductModel.find({ userId });
-    return docs.map((doc) => ({
-      id: doc.id,
-      name: doc.name,
-      description: doc.description,
-      recipe: doc.recipe,
-      price: doc.price,
-      userId: doc.userId,
-    }));
   }
 }

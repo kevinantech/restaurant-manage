@@ -11,11 +11,11 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import Link from 'next/link';
-import { useProducts } from 'app/_hooks/useProducts';
-import { useInventory } from 'app/_hooks/useInventory';
 import { Title } from 'app/_components';
-import { useEffect, useState } from 'react';
+import { useProducts } from 'app/_hooks/useProducts';
+import { unitName } from 'lib/units.util';
+import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 const ProductBar = () => {
   return (
@@ -55,17 +55,27 @@ const Cell: React.FC<TableCellProps> = ({ children, sx, ...props }) => {
 };
 
 export default function Products() {
-  const { products } = useProducts();
-  const { inventoryById } = useInventory();
+  const { responses, handleNext } = useProducts();
+  const loaderRef = useRef<HTMLDivElement>(null);
 
-  const [show, setShow] = useState(false);
-
+  /**
+   * Pagination manages through intersection observer.
+   */
   useEffect(() => {
-    if (!show) setShow(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && loaderRef.current) handleNext();
+      },
+      { threshold: 1 }
+    );
 
-  if (!show) return null;
+    if (loaderRef.current) observer.observe(loaderRef.current);
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [handleNext]);
 
   return (
     <main>
@@ -86,27 +96,26 @@ export default function Products() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <Cell align="left">{product.name}</Cell>
-                <Cell align="left">{product.description}</Cell>
-                <Cell align="left">
-                  {inventoryById
-                    ? product.recipe
-                        .map(({ id, quantity }) => {
-                          const ingr = inventoryById[id];
-                          return ingr
-                            ? [ingr.name, quantity, ingr.unitOfMeasure].join(
-                                ' '
-                              )
-                            : '';
-                        })
-                        .join(', ')
-                    : ''}
-                </Cell>
-                <Cell align="left">{`${product.price} COP`}</Cell>
-              </TableRow>
-            ))}
+            {!!responses &&
+              responses.map((response) =>
+                response.data?.map((product) => (
+                  <TableRow key={product.id}>
+                    <Cell align="left">{product.name}</Cell>
+                    <Cell align="left">{product.description}</Cell>
+                    <Cell align="left">
+                      {product.recipe
+                        .map(
+                          (item) =>
+                            `${item.name} × ${item.quantity} ${unitName(
+                              item.unitOfMeasure
+                            )} `
+                        )
+                        .join(', ')}
+                    </Cell>
+                    <Cell align="left">{`${product.price} COP`}</Cell>
+                  </TableRow>
+                ))
+              )}
           </TableBody>
         </Table>
       </TableContainer>

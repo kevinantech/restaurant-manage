@@ -1,18 +1,26 @@
+import { Pagination } from '@/shared/domain/pagination.interface';
+
 export interface ResponseBody<T = never> {
   status: 'success' | 'error';
   message?: string;
   data?: T;
+  pagination?: Pagination;
 }
 
 export class ResponseBodyFactory {
   static success<T = never>({
     data,
     message,
-  }: Pick<ResponseBody<T>, 'message' | 'data'>): ResponseBody<T> {
+    pagination,
+  }: Pick<
+    ResponseBody<T>,
+    'message' | 'data' | 'pagination'
+  >): ResponseBody<T> {
     return {
       status: 'success',
-      data,
       message,
+      data,
+      pagination,
     };
   }
   static error(message?: string): ResponseBody {

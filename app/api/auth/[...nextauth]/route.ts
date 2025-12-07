@@ -1,9 +1,9 @@
 import { AdminRepository } from '@/admin/infrastructure/admin.repository';
-import { WebRoutes } from 'app/routes.config';
-import { dbConnect } from 'lib/mongoose/connect';
-import NextAuth, { AuthOptions, DefaultSession } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import { WebRoutes } from 'app/_common/routes-enum';
 import { GeneralUtils } from 'lib/general.util';
+import { dbConnect } from 'lib/mongoose/connect';
+import NextAuth, { AuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 /**
  * https://next-auth.js.org/configuration/providers/credentials
@@ -31,24 +31,21 @@ export const authOptions: AuthOptions = {
         await dbConnect();
         const db = new AdminRepository();
         const userFound = await db.getAdminByUsername(credentials.username);
-        if (!userFound)
-          throw new Error('Parece que no es posible encontrar la cuenta.');
+        if (!userFound) throw new Error('Usuario o contraseña incorrectos.');
 
-        const KEY = <string>process.env.PASS_ENCRIPTION_KEY;
+        const PASS_ENCRYPTION_KEY = <string>process.env.PASS_ENCRIPTION_KEY;
         const matchPassword = await GeneralUtils.comparePassword(
           credentials.password,
           userFound.password,
-          KEY
+          PASS_ENCRYPTION_KEY
         );
 
-        if (!matchPassword)
-          throw new Error('Usuario o contraseña incorrectos.');
+        if (!matchPassword) throw new Error('Usuario o contraseña incorrectos.');
 
         /**
          * By default NextAuth only take the name, email and image props
          * for the session. If the prop id is setted in the return,
          * the will take place in the token sub prop
-         *
          * @watch session callback.
          */
         return {
@@ -63,7 +60,15 @@ export const authOptions: AuthOptions = {
     /**
      * We know that the token sub prop contains the id
      * setted in the authorize function. Then we set the data in the user session.
-     * Now we use the id in the session from the entire app (useSession, getServerSession).
+     * Now the id will be available in the session object (useSession, getServerSession).
+     *
+     * Example of token payload:
+     * {
+     *   "sub": "507f1f77bcf86cd799439011",  // User ID from authorize function
+     *   "name": "John Doe",
+     *   "email": "john.doe@example.com",
+     * }
+     *
      */
     session: ({ session, token }) => {
       if (session.user && token.sub) {
@@ -73,7 +78,7 @@ export const authOptions: AuthOptions = {
     },
   },
   pages: {
-    signIn: WebRoutes.SIGN_IN,
+    signIn: WebRoutes.LOGIN,
     error: undefined,
   },
 };

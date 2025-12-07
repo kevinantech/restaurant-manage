@@ -1,7 +1,7 @@
+import { LoginPage } from 'app/_components/pages/LoginPage/LoginPage';
 import { ProtectAuthRoutes } from 'app/_middlewares/ProtectAuthRoutes';
-import { SignIn } from './SignIn';
 
 export default async function Page() {
   await ProtectAuthRoutes();
-  return <SignIn />;
+  return <LoginPage />;
 }

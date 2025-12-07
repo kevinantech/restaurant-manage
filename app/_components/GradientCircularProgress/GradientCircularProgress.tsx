@@ -1,10 +1,8 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress } from '@mui/material';
 
 export type GradientCircularProgressProps = {};
 
-const GradientCircularProgress: React.FC<
-  GradientCircularProgressProps
-> = ({}) => {
+const GradientCircularProgress: React.FC<GradientCircularProgressProps> = ({}) => {
   return (
     <>
       <svg width={0} height={0}>
@@ -18,13 +16,13 @@ const GradientCircularProgress: React.FC<
       <CircularProgress
         thickness={5}
         sx={{
-          "svg circle": { stroke: "url(#my_gradient)" },
-          width: "50px", // Ajusta el tamaño del loader
-          height: "50px",
+          'svg circle': { stroke: 'url(#my_gradient)' },
+          width: '50px', // Ajusta el tamaño del loader
+          height: '50px',
         }}
       />
     </>
   );
 };
 
-export default GradientCircularProgress;
+export { GradientCircularProgress };

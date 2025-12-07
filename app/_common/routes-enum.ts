@@ -1,5 +1,5 @@
 export enum WebRoutes {
-  SIGN_IN = '/sign-in',
+  LOGIN = '/login',
   REGISTER = '/register',
   DASHBOARD = '/app/dashboard',
 }

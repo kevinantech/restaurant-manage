@@ -1,0 +1,12 @@
+.form-submit-animation {
+  animation: backdrop-in 450ms ease-in forwards;
+}
+
+@keyframes backdrop-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

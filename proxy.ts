@@ -1,9 +1,9 @@
-import { WebRoutes } from 'app/routes.config';
+import { WebRoutes } from 'app/_common/routes-enum';
 import { withAuth } from 'next-auth/middleware';
 
 export default withAuth({
   pages: {
-    signIn: WebRoutes.SIGN_IN,
+    signIn: WebRoutes.LOGIN,
   },
 });
 

@@ -1,17 +1,8 @@
 'use client';
-import {
-  RegisterAdminBody,
-  RegisterAdminBodySchema,
-} from '@/admin/domain/admin.entity';
+import { RegisterAdminBody, RegisterAdminBodySchema } from '@/admin/domain/admin.entity';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  Backdrop,
-  Button,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from '@mui/material';
+import { Backdrop, Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { GradientCircularProgress } from 'app/_components/GradientCircularProgress';
 import { useHandler } from 'app/_hooks/useHandler';
 import { usePassword } from 'app/_hooks/usePassword';
@@ -21,23 +12,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerAdmin } from './actions';
 import styles from './page.module.css';
-
-type FormLoaderProps = {
-  open?: boolean;
-};
-
-const FormLoader: React.FC<FormLoaderProps> = ({ open }) =>
-  open ? (
-    <div
-      className={`${styles['form-submit-animation']} absolute z-10 inset-0 flex items-center w-full h-full m-0 rounded-lg bg-white bg-opacity-50`}
-    >
-      <div className="w-max my-0 mx-auto">
-        <GradientCircularProgress />
-      </div>
-    </div>
-  ) : (
-    <></>
-  );
 
 type FormFeedbackProps = {
   open: boolean;
@@ -99,8 +73,7 @@ const useRegister = () => {
 };
 
 const Register = () => {
-  const { form, handleFeedback, handleRegister, openFeedback, isLoading } =
-    useRegister();
+  const { form, handleFeedback, handleRegister, openFeedback, isLoading } = useRegister();
   const [visibility, setVisibility] = useState<boolean>(false);
   const password = usePassword();
 
@@ -116,16 +89,11 @@ const Register = () => {
     <div className="min-h-screen bg-french-lilac overflow-hidden">
       <div className="relative max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
         <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
-        <p className="block sm:hidden text-center text-sm">
-          Únete a la experiencia 🚀
-        </p>
+        <p className="block sm:hidden text-center text-sm">Únete a la experiencia 🚀</p>
         <p className="hidden sm:block text-center text-sm">
           Crea tu cuenta, únete a la experiencia 🚀
         </p>
-        <form
-          className="mt-5 space-y-4"
-          onSubmit={form.handleSubmit(handleRegister)}
-        >
+        <form className="mt-5 space-y-4" onSubmit={form.handleSubmit(handleRegister)}>
           <TextField
             variant="standard"
             size="small"
@@ -167,11 +135,7 @@ const Register = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton disableRipple onClick={password.toggle}>
-                      {password.type === 'text' ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                      {password.type === 'text' ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),

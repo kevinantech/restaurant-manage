@@ -1,81 +1,16 @@
 'use client';
-import { RegisterAdminBody, RegisterAdminBodySchema } from '@/admin/domain/admin.entity';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Backdrop, Button, IconButton, InputAdornment, TextField } from '@mui/material';
-import { GradientCircularProgress } from 'app/_components/GradientCircularProgress';
-import { useHandler } from 'app/_hooks/useHandler';
-import { usePassword } from 'app/_hooks/usePassword';
-import { WebRoutes } from 'app/routes.config';
-import { useRouter } from 'next/navigation';
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
+import { useTogglePassword } from 'app/_hooks/useTogglePassword';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { registerAdmin } from './actions';
-import styles from './page.module.css';
+import { FormLoader } from '../LoginPage/FormLoader';
+import { FormFeedback } from './FormFeedback';
+import { useRegister } from './RegisterPage.model';
 
-type FormFeedbackProps = {
-  open: boolean;
-  onAccept: () => void;
-};
-
-const FormFeedback: React.FC<FormFeedbackProps> = ({ open, onAccept }) => (
-  <Backdrop open={open} className="backdrop-blur-md">
-    <div className="flex flex-col bg-white pt-8 px-6 pb-4 rounded-md">
-      <p className="font-semibold mb-2">✅ ¡Listo! Tu registro fue exitoso. </p>
-      <p className="text-sm mb-6">
-        Ahora puedes iniciar sesión para acceder a tu cuenta.
-      </p>
-      <Button
-        variant="outlined"
-        className="self-end w-min font-semibold normal-case"
-        onClick={onAccept}
-      >
-        Continuar
-      </Button>
-    </div>
-  </Backdrop>
-);
-
-const useRegister = () => {
-  const [openFeedback, setOpenFeedback] = useState<boolean>(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = useForm<RegisterAdminBody>({
-    resolver: zodResolver(RegisterAdminBodySchema),
-  });
-  const router = useRouter();
-  const { handler, error, isLoading } = useHandler();
-
-  const handleRegister = async (data: RegisterAdminBody) => {
-    await handler(async () => {
-      const result = await registerAdmin(data);
-      if (result.status == 'success') setOpenFeedback(true);
-    });
-  };
-
-  const handleFeedback = () => router.push(WebRoutes.SIGN_IN);
-
-  return {
-    form: {
-      errors,
-      getValues,
-      handleSubmit,
-      register,
-    },
-    handleFeedback,
-    handleRegister,
-    openFeedback,
-    isLoading,
-  };
-};
-
-const Register = () => {
+const RegisterPage = () => {
   const { form, handleFeedback, handleRegister, openFeedback, isLoading } = useRegister();
   const [visibility, setVisibility] = useState<boolean>(false);
-  const password = usePassword();
+  const togglePassword = useTogglePassword();
 
   // Wait for the inputs to finish loading.
   useEffect(() => {
@@ -126,7 +61,7 @@ const Register = () => {
             size="small"
             fullWidth
             label="Contraseña"
-            type={password.type}
+            type={togglePassword.textType}
             {...form.register('password')}
             error={!!form.errors.password?.message}
             helperText={form.errors.password?.message}
@@ -134,8 +69,12 @@ const Register = () => {
               input: {
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton disableRipple onClick={password.toggle}>
-                      {password.type === 'text' ? <VisibilityOff /> : <Visibility />}
+                    <IconButton disableRipple onClick={togglePassword.toggle}>
+                      {togglePassword.textType === 'text' ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -152,13 +91,9 @@ const Register = () => {
             error={!!form.errors.confirmPassword?.message}
             helperText={form.errors.confirmPassword?.message}
           />
-          <div>
-            <div className="mt-6">
-              <Button fullWidth variant="contained" type="submit">
-                Registrar
-              </Button>
-            </div>
-          </div>
+          <Button fullWidth variant="contained" type="submit" className="!mt-6">
+            Registrar
+          </Button>
         </form>
         <FormLoader open={isLoading} />
         <FormFeedback open={openFeedback} onAccept={handleFeedback} />
@@ -167,4 +102,4 @@ const Register = () => {
   );
 };
 
-export { FormLoader, Register };
+export { RegisterPage };

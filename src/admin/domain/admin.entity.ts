@@ -18,10 +18,7 @@ export const AdminSchema = InsertAdminSchema.extend({
 export const RegisterAdminBodySchema = z
   .object({
     name: z.string().min(1, 'Ingrese su nombre').max(55),
-    email: z
-      .string()
-      .min(1, 'Ingrese un email')
-      .email('Ingrese un email válido'),
+    email: z.string().min(1, 'Ingrese un email').email('Ingrese un email válido'),
     username: z.string().min(1, 'Ingrese un nombre de usuario').max(25),
     password: z
       .string()

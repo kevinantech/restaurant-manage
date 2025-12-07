@@ -1,9 +1,6 @@
 'use server';
 import { registerAdminUseCase } from '@/admin/application/register-admin.uc';
-import {
-  RegisterAdminBody,
-  RegisterAdminBodySchema,
-} from '@/admin/domain/admin.entity';
+import { RegisterAdminBody, RegisterAdminBodySchema } from '@/admin/domain/admin.entity';
 import { AdminRepository } from '@/admin/infrastructure/admin.repository';
 import { ActionErrorHandler } from 'lib/handlers/error.handler';
 import { ValidationError } from 'lib/errors/validation.error';

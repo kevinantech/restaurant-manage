@@ -1,4 +1,5 @@
 import { Backdrop, Button } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 type FormFeedbackProps = {
   open: boolean;
@@ -7,14 +8,17 @@ type FormFeedbackProps = {
 
 const FormFeedback: React.FC<FormFeedbackProps> = ({ open, onAccept }) => (
   <Backdrop open={open} className="backdrop-blur-md">
-    <div className="flex flex-col bg-white pt-8 px-6 pb-4 rounded-md">
-      <p className="font-semibold mb-2">✅ ¡Tu registro fue exitoso!</p>
-      <p className="text-sm mb-6">
+    <div className="space-y-2 flex flex-col bg-white p-4 rounded-md shadow-2xl">
+      <div className="flex items-center gap-2 font-semibold">
+        <CheckCircleIcon fontSize="medium" className="text-pompadour" />
+        <span>¡Tu registro fue exitoso!</span>
+      </div>
+      <p className="text-sm pr-4 !mb-4">
         Ahora puedes iniciar sesión para acceder a tu cuenta.
       </p>
       <Button
-        variant="outlined"
-        className="self-end w-min font-semibold normal-case"
+        variant="contained"
+        className="self-end font-semibold normal-case"
         onClick={onAccept}
       >
         Continuar

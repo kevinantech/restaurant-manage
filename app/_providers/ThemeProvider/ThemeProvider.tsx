@@ -65,7 +65,7 @@ const theme: ThemeOptions = {
   },
   palette: {
     primary: {
-      main: Color.pompadour,
+      main: Color.primary,
     },
     secondary: {
       main: colors.blue[500],

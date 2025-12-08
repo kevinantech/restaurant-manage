@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { FormLoader } from '../LoginPage/FormLoader';
 import { FormFeedback } from './FormFeedback';
 import { useRegister } from './RegisterPage.model';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { BackButton } from './BackButton';
 
 const RegisterPage = () => {
   const { form, handleFeedback, handleRegister, openFeedback, isLoading } = useRegister();
@@ -22,12 +24,18 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen bg-french-lilac overflow-hidden">
+      <BackButton />
       <div className="relative max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
-        <p className="w-max text-xl font-bold mb-2 mx-auto">Registro</p>
-        <p className="block sm:hidden text-center text-sm">Únete a la experiencia 🚀</p>
-        <p className="hidden sm:block text-center text-sm">
-          Crea tu cuenta, únete a la experiencia 🚀
-        </p>
+        {/* Block of registration header */}
+        <div className="flex items-center gap-2 text-primary">
+          <AccountCircleIcon fontSize="large" />
+          <p className="text-2xl font-bold">Registro</p>
+          {/* <p className="block sm:hidden text-center text-sm">Únete a la experiencia 🚀</p> */}
+          {/* <p className="hidden sm:block text-center text-sm">
+            Crea tu cuenta, únete a la experiencia 🚀
+          </p> */}
+        </div>
+
         <form className="mt-5 space-y-4" onSubmit={form.handleSubmit(handleRegister)}>
           <TextField
             variant="standard"

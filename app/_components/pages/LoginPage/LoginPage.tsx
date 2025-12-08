@@ -28,7 +28,7 @@ const LoginPage = () => {
       <div className="max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
         {/* Card header with icon and title */}
         <div className="space-y-4">
-          <div className="flex justify-center items-center w-16 h-16 rounded-full mx-auto my-0 bg-pompadour">
+          <div className="flex justify-center items-center w-16 h-16 rounded-full mx-auto my-0 bg-primary">
             <LockOpenRoundedIcon fontSize="large" htmlColor="#FFF" />
           </div>
           <p className="text-xl font-medium text-center">Iniciar Sesión</p>

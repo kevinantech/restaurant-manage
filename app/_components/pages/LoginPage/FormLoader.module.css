@@ -1,5 +1,5 @@
 .form-submit-animation {
-  animation: backdrop-in 450ms ease-in forwards;
+  animation: backdrop-in 350ms ease-in forwards;
 }
 
 @keyframes backdrop-in {

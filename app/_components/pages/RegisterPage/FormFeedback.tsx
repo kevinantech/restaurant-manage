@@ -10,7 +10,7 @@ const FormFeedback: React.FC<FormFeedbackProps> = ({ open, onAccept }) => (
   <Backdrop open={open} className="backdrop-blur-md">
     <div className="space-y-2 flex flex-col bg-white p-4 rounded-md shadow-2xl">
       <div className="flex items-center gap-2 font-semibold">
-        <CheckCircleIcon fontSize="medium" className="text-pompadour" />
+        <CheckCircleIcon fontSize="medium" className="text-primary" />
         <span>¡Tu registro fue exitoso!</span>
       </div>
       <p className="text-sm pr-4 !mb-4">

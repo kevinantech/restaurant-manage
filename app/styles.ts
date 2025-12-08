@@ -11,4 +11,6 @@ export const Color = {
   pompadour: '#55004C', // TODO: remove
   'french-lilac': '#EADBF6', // TODO: remove
   cinnabar: '#E53935', // TODO: remove
+
+  primary: '#55004C',
 };

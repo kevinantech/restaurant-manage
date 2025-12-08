@@ -1,7 +1,11 @@
-import { Model, model, models, Schema } from 'mongoose';
-import { InsertUser } from '../domain/user.entity';
+import { HydratedDocument, Model, model, models, Schema } from 'mongoose';
+import { InsertUser, User } from '../domain/user.entity';
+import { UserRole } from '@/shared/enums/user-role-enum';
 
-const UserSchema = new Schema<InsertUser>(
+export type UserDocument = HydratedDocument<User>;
+export type UserModel = Model<UserDocument>;
+
+const userSchema = new Schema<InsertUser>(
   {
     name: {
       type: String,
@@ -13,6 +17,7 @@ const UserSchema = new Schema<InsertUser>(
     },
     role: {
       type: String,
+      enum: UserRole,
       required: true,
     },
     password: {
@@ -26,5 +31,4 @@ const UserSchema = new Schema<InsertUser>(
 );
 
 /* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Users` model once compiled. */
-const UserModel: Model<InsertUser> = models?.users || model('users', UserSchema);
-export { UserModel };
+export const userModel: UserModel = models?.users || model('users', userSchema);

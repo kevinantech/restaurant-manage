@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { Title } from 'app/_components';
+import { Title } from 'app/_components/Title/Title';
 import { useInventory } from 'app/_hooks/useInventory';
 import { unitName } from 'lib/units.util';
 import Link from 'next/link';
@@ -100,9 +100,9 @@ export default function Inventory() {
                 response.data?.map((inventoryItem) => (
                   <TableRow key={inventoryItem.id} className="font-medium">
                     <Cell align="left">{inventoryItem.name}</Cell>
-                    <Cell align="left">{`${
-                      inventoryItem.unitPrice
-                    } COP/${unitName(inventoryItem.unitOfMeasure)}`}</Cell>
+                    <Cell align="left">{`${inventoryItem.unitPrice} COP/${unitName(
+                      inventoryItem.unitOfMeasure
+                    )}`}</Cell>
                     <Cell align="left">{`${inventoryItem.stock} ${unitName(
                       inventoryItem.unitOfMeasure,
                       inventoryItem.stock !== 1

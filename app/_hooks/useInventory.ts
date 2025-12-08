@@ -1,5 +1,5 @@
 import { IGetInventoryItemsUseCase } from '@/inventory/application/get-inventory-items.uc';
-import { ApiRoutes } from 'app/routes.config';
+import { ApiRoutes } from 'app/_common/routes-enum';
 import useSWRInfinite from 'swr/infinite';
 
 const getKey = (pageIndex: number /* , previousPageData: any */) => {
@@ -13,10 +13,7 @@ const useInventory = () => {
     data: responses,
     size,
     setSize,
-  } = useSWRInfinite<Awaited<ReturnType<IGetInventoryItemsUseCase>>>(
-    getKey,
-    fetcher
-  );
+  } = useSWRInfinite<Awaited<ReturnType<IGetInventoryItemsUseCase>>>(getKey, fetcher);
 
   const handleNext = () => {
     if (

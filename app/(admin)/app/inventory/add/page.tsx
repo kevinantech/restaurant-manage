@@ -17,7 +17,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { Title } from 'app/_components';
+import { Title } from 'app/_components/Title/Title';
 import { useHandler } from 'app/_hooks/useHandler';
 import { useForm } from 'react-hook-form';
 import { createInventoryItem } from '../actions';
@@ -72,10 +72,7 @@ export default function RegisterInventory() {
     <>
       <main className="max-w-3xl space-y-10 mx-auto">
         <Title>Añadir Nuevo Insumo</Title>
-        <form
-          onSubmit={form.handleSubmit(handleRegister)}
-          className="space-y-5"
-        >
+        <form onSubmit={form.handleSubmit(handleRegister)} className="space-y-5">
           <Grid2 container spacing={4}>
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
@@ -104,22 +101,17 @@ export default function RegisterInventory() {
                   <MenuItem value={Units.KILOGRAM}>KG</MenuItem>
                   <MenuItem value={Units.LITER}>L</MenuItem>
                 </Select>
-                <FormHelperText>
-                  {form.errors.unitOfMeasure?.message}
-                </FormHelperText>
+                <FormHelperText>{form.errors.unitOfMeasure?.message}</FormHelperText>
               </FormControl>
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
-                label={`Precio unitario × ${unitName(
-                  form.values.unitOfMeasure
-                )}`}
+                label={`Precio unitario × ${unitName(form.values.unitOfMeasure)}`}
                 slotProps={{ htmlInput: { step: 0.1 } }}
                 {...form.register('unitPrice', {
-                  setValueAs: (value) =>
-                    !isNaN(value) ? Number(value) : undefined,
+                  setValueAs: (value) => (!isNaN(value) ? Number(value) : undefined),
                 })}
                 error={!!form.errors.unitPrice}
                 helperText={form.errors.unitPrice?.message}
@@ -131,8 +123,7 @@ export default function RegisterInventory() {
                 fullWidth
                 label="Stock"
                 {...form.register('stock', {
-                  setValueAs: (value) =>
-                    !isNaN(value) ? Number(value) : undefined,
+                  setValueAs: (value) => (!isNaN(value) ? Number(value) : undefined),
                 })}
                 error={!!form.errors.stock}
                 helperText={form.errors.stock?.message}

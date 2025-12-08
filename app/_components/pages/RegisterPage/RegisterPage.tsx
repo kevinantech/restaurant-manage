@@ -4,10 +4,9 @@ import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useTogglePassword } from 'app/_hooks/useTogglePassword';
 import { useEffect, useState } from 'react';
 import { FormLoader } from '../LoginPage/FormLoader';
+import { BackButton } from './BackButton';
 import { FormFeedback } from './FormFeedback';
 import { useRegister } from './RegisterPage.model';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { BackButton } from './BackButton';
 
 const RegisterPage = () => {
   const { form, handleFeedback, handleRegister, openFeedback, isLoading } = useRegister();
@@ -28,8 +27,8 @@ const RegisterPage = () => {
       <div className="relative max-w-xs sm:max-w-sm mt-16 mx-auto p-10 rounded-lg bg-white">
         {/* Block of registration header */}
         <div className="flex items-center gap-2 text-primary">
-          <AccountCircleIcon fontSize="large" />
-          <p className="text-2xl font-bold">Registro</p>
+          {/* <AccountCircleIcon fontSize="large" /> */}
+          <p className="text-[1.625rem] md:text-[1.75rem] font-bold">Crea una cuenta</p>
           {/* <p className="block sm:hidden text-center text-sm">Únete a la experiencia 🚀</p> */}
           {/* <p className="hidden sm:block text-center text-sm">
             Crea tu cuenta, únete a la experiencia 🚀

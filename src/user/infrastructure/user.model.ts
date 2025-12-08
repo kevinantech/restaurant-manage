@@ -1,7 +1,7 @@
 import { Model, model, models, Schema } from 'mongoose';
-import { InsertAdmin } from '../domain/admin.entity';
+import { InsertUser } from '../domain/user.entity';
 
-const AdminSchema = new Schema<InsertAdmin>(
+const UserSchema = new Schema<InsertUser>(
   {
     name: {
       type: String,
@@ -11,7 +11,7 @@ const AdminSchema = new Schema<InsertAdmin>(
       type: String,
       required: true,
     },
-    username: {
+    role: {
       type: String,
       required: true,
     },
@@ -25,7 +25,6 @@ const AdminSchema = new Schema<InsertAdmin>(
   }
 );
 
-/* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Admins` model once compiled. */
-const AdminModel: Model<InsertAdmin> =
-  models?.admins || model('admins', AdminSchema);
-export { AdminModel };
+/* Fixs: ⨯ OverwriteModelError: Cannot overwrite `Users` model once compiled. */
+const UserModel: Model<InsertUser> = models?.users || model('users', UserSchema);
+export { UserModel };

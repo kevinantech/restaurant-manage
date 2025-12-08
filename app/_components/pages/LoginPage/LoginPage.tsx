@@ -39,10 +39,10 @@ const LoginPage = () => {
             variant="standard"
             size="small"
             fullWidth
-            label="Usuario"
-            {...form.register('username')}
-            error={!!form.errors.username?.message}
-            helperText={form.errors.username?.message}
+            label="Correo electrónico"
+            {...form.register('email')}
+            error={!!form.errors.email?.message}
+            helperText={form.errors.email?.message}
           />
           <TextField
             variant="standard"

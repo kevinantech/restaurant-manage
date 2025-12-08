@@ -1,4 +1,7 @@
-import { RegisterAdminBody, RegisterAdminBodySchema } from '@/admin/domain/admin.entity';
+import {
+  RegisterAdminBody,
+  RegisterAdminBodySchema,
+} from '@/user/domain/admin-user.entity';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { WebRoutes } from 'app/_common/routes-enum';
 import { useHandler } from 'app/_hooks/useHandler';

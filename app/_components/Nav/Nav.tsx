@@ -5,8 +5,8 @@ import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { LayoutContext } from 'app/_context/Layout';
 import React, { useContext } from 'react';
-import { NavGroup } from '../NavGroup';
-import { NavLink } from '../NavLink';
+import { NavGroup } from '../NavGroup/NavGroup';
+import { NavLink } from '../NavLink/NavLink';
 
 export interface NavProps {}
 
@@ -63,4 +63,4 @@ const Nav: React.FC<NavProps> = () => {
   );
 };
 
-export default Nav;
+export { Nav };

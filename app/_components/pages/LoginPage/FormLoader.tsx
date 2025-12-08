@@ -8,13 +8,8 @@ type FormLoaderProps = {
 
 const FormLoader: React.FC<FormLoaderProps> = ({ open }) =>
   open ? (
-    <div
-      className={cn(
-        styles['form-submit-animation'],
-        'absolute z-10 inset-0 flex items-center w-full h-full m-0 rounded-lg bg-black bg-opacity-50'
-      )}
-    >
-      <div className="w-max my-0 mx-auto">
+    <div className="absolute z-10 inset-0 place-content-center place-items-center rounded-lg bg-black bg-opacity-50">
+      <div className={cn(styles['form-submit-animation'])}>
         <GradientCircularProgress />
       </div>
     </div>

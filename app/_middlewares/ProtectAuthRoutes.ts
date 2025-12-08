@@ -7,5 +7,5 @@ import { redirect } from 'next/navigation';
  */
 export const ProtectAuthRoutes = async () => {
   const session = await getServerSession();
-  if (session) return redirect(WebRoutes.DASHBOARD);
+  if (session) return redirect(WebRoutes.HOME);
 };

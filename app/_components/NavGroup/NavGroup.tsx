@@ -32,12 +32,10 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
 
   const handleClick = () => {
     const container = document.getElementById(containerId);
-    const contentOffsetHeight =
-      document.getElementById(contentId)?.offsetHeight;
+    const contentOffsetHeight = document.getElementById(contentId)?.offsetHeight;
     const arrowIcon = document.getElementById(arrowIconId);
     if (container && contentOffsetHeight && arrowIcon) {
-      const newContainerHeigth =
-        contentOffsetHeight + pathnames.length * marginBottom;
+      const newContainerHeigth = contentOffsetHeight + pathnames.length * marginBottom;
       container.style.height = !isOpen ? `${newContainerHeigth}px` : '0px';
       arrowIcon.style.transform = !isOpen ? 'rotate(90deg)' : '';
     }
@@ -104,4 +102,4 @@ const NavGroup: React.FC<NavGroupProps> = ({ children, label, startIcon }) => {
   );
 };
 
-export default NavGroup;
+export { NavGroup };

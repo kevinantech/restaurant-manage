@@ -1,4 +1,4 @@
-import { AdminRepository } from '@/admin/infrastructure/admin.repository';
+import { UserRepository } from '@/user/infrastructure/user.repository';
 import { WebRoutes } from 'app/_common/routes-enum';
 import { GeneralUtils } from 'lib/general.util';
 import { dbConnect } from 'lib/mongoose/connect';
@@ -22,15 +22,15 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: {},
+        email: {},
         password: {},
       },
       async authorize(credentials, req): Promise<UserSession | null> {
-        if (!credentials || !credentials.username || !credentials.password)
+        if (!credentials || !credentials.email || !credentials.password)
           throw new Error('Las credenciales no han sido proporcionadas.');
         await dbConnect();
-        const db = new AdminRepository();
-        const userFound = await db.getAdminByUsername(credentials.username);
+        const db = new UserRepository();
+        const userFound = await db.getUserByEmail(credentials.email);
         if (!userFound) throw new Error('Usuario o contraseña incorrectos.');
 
         const PASS_ENCRYPTION_KEY = <string>process.env.PASS_ENCRIPTION_KEY;

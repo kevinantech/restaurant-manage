@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 export const credentialsSchema = z.object({
-  username: z.string().min(1, 'Este campo es obligatorio.'),
+  email: z.email('Ingrese un email válido').min(1, 'Ingrese un email'),
   password: z.string().min(1, 'Este campo es obligatorio.'),
 });
 
@@ -30,7 +30,7 @@ export const useLoginPage = () => {
   const handleLogin = async (data: Credentials) => {
     await handler(async () => {
       const result = await signIn('credentials', { ...data, redirect: false });
-      if (result?.ok) router.push(WebRoutes.DASHBOARD);
+      if (result?.ok) router.push(WebRoutes.HOME);
       else if (result?.error) throw new Error(result.error);
     });
   };

@@ -50,15 +50,6 @@ const RegisterPage = () => {
             variant="standard"
             size="small"
             fullWidth
-            label="Usuario"
-            {...form.register('username')}
-            error={!!form.errors.username?.message}
-            helperText={form.errors.username?.message}
-          />
-          <TextField
-            variant="standard"
-            size="small"
-            fullWidth
             label="Correo"
             {...form.register('email')}
             error={!!form.errors.email?.message}

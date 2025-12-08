@@ -25,18 +25,11 @@ const Dot: React.FC<DotProps> = ({ active }) => {
 export interface NavLinkProps {
   children: string;
   href: string;
-  onClick?: (
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-  ) => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
   startIcon?: ReactNode;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({
-  children,
-  href,
-  onClick,
-  startIcon,
-}) => {
+const NavLink: React.FC<NavLinkProps> = ({ children, href, onClick, startIcon }) => {
   const path = usePathname();
   const router = useRouter();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,4 +72,4 @@ const NavLink: React.FC<NavLinkProps> = ({
   );
 };
 
-export default NavLink;
+export { NavLink };

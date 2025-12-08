@@ -1,9 +1,10 @@
 'use client';
 import { Drawer, useMediaQuery } from '@mui/material';
-import { Header, Nav } from 'app/_components';
+import { Header } from 'app/_components/Header/Header';
+import { Nav } from 'app/_components/Nav/Nav';
 import { LayoutContext } from 'app/_context/Layout';
 import { SessionProvider } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './layout.module.css';
 
 interface ResponsiveNavProps {

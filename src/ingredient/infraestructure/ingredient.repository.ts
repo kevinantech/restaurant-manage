@@ -1,12 +1,13 @@
-import {
-  InsertInventoryItem,
-  InventoryItem,
-} from '../domain/inventory-item.entity';
-import { IInventoryRepository } from '../domain/inventory.repository.interface';
-import { InventoryItemModel } from './inventory-item.model';
+import { InsertIngredient } from '../domain/ingredient.entity';
+import { IIngredientRepository } from '../domain/ingredient.repository.interface';
+import { ingredientModel } from './ingredient.model';
 
-export class InventoryItemRepository implements IInventoryRepository {
-  async getItemById(id: string): Promise<InventoryItem | undefined> {
+export class IngredientRepository implements IIngredientRepository {
+  async saveIngredient(input: InsertIngredient): Promise<void> {
+    await new ingredientModel(input).save();
+  }
+
+  /* async getItemById(id: string): Promise<InventoryItem | undefined> {
     const doc = await InventoryItemModel.findById(id);
     return doc
       ? {
@@ -53,5 +54,5 @@ export class InventoryItemRepository implements IInventoryRepository {
 
   async getTotalItemsForUser(filter: { userId: string }): Promise<number> {
     return InventoryItemModel.countDocuments(filter);
-  }
+  } */
 }

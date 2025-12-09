@@ -1,7 +1,7 @@
 import { HydratedDocument, model, Model, models, Schema } from 'mongoose';
 import { InsertProvider, Provider } from '../domain/provider.entity';
 export type ProviderDocument = HydratedDocument<Provider>;
-export type ProvModel = Model<ProviderDocument>;
+export type providerModel = Model<ProviderDocument>;
 
 const schema = new Schema<InsertProvider>(
   {
@@ -29,5 +29,5 @@ const schema = new Schema<InsertProvider>(
   { versionKey: false }
 );
 
-export const ProviderModel: ProvModel =
+export const providerModel: providerModel =
   models.providers || model('providers', schema);

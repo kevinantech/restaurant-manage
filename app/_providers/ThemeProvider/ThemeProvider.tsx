@@ -6,11 +6,13 @@ import {
 } from '@mui/material';
 import { Color } from 'app/styles';
 import { Open_Sans } from 'next/font/google';
-import colors from 'tailwindcss/colors';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
 
-const theme: ThemeOptions = {
+/**
+ * https://mui.com/material-ui/customization/theme-components/
+ */
+export const theme: ThemeOptions = {
   typography: {
     fontFamily: openSans.style.fontFamily,
   },
@@ -38,9 +40,10 @@ const theme: ThemeOptions = {
         },
       },
     },
-    MuiButton: {
+    MuiButtonBase: {
       styleOverrides: {
         root: {
+          borderRadius: '0.5rem',
           textTransform: 'none',
           boxShadow: 'none',
           '&:hover': {
@@ -52,7 +55,8 @@ const theme: ThemeOptions = {
         },
       },
     },
-    MuiMenuItem: {
+    MuiSvgIcon: { styleOverrides: { root: { display: 'block' } } },
+    /* MuiMenuItem: {
       defaultProps: {
         disableRipple: true,
       },
@@ -61,17 +65,19 @@ const theme: ThemeOptions = {
           fontSize: 14,
         },
       },
-    },
+    }, */
   },
   palette: {
     primary: {
-      main: Color.primary,
+      main: Color.primary['800'],
+      ...Color.primary,
     },
     secondary: {
-      main: colors.blue[500],
+      main: Color.secondary['800'],
+      ...Color.secondary,
     },
     error: {
-      main: Color.cinnabar,
+      main: Color.error,
     },
   },
 };

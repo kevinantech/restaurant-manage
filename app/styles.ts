@@ -1,16 +1,15 @@
 export const Color = {
-  /* error: '#E94560', 
-  'admin-1': '#0F0F0F', 
-  'admin-2': '#E5E7EB', 
-  'admin-active': '#4E97FD', 
-  'admin-error': '#E94560', 
-  'admin-active-2': 'rgba(255 255 255 / 0.05)', 
-  'admin-primary': '#2B3445', 
-  'prussian-blue': '#002255', 
-  'azure-radiance': '#009CFF', */
-  pompadour: '#55004C', // TODO: remove
-  'french-lilac': '#EADBF6', // TODO: remove
-  cinnabar: '#E53935', // TODO: remove
-
-  primary: '#55004C',
+  primary: {
+    200: '#F8ECD9',
+    400: '#EEBEE3',
+    600: '#C576AC',
+    800: '#662753',
+  },
+  secondary: {
+    200: '#F4EEFF',
+    400: '#DCD6F7',
+    600: '#A6B1E1',
+    800: '#424874',
+  },
+  error: '#E53935',
 };

@@ -1,7 +1,8 @@
 export enum WebRoutes {
   LOGIN = '/login',
   REGISTER = '/register',
-  HOME = '/app',
+  HOME = '/home',
+  INVENTORY = '/inventory',
 }
 
 export enum ApiRoutes {

@@ -1,4 +1,7 @@
-'use client';
+import { AppLayout } from 'app/_components/layout/AppLayout';
+export default AppLayout;
+
+/* 'use client';
 import { Drawer, useMediaQuery } from '@mui/material';
 import { Header } from 'app/_components/Header/Header';
 import { Nav } from 'app/_components/Nav/Nav';
@@ -58,4 +61,4 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </LayoutContext.Provider>
     </SessionProvider>
   );
-}
+} */

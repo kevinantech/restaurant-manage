@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --sidebar-width-expanded: 16.25rem; /* 260px */
+  --sidebar-width-collapsed: 5rem; /* 80px */
+  --header-height: 5rem; /* 80px */
+}

@@ -11,13 +11,13 @@ export type AppLayoutProps = {
 };
 
 /**
- * Permite gestionar la apertura/cierre del menú lateral.
+ * Permite gestionar la apertura/cierre del menu de navegación.
  */
-const useMenuToggle = () => {
+const useNavigationMenu = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
   const toggle = () => setOpen((prev) => !prev);
   return {
-    open: isOpen,
+    isOpen,
     toggle,
     set: setOpen,
   };
@@ -25,10 +25,10 @@ const useMenuToggle = () => {
 
 export type AppLayoutHook = ReturnType<typeof _useAppLayout>;
 const _useAppLayout = () => {
-  const menuToggle = useMenuToggle();
+  const navigationMenu = useNavigationMenu();
 
   return {
-    menuToggle,
+    navigationMenu,
   };
 };
 
@@ -48,7 +48,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               'mx-4',
 
               /* Desktop */
-              appLayoutHook.menuToggle.open
+              appLayoutHook.navigationMenu.isOpen
                 ? 'lg:ml-[var(--sidebar-width-expanded)]'
                 : 'lg:ml-[var(--sidebar-width-collapsed)]'
             )}

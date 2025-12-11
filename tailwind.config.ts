@@ -6,9 +6,6 @@ const config: Config = {
   theme: {
     extend: {
       colors: { ...Color },
-      screens: {
-        'semi-sm': '600px',
-      },
     },
   },
   plugins: [],

@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { Color } from 'app/styles';
 import { Open_Sans } from 'next/font/google';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
 
@@ -13,6 +14,16 @@ const openSans = Open_Sans({ subsets: ['latin'] });
  * https://mui.com/material-ui/customization/theme-components/
  */
 export const theme: ThemeOptions = {
+  breakpoints: {
+    // Usa breakpoints de tailwind.
+    values: {
+      xs: 0,
+      sm: parseInt(defaultTheme.screens.sm),
+      md: parseInt(defaultTheme.screens.md),
+      lg: parseInt(defaultTheme.screens.lg),
+      xl: parseInt(defaultTheme.screens.xl),
+    },
+  },
   typography: {
     fontFamily: openSans.style.fontFamily,
   },

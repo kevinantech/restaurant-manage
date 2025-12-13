@@ -1,46 +1,29 @@
-import { cn } from 'app/_common/cn-util';
-import { SidebarMenu } from './SidebarMenu';
+import Box from '@mui/material/Box';
 import { useAppLayout } from 'app/_context/AppLayoutContext';
-import { Brand } from './Brand';
+import React from 'react';
+import { SidebarMenu } from './SidebarMenu';
 
+/**
+ * Versión para dispositivos NO móviles.
+ */
 export type SidebarProps = {};
-const Sidebar: React.FC<SidebarProps> = ({}) => {
+export const Sidebar: React.FC<SidebarProps> = ({}) => {
   const { navigationMenu } = useAppLayout();
-
   return (
-    <aside
-      className={cn(
-        'fixed bottom-0 bg-white',
-        'transition-[transform,width] duration-300 ease-in-out',
-        /* Mobile */
-        'top-0 w-[var(--sidebar-width-expanded)]',
-        navigationMenu.isOpen ? 'translate-x-0' : 'translate-x-[-100%]',
-
-        /* Desktop  */
-        'lg:translate-x-0 lg:top-[var(--header-height)]',
-        navigationMenu.isOpen
-          ? 'lg:w-[var(--sidebar-width-expanded)]'
-          : 'lg:w-[var(--sidebar-width-collapsed)]'
-      )}
+    <Box
+      component="aside"
+      sx={{
+        display: { xs: 'none', md: 'block' },
+        height: 'calc(100dvh - var(--header-height))',
+        paddingX: '1rem',
+        width: navigationMenu.isOpen
+          ? 'var(--sidebar-width-expanded)'
+          : 'var(--sidebar-width-reduced)',
+        ...(!navigationMenu.isOpen && { paddingLeft: '0.625rem' }),
+        transition: 'width 300ms ease-in-out',
+      }}
     >
-      <SidebarHeader />
-      <SidebarMenu />
-    </aside>
+      <SidebarMenu expanded={navigationMenu.isOpen} />
+    </Box>
   );
 };
-
-// Solo para mobiles
-const SidebarHeader = () => {
-  return (
-    <div
-      className={cn(
-        'flex items-center h-[var(--header-height)] p-4',
-        'lg:hidden'
-      )}
-    >
-      <Brand />
-    </div>
-  );
-};
-
-export { Sidebar };

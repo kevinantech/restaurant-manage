@@ -1,13 +1,18 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAppLayout } from 'app/_context/AppLayoutContext';
 import { Brand } from './Brand';
+import { cn } from 'app/_common/cn-util';
 
 const MenuButton = () => {
   const { navigationMenu } = useAppLayout();
   return (
     <button
       onClick={navigationMenu.toggle}
-      className="p-1 rounded-[0.25rem] text-primary-600 bg-primary-200 transition-colors duration-[250ms] ease-in-out hover:text-primary-200 hover:bg-primary-600"
+      className={cn(
+        'flex justify-center items-center size-[2.125rem] rounded-lg text-primary-600 bg-primary-200',
+        'transition-colors duration-[250ms] ease-in-out',
+        'hover:text-primary-200 hover:bg-primary-600'
+      )}
     >
       <MenuIcon />
     </button>

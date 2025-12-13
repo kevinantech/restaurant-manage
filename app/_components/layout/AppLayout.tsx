@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { useState } from 'react';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
+import { SidebarDrawer } from './SidebarDrawer';
 
 export type AppLayoutProps = {
   children: React.ReactNode;
@@ -27,9 +28,7 @@ export type AppLayoutHook = ReturnType<typeof _useAppLayout>;
 const _useAppLayout = () => {
   const navigationMenu = useNavigationMenu();
 
-  return {
-    navigationMenu,
-  };
+  return { navigationMenu };
 };
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
@@ -38,23 +37,17 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
     <AppLayoutContext value={appLayoutHook}>
       <SessionProvider>
-        <div className="min-h-screen">
-          <Header />
+        <Header />
+        <div
+          className={cn(
+            'flex min-h-[calc(100dvh-var(--header-height))]',
+            'px-4 md:px-0 md:pr-5'
+          )}
+        >
           <Sidebar />
-          <div
-            className={cn(
-              'min-h-[calc(100dvh_-_var(--header-height))] p-4 rounded-t-3xl bg-secondary-200 transition-[margin-left] duration-300 ease-in-out',
-              /* Mobile */
-              'mx-4',
-
-              /* Desktop */
-              appLayoutHook.navigationMenu.isOpen
-                ? 'lg:ml-[var(--sidebar-width-expanded)]'
-                : 'lg:ml-[var(--sidebar-width-collapsed)]'
-            )}
-          >
-            <div className="container mx-auto"></div>
-            {children}
+          <SidebarDrawer />
+          <div className="grow p-4 rounded-t-[1.5rem] bg-secondary-200 transition-[flex-grow] duration-300 ease-in-out">
+            <div className="container mx-auto">{children}</div>
           </div>
         </div>
       </SessionProvider>

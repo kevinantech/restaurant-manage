@@ -1,14 +1,8 @@
 'use client';
-import {
-  ThemeProvider as _ThemeProvider,
-  createTheme,
-  ThemeOptions,
-} from '@mui/material';
+import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 import { Color } from 'app/styles';
-import { Open_Sans } from 'next/font/google';
 import defaultTheme from 'tailwindcss/defaultTheme';
-
-const openSans = Open_Sans({ subsets: ['latin'] });
+import { typography } from './typography';
 
 /**
  * https://mui.com/material-ui/customization/theme-components/
@@ -24,9 +18,7 @@ export const theme: ThemeOptions = {
       xl: parseInt(defaultTheme.screens.xl),
     },
   },
-  typography: {
-    fontFamily: openSans.style.fontFamily,
-  },
+  typography,
   components: {
     MuiFormLabel: {
       styleOverrides: {
@@ -57,26 +49,19 @@ export const theme: ThemeOptions = {
           borderRadius: '0.5rem',
           textTransform: 'none',
           boxShadow: 'none',
-          '&:hover': {
-            boxShadow: 'none',
-          },
-          '&:active': {
-            boxShadow: 'none',
-          },
+          '&:hover': { boxShadow: 'none' },
+          '&:active': { boxShadow: 'none' },
         },
       },
     },
-    MuiSvgIcon: { styleOverrides: { root: { display: 'block' } } },
-    /* MuiMenuItem: {
-      defaultProps: {
-        disableRipple: true,
-      },
+
+    MuiSvgIcon: {
       styleOverrides: {
         root: {
-          fontSize: 14,
+          display: 'block',
         },
       },
-    }, */
+    },
   },
   palette: {
     primary: {
@@ -97,8 +82,8 @@ export type ThemeProviderProps = {
   children: React.ReactNode;
 };
 
-const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  return <_ThemeProvider theme={createTheme(theme)}>{children}</_ThemeProvider>;
+const ThemeCustomization: React.FC<ThemeProviderProps> = ({ children }) => {
+  return <ThemeProvider theme={createTheme(theme)}>{children}</ThemeProvider>;
 };
 
-export default ThemeProvider;
+export default ThemeCustomization;

@@ -16,8 +16,8 @@ const expandedMixin = (theme: Theme): CSSObject => ({
   }),
 });
 
-const reducedMixin = (theme: Theme): CSSObject => ({
-  width: 'var(--sidebar-width-reduced)',
+const collapsedMixin = (theme: Theme): CSSObject => ({
+  width: 'var(--sidebar-width-collapsed)',
   transition: theme.transitions.create('width', {
     duration: theme.transitions.duration.leavingScreen,
     easing: theme.transitions.easing.easeInOut,
@@ -27,11 +27,12 @@ const reducedMixin = (theme: Theme): CSSObject => ({
 const DrawerStyled = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'downMD',
 })<DrawerStyledProps>(({ open, downMD, theme }) => ({
-  ...(open ? expandedMixin(theme) : reducedMixin(theme)),
+  ...(open ? expandedMixin(theme) : collapsedMixin(theme)),
   '& .MuiDrawer-paper': {
+    overflowX: 'hidden',
     borderRight: 'none',
     ...(!downMD && { zIndex: zIndex.appBar - 1 }),
-    ...(open ? expandedMixin(theme) : reducedMixin(theme)),
+    ...(open ? expandedMixin(theme) : collapsedMixin(theme)),
   },
 }));
 

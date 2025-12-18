@@ -1,44 +1,37 @@
-import styled from '@emotion/styled';
+import List from '@mui/material/List';
+import styled from '@mui/material/styles/styled';
 import Typography from '@mui/material/Typography';
-import { useAppLayout } from 'app/_context/AppLayoutContext';
-import { Fragment, memo } from 'react';
-import { NavList } from './config';
-import MenuListStyled from './MenuListStyled';
+import useMenuVariant from 'app/_hooks/useMenuVariant';
+import { navList } from '../config';
 import MenuItem from './MenuItem';
-export type MenuListProps = {
-  menuList: NavList;
-};
 
-const SubheaderStyled = memo(
-  styled(Typography)({
-    display: 'block',
-    marginTop: '0.625rem' /* 10px */,
-    padding: '0.375rem' /* 6px */,
-    fontSize: '0.875rem' /* 14px */,
-    fontWeight: '500',
-    textTransform: 'capitalize',
-  })
-);
+const Sub = styled(Typography)({
+  display: 'block',
+  marginTop: '0.625rem' /* 10px */,
+  padding: '0.375rem' /* 6px */,
+  fontSize: '0.875rem' /* 14px */,
+  fontWeight: '500',
+  textTransform: 'capitalize',
+});
 
-const MenuList: React.FC<MenuListProps> = ({ menuList }) => {
-  const { navigationMenu } = useAppLayout();
+export type MenuListProps = {};
+const MenuList: React.FC<MenuListProps> = ({}) => {
+  const menuVariant = useMenuVariant();
 
   return (
-    <MenuListStyled
-      expanded={navigationMenu.isOpen}
-      subheader={
-        navigationMenu.isOpen && (
-          <SubheaderStyled>{menuList.title}</SubheaderStyled>
-        )
-      }
+    <List
+      sx={{
+        paddingX: '1rem' /* 16px */,
+        ...(menuVariant === 'collapsed' && {
+          paddingLeft: '0.625rem' /* 10px */,
+        }),
+      }}
+      subheader={menuVariant === 'expanded' && <Sub>Menu</Sub>}
     >
-      {menuList.items.map((item) => (
-        <Fragment key={`menuItem-${item.title}`}>
-          {item.type === 'item' && <MenuItem item={item} />}
-          {/* TODO: add nav group */}
-        </Fragment>
+      {navList.map((menuItem) => (
+        <MenuItem key={menuItem.id} menuItem={menuItem} />
       ))}
-    </MenuListStyled>
+    </List>
   );
 };
 

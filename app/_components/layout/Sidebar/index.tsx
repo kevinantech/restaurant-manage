@@ -1,6 +1,5 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAppLayout } from 'app/_context/AppLayoutContext';
-import { navItems } from '../Sidebar/MenuList/config';
 import DrawerStyled from './DrawerStyled';
 import MenuList from './MenuList';
 
@@ -19,9 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({}) => {
       <div className="h-[var(--header-height)]"></div>
 
       {/* sidebar menus */}
-      {navItems.map((menuList) => (
-        <MenuList key={`menuList-${menuList.title}`} menuList={menuList} />
-      ))}
+      <MenuList />
     </DrawerStyled>
   );
 };

@@ -4,18 +4,18 @@ import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlin
 import { WebRoutes } from 'app/_common/routes-enum';
 
 // Item de navegación simple
-export type NavItemSingle = {
+export type NavItem = {
   id: string;
-  type: 'item';
+  type: 'NavItem';
   title: string;
   href: string;
   icon: SvgIconComponent;
 };
 
 // Item con sub-items (grupo expandible)
-export type NavItemGroup = {
+export type NavGroup = {
   id: string;
-  type: 'group';
+  type: 'NavGroup';
   title: string;
   icon: SvgIconComponent;
   subItems: {
@@ -25,17 +25,17 @@ export type NavItemGroup = {
   }[];
 };
 
-export const navList: (NavItemSingle | NavItemGroup)[] = [
+export const navList: (NavItem | NavGroup)[] = [
   {
     id: crypto.randomUUID(),
-    type: 'item',
+    type: 'NavItem',
     title: 'Inicio',
     href: WebRoutes.HOME,
     icon: SpaceDashboardOutlinedIcon,
   },
   {
     id: crypto.randomUUID(),
-    type: 'group',
+    type: 'NavGroup',
     title: 'Inventario',
     icon: InventoryOutlinedIcon,
     subItems: [

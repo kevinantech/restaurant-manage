@@ -3,9 +3,9 @@
  * but when the menu collapses, they are assigned to ButtonBase.
  */
 import styled, { CSSObject } from '@emotion/styled';
+import grey from '@mui/material/colors/grey';
 import ListItemButton from '@mui/material/ListItemButton';
 import { Color } from 'app/styles';
-import colors from 'tailwindcss/colors';
 
 const defaultStyles = {
   ListItemIcon: {
@@ -59,7 +59,7 @@ const collapsedMixin = (): CSSObject => ({
 const ListItemButtonStyled = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<ListItemButtonStyledProps>(({ variant }) => ({
-  color: colors.slate[700],
+  color: grey[700],
   marginBottom: '0.25rem',
 
   /* ListItemIcon */

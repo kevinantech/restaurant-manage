@@ -2,10 +2,12 @@ import List from '@mui/material/List';
 import styled from '@mui/material/styles/styled';
 import Typography from '@mui/material/Typography';
 import useMenuVariant from 'app/_hooks/useMenuVariant';
+import { Fragment } from 'react';
 import { navList } from '../config';
+import MenuGroup from './MenuGroup';
 import MenuItem from './MenuItem';
 
-const Sub = styled(Typography)({
+const Caption = styled(Typography)({
   display: 'block',
   marginTop: '0.625rem' /* 10px */,
   padding: '0.375rem' /* 6px */,
@@ -26,10 +28,13 @@ const MenuList: React.FC<MenuListProps> = ({}) => {
           paddingLeft: '0.625rem' /* 10px */,
         }),
       }}
-      subheader={menuVariant === 'expanded' && <Sub>Menu</Sub>}
+      subheader={menuVariant === 'expanded' && <Caption>Menu</Caption>}
     >
-      {navList.map((menuItem) => (
-        <MenuItem key={menuItem.id} menuItem={menuItem} />
+      {navList.map((item) => (
+        <Fragment key={item.id}>
+          {item.type === 'NavItem' && <MenuItem navItem={item} />}
+          {item.type === 'NavGroup' && <MenuGroup navGroup={item} />}
+        </Fragment>
       ))}
     </List>
   );

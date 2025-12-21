@@ -32,13 +32,13 @@ const usePopper = () => {
   const mainButtonHandlers = {
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (menuVariant === 'compact') {
-        setAchorEl(event.target as HTMLDivElement);
+        setAchorEl(event.currentTarget as HTMLDivElement);
         toggleOpen();
       }
     },
     onMouseEnter: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (menuVariant === 'compact') {
-        setAchorEl(event.target as HTMLDivElement);
+        setAchorEl(event.currentTarget as HTMLDivElement);
         setOpen(true);
       }
     },

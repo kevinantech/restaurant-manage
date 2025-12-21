@@ -3,7 +3,7 @@ import styled from '@mui/material/styles/styled';
 import Typography from '@mui/material/Typography';
 import useMenuVariant from 'app/_hooks/useMenuVariant';
 import { Fragment } from 'react';
-import { navList } from '../config';
+import { navList } from './config';
 import MenuGroup from './MenuGroup';
 import MenuItem from './MenuItem';
 
@@ -24,9 +24,7 @@ const MenuList: React.FC<MenuListProps> = ({}) => {
     <List
       sx={{
         paddingX: '1rem' /* 16px */,
-        ...(menuVariant === 'compact' && {
-          paddingLeft: '0.625rem' /* 10px */,
-        }),
+        ...(menuVariant === 'compact' && { paddingX: '0' }),
       }}
       subheader={menuVariant === 'default' && <Caption>Menu</Caption>}
     >

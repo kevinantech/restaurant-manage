@@ -37,7 +37,6 @@ const checkProps = (props: MenuItemProps) => {
 };
 
 const MenuItem: React.FC<MenuItemProps> = (props) => {
-  console.log('🚀 ~ MenuItem ~ props:', props);
   checkProps(props);
   const variant = useMenuVariant();
   const pathname = usePathname();
@@ -55,9 +54,10 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
         onMouseEnter: props.onMouseEnter,
       })}
       sx={sxListItemButton({ variant })}
+      disableRipple={variant === 'compact'}
     >
       {/* button icon wrapper */}
-      <ButtonBase disableRipple>
+      <ButtonBase disableRipple={variant === 'default'}>
         <ListItemIcon>
           <props.item.icon
             sx={{ width: variant === 'default' ? '1.25rem' : '1.5rem' }}

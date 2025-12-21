@@ -27,10 +27,10 @@ const defaultVariantMixin = (): CSSObject => ({
 });
 
 const compactVariantMixin = (): CSSObject => ({
-  padding: 0,
+  padding: '0 0.625rem 0 1rem' /* 0 10px 0 16px */,
 
   /* Clear ListButtonItem's styles */
-  '&.Mui-selected': {
+  '&:hover, &.Mui-selected, &.Mui-selected:hover': {
     backgroundColor: 'transparent',
   },
 

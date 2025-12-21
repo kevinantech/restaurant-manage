@@ -6,15 +6,15 @@ const useCollapse = () => {
   const menuVariant = useMenuVariant();
   const toggleOpen = () => setOpen((prev) => !prev);
 
-  const groupButtonHandlers = {
+  const mainButtonHandlers = {
     onClick: () => {
-      if (menuVariant === 'expanded') toggleOpen();
+      if (menuVariant === 'default') toggleOpen();
     },
   };
 
   return {
     isOpen,
-    groupButtonHandlers,
+    mainButtonHandler: mainButtonHandlers,
   };
 };
 

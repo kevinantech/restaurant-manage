@@ -10,13 +10,13 @@ const usePopper = () => {
 
   // Close the popper when the menu variant is expanded.
   useEffect(() => {
-    if (menuVariant === 'expanded' && isOpen) setOpen(false);
+    if (menuVariant === 'default' && isOpen) setOpen(false);
   }, [menuVariant]);
 
   // Close the popper when the user left the trigger button or the popper.
   useEffect(() => {
     const handleMouseOver = (event: MouseEvent) => {
-      if (menuVariant === 'collapsed' && isOpen) {
+      if (menuVariant === 'compact' && isOpen) {
         const target = event.target as HTMLElement;
         const isMouseOutsideGroupButton =
           anchorEl && !anchorEl.contains(target);
@@ -29,15 +29,15 @@ const usePopper = () => {
     return () => document.removeEventListener('mouseover', handleMouseOver);
   }, [isOpen]);
 
-  const groupButtonHandlers = {
+  const mainButtonHandlers = {
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (menuVariant === 'collapsed') {
+      if (menuVariant === 'compact') {
         setAchorEl(event.target as HTMLDivElement);
         toggleOpen();
       }
     },
     onMouseEnter: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (menuVariant === 'collapsed') {
+      if (menuVariant === 'compact') {
         setAchorEl(event.target as HTMLDivElement);
         setOpen(true);
       }
@@ -46,8 +46,8 @@ const usePopper = () => {
 
   return {
     anchorEl,
-    groupButtonHandlers,
     isOpen,
+    mainButtonHandlers,
     ref,
   };
 };

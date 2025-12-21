@@ -1,167 +1,82 @@
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import ButtonBase from '@mui/material/ButtonBase';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import useMenuVariant from 'app/_hooks/useMenuVariant';
+import { OmitTyped } from 'lib/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { NavItem } from '../../config';
-import ListItemButtonStyled from './ListItemButtonStyled';
-import ListItemText from '@mui/material/ListItemText';
-export type MenuItemProps = { navItem: NavItem };
+import React from 'react';
+import { NavGroup, NavItem } from '../../config';
+import sxListItemButton from './sx/ListItemButton';
 
-const MenuItem: React.FC<MenuItemProps> = ({ navItem }) => {
-  const menuVariant = useMenuVariant();
+export type MenuItemProps = {
+  item: NavItem | OmitTyped<NavGroup, 'subItems'>;
+
+  // NavGroup-specific props
+  selected?: boolean;
+  isExpanded?: boolean;
+  onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+};
+
+const checkProps = (props: MenuItemProps) => {
+  if (
+    props.item.type === 'NavGroup' &&
+    (typeof props.selected !== 'boolean' ||
+      typeof props.isExpanded !== 'boolean' ||
+      typeof props.onMouseEnter !== 'function' ||
+      typeof props.onClick !== 'function')
+  ) {
+    throw new Error(
+      'MenuItem component expects selected, isExpanded, onMouseEnter, and onClick props for NavGroup items'
+    );
+  }
+};
+
+const MenuItem: React.FC<MenuItemProps> = (props) => {
+  console.log('🚀 ~ MenuItem ~ props:', props);
+  checkProps(props);
+  const variant = useMenuVariant();
   const pathname = usePathname();
 
   return (
-    <ListItemButtonStyled
-      component={Link}
-      href={navItem.href}
-      selected={pathname === navItem.href}
-      variant={menuVariant}
+    <ListItemButton
+      {...(props.item.type === 'NavItem' && {
+        component: Link,
+        href: props.item.href,
+        selected: pathname === props.item.href,
+      })}
+      {...(props.item.type === 'NavGroup' && {
+        selected: props.selected,
+        onClick: props.onClick,
+        onMouseEnter: props.onMouseEnter,
+      })}
+      sx={sxListItemButton({ variant })}
     >
       {/* button icon wrapper */}
       <ButtonBase disableRipple>
         <ListItemIcon>
-          <navItem.icon
-            sx={{ width: menuVariant === 'expanded' ? '1.25rem' : '1.5rem' }}
+          <props.item.icon
+            sx={{ width: variant === 'default' ? '1.25rem' : '1.5rem' }}
           />
         </ListItemIcon>
       </ButtonBase>
 
       {/* button text */}
-      {menuVariant === 'expanded' && (
-        <ListItemText>{navItem.title}</ListItemText>
-      )}
-    </ListItemButtonStyled>
-  );
-};
+      {variant === 'default' && <ListItemText>{props.item.title}</ListItemText>}
 
-export default MenuItem;
-
-/* 
-const useNestedMenu = () => {
-  const menuVariant = useMenuVariant();
-  const [isOpen, setOpen] = useState<boolean>(false);
-  const toggleOpen = () => setOpen((prev) => !prev);
-  const popperRef = useRef<HTMLDivElement>(null);
-
-  const [popperAnchor, setPopperAnchor] = useState<HTMLDivElement | null>(null);
-
-  // track if the user has left the trigger button.
-  const [hasLeftTrigger, setHasLeftTrigger] = useState<boolean>(false);
-
-  // Close the popper if the menu variant is expanded;
-  useEffect(() => {
-    if (menuVariant === 'expanded') return setOpen(false);
-  }, [menuVariant]);
-
-  // Close popper when the user left the trigger button without entering the popper.
-  useEffect(() => {
-    const handleMouseOverOutsidePopper = (event: MouseEvent) => {
-      if (
-        hasLeftTrigger &&
-        popperRef.current &&
-        !popperRef.current.contains(event.target as HTMLElement) // check if the mouse is outside the popper
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mouseover', handleMouseOverOutsidePopper);
-    return document.removeEventListener(
-      'mouseover',
-      handleMouseOverOutsidePopper
-    );
-  }, [hasLeftTrigger]);
-
-  const triggerHandlers = {
-    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (menuVariant === 'collapsed') setPopperAnchor(event.currentTarget);
-      toggleOpen();
-    },
-    onMouseEnter: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (menuVariant === 'collapsed') {
-        setPopperAnchor(event.currentTarget);
-        setHasLeftTrigger(false);
-        setOpen(true);
-      }
-    },
-    onMouseLeave: () => {
-      if (menuVariant === 'collapsed') setHasLeftTrigger(true);
-    },
-  };
-
-  return { popperAnchor, popperRef, triggerHandlers, isOpen };
-};
-*/
-
-/* 
-const useMenuItem = ({ menuItem }: MenuItemProps) => {
-  const pathname = usePathname();
-  const menuVariant = useMenuVariant();
-  const nestedMenu = useNestedMenu();
-
-  const isSelected = useMemo(() => {
-    if (menuItem.type === 'item') {
-      return pathname === menuItem.href;
-    }
-    if (menuItem.type === 'group') {
-      const isActiveBySubItems = menuItem.subItems.some(
-        (subItem) => subItem.href === pathname
-      );
-      return (
-        (menuVariant === 'expanded' && nestedMenu.isOpen) || isActiveBySubItems
-      );
-    }
-    return false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, menuVariant, nestedMenu.isOpen]);
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (menuItem.type === 'group') {
-      nestedMenu.triggerHandlers.onClick(event);
-    }
-  };
-
-  const handleMouseEnter = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (menuItem.type === 'group') {
-      nestedMenu.triggerHandlers.onMouseEnter(event);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (menuItem.type === 'group') nestedMenu.triggerHandlers.onMouseLeave();
-  };
-
-  return {
-    handleClick,
-    handleMouseEnter,
-    handleMouseLeave,
-    isSelected,
-    nestedMenu,
-  };
-};
-*/
-
-/* 
-{menuItem.type === 'group' &&
-        menuVariant === 'expanded' &&
-        (nestedMenu.isOpen ? (
+      {props.item.type === 'NavGroup' &&
+        variant === 'default' &&
+        (props.isExpanded ? (
           <KeyboardArrowUpRoundedIcon />
         ) : (
           <KeyboardArrowDownRoundedIcon />
         ))}
-*/
+    </ListItemButton>
+  );
+};
 
-/*
-{menuItem.type === 'group' && nestedMenu.popperAnchor && (
-        <NestedMenu
-          ref={nestedMenu.popperRef}
-          popperAnchor={nestedMenu.popperAnchor}
-          open={nestedMenu.isOpen}
-          subItems={menuItem.subItems}
-        />
-      )}
- */
+export default MenuItem;

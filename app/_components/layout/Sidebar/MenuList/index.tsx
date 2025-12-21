@@ -24,16 +24,16 @@ const MenuList: React.FC<MenuListProps> = ({}) => {
     <List
       sx={{
         paddingX: '1rem' /* 16px */,
-        ...(menuVariant === 'collapsed' && {
+        ...(menuVariant === 'compact' && {
           paddingLeft: '0.625rem' /* 10px */,
         }),
       }}
-      subheader={menuVariant === 'expanded' && <Caption>Menu</Caption>}
+      subheader={menuVariant === 'default' && <Caption>Menu</Caption>}
     >
       {navList.map((item) => (
         <Fragment key={item.id}>
-          {item.type === 'NavItem' && <MenuItem navItem={item} />}
-          {item.type === 'NavGroup' && <MenuGroup navGroup={item} />}
+          {item.type === 'NavItem' && <MenuItem item={item} />}
+          {item.type === 'NavGroup' && <MenuGroup group={item} />}
         </Fragment>
       ))}
     </List>

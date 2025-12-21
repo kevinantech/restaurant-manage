@@ -1,14 +1,15 @@
 import grey from '@mui/material/colors/grey';
-import ListItemButton from '@mui/material/ListItemButton';
-import styled from '@mui/material/styles/styled';
+import { SxProps, Theme } from '@mui/material/styles';
+import useMenuVariant from 'app/_hooks/useMenuVariant';
 import { Color } from 'app/styles';
 
-type ListItemButtonStyledProps = {
-  variant: 'expanded' | 'collapsed';
+type ListItemButtonSxProps = {
+  variant: ReturnType<typeof useMenuVariant>;
 };
-const ListItemButtonStyled = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'variant',
-})<ListItemButtonStyledProps>(({ variant }) => ({
+
+const sxListItemButton = ({
+  variant,
+}: ListItemButtonSxProps): SxProps<Theme> => ({
   color: grey[700],
 
   '&:hover, &.Mui-selected, &.Mui-selected:hover': {
@@ -46,7 +47,7 @@ const ListItemButtonStyled = styled(ListItemButton, {
     fontWeight: 500,
   },
 
-  ...(variant === 'expanded' && { marginLeft: '2.25rem' /* 36px */ }),
-}));
+  ...(variant === 'default' && { marginLeft: '2.25rem' /* 36px */ }),
+});
 
-export default ListItemButtonStyled;
+export default sxListItemButton;

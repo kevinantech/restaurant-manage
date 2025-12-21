@@ -1,9 +1,7 @@
-import Collapse from '@mui/material/Collapse';
-import styled from '@mui/material/styles/styled';
+import { SxProps, Theme } from '@mui/material/styles';
 import { Color } from 'app/styles';
 
-type CollapseStyledProps = {};
-const CollapseStyled = styled(Collapse)<CollapseStyledProps>(({}) => ({
+const sxCollapse: SxProps<Theme> = {
   position: 'relative',
 
   /* Vertical divider */
@@ -16,6 +14,6 @@ const CollapseStyled = styled(Collapse)<CollapseStyledProps>(({}) => ({
     marginLeft: '1.5rem' /* 24px */,
     backgroundColor: Color.primary[200],
   },
-}));
+};
 
-export default CollapseStyled;
+export default sxCollapse;

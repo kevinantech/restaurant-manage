@@ -1,76 +1,83 @@
+import Collapse from '@mui/material/Collapse';
+import Popper from '@mui/material/Popper';
 import useMenuVariant from 'app/_hooks/useMenuVariant';
 import { usePathname } from 'next/navigation';
 import React, { useMemo } from 'react';
 import { NavGroup } from '../../config';
-import CollapseStyled from './CollapseStyled';
-import GroupButton from './GroupButton';
+import MenuItem from '../MenuItem';
 import GroupItem from './GroupItem';
 import useCollapse from './hooks/useCollapse';
 import usePopper from './hooks/usePopper';
-import PopperStyled from './PopperStyled';
+import sxCollapse from './sx/Collapse';
 
 const useMenuGroup = (props: MenuGroupProps) => {
   const pathname = usePathname();
   const popper = usePopper();
   const collapse = useCollapse();
-  const menuVariant = useMenuVariant();
+  const variant = useMenuVariant();
 
   const isMenuOpen = useMemo(() => {
-    if (menuVariant === 'expanded') return collapse.isOpen;
-    if (menuVariant === 'collapsed') return popper.isOpen;
+    if (variant === 'default') return collapse.isOpen;
+    if (variant === 'compact') return popper.isOpen;
     return false;
-  }, [menuVariant, collapse.isOpen, popper.isOpen]);
+  }, [variant, collapse.isOpen, popper.isOpen]);
 
   const isSelected = useMemo(() => {
-    const isThereSubItemSelected = props.navGroup.subItems.some(
+    const isThereSubItemSelected = props.group.subItems.some(
       (subItem) => subItem.href === pathname
     );
     return isMenuOpen || isThereSubItemSelected;
   }, [isMenuOpen, pathname]);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    collapse.groupButtonHandlers.onClick();
-    popper.groupButtonHandlers.onClick(event);
+    collapse.mainButtonHandler.onClick();
+    popper.mainButtonHandlers.onClick(event);
   };
 
-  return { collapse, handleClick, isMenuOpen, isSelected, menuVariant, popper };
+  return {
+    collapse,
+    handleClick,
+    isMenuOpen,
+    isSelected,
+    variant,
+    popper,
+  };
 };
 
-export type MenuGroupProps = {
-  navGroup: NavGroup;
-};
+export type MenuGroupProps = { group: NavGroup };
 
 const MenuGroup: React.FC<MenuGroupProps> = (props) => {
-  const { collapse, handleClick, isSelected, isMenuOpen, menuVariant, popper } =
+  const { collapse, handleClick, isSelected, isMenuOpen, variant, popper } =
     useMenuGroup(props);
-  const { navGroup } = props;
+  const { subItems, ...item } = props.group;
 
-  const navGroupSubItems = navGroup.subItems.map((subItem) => (
+  const navGroupSubItems = subItems.map((subItem) => (
     <GroupItem key={subItem.id} item={subItem} />
   ));
 
   return (
     <>
-      <GroupButton
-        title={navGroup.title}
-        icon={navGroup.icon}
-        isOpen={isMenuOpen}
+      <MenuItem
+        item={item}
+        isExpanded={isMenuOpen}
         selected={isSelected}
         onClick={handleClick}
-        onMouseEnter={popper.groupButtonHandlers.onMouseEnter}
+        onMouseEnter={popper.mainButtonHandlers.onMouseEnter}
       />
-      {menuVariant === 'expanded' && (
-        <CollapseStyled in={collapse.isOpen}>{navGroupSubItems}</CollapseStyled>
+      {variant === 'default' && (
+        <Collapse in={collapse.isOpen} sx={sxCollapse}>
+          {navGroupSubItems}
+        </Collapse>
       )}
-      {menuVariant === 'collapsed' && (
-        <PopperStyled
+      {variant === 'compact' && (
+        <Popper
           ref={popper.ref}
           anchorEl={popper.anchorEl}
           open={popper.isOpen}
           placement="right"
         >
           {navGroupSubItems}
-        </PopperStyled>
+        </Popper>
       )}
     </>
   );

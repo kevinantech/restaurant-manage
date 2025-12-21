@@ -1,10 +1,10 @@
 /**
- * When the menu is expanded ListItemButton takes styles for the hover and selected.
- * but when the menu collapses, they are assigned to ButtonBase.
+ * When the menu is default ListItemButton takes styles for the hover and selected.
+ * but when the menu is compact, those styles are assigned to ButtonBase.
  */
-import styled, { CSSObject } from '@emotion/styled';
 import grey from '@mui/material/colors/grey';
-import ListItemButton from '@mui/material/ListItemButton';
+import { CSSObject, SxProps, Theme } from '@mui/material/styles';
+import useMenuVariant from 'app/_hooks/useMenuVariant';
 import { Color } from 'app/styles';
 
 const defaultStyles = {
@@ -14,11 +14,7 @@ const defaultStyles = {
   } as CSSObject,
 };
 
-type ListItemButtonStyledProps = {
-  variant: 'expanded' | 'collapsed';
-};
-
-const expandedMixin = (): CSSObject => ({
+const defaultVariantMixin = (): CSSObject => ({
   '&:hover, &.Mui-selected, &.Mui-selected:hover': {
     color: Color.primary[800],
     backgroundColor: Color.primary[200],
@@ -30,7 +26,7 @@ const expandedMixin = (): CSSObject => ({
   },
 });
 
-const collapsedMixin = (): CSSObject => ({
+const compactVariantMixin = (): CSSObject => ({
   padding: 0,
 
   /* Clear ListButtonItem's styles */
@@ -56,9 +52,13 @@ const collapsedMixin = (): CSSObject => ({
   },
 });
 
-const ListItemButtonStyled = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'variant',
-})<ListItemButtonStyledProps>(({ variant }) => ({
+type ListItemButtonSxProps = {
+  variant: ReturnType<typeof useMenuVariant>;
+};
+
+const sxListItemButton = ({
+  variant,
+}: ListItemButtonSxProps): SxProps<Theme> => ({
   color: grey[700],
   marginBottom: '0.25rem',
 
@@ -72,8 +72,8 @@ const ListItemButtonStyled = styled(ListItemButton, {
     fontSize: '0.875rem' /* 14px */,
   },
 
-  ...(variant === 'expanded' && expandedMixin()),
-  ...(variant === 'collapsed' && collapsedMixin()),
-}));
+  ...(variant === 'default' && defaultVariantMixin()),
+  ...(variant === 'compact' && compactVariantMixin()),
+});
 
-export default ListItemButtonStyled;
+export default sxListItemButton;

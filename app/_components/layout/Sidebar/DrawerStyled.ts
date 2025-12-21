@@ -8,7 +8,7 @@ type DrawerStyledProps = {
   downMD: boolean;
 };
 
-const expandedMixin = (theme: Theme): CSSObject => ({
+const defaultVariantMixin = (theme: Theme): CSSObject => ({
   width: 'var(--sidebar-width-expanded)',
   transition: theme.transitions.create('width', {
     duration: theme.transitions.duration.enteringScreen,
@@ -16,7 +16,7 @@ const expandedMixin = (theme: Theme): CSSObject => ({
   }),
 });
 
-const collapsedMixin = (theme: Theme): CSSObject => ({
+const compactVariantMixin = (theme: Theme): CSSObject => ({
   width: 'var(--sidebar-width-collapsed)',
   transition: theme.transitions.create('width', {
     duration: theme.transitions.duration.leavingScreen,
@@ -27,12 +27,12 @@ const collapsedMixin = (theme: Theme): CSSObject => ({
 const DrawerStyled = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'downMD',
 })<DrawerStyledProps>(({ open, downMD, theme }) => ({
-  ...(open ? expandedMixin(theme) : collapsedMixin(theme)),
+  ...(open ? defaultVariantMixin(theme) : compactVariantMixin(theme)),
   '& .MuiDrawer-paper': {
     overflowX: 'hidden',
     borderRight: 'none',
     ...(!downMD && { zIndex: zIndex.appBar - 1 }),
-    ...(open ? expandedMixin(theme) : collapsedMixin(theme)),
+    ...(open ? defaultVariantMixin(theme) : compactVariantMixin(theme)),
   },
 }));
 

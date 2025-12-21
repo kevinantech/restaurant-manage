@@ -1,6 +1,6 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAppLayout } from 'app/_context/AppLayoutContext';
-import DrawerStyled from './DrawerStyled';
+import DrawerStyled from './styled/Drawer';
 import MenuList from './MenuList';
 
 export type SidebarProps = {};

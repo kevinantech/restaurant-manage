@@ -9,7 +9,7 @@ import { OmitTyped } from 'lib/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import { NavGroup, NavItem } from '../../config';
+import { NavGroup, NavItem } from '../config';
 import sxListItemButton from './sx/ListItemButton';
 
 export type MenuItemProps = {

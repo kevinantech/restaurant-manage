@@ -3,7 +3,7 @@ import Popper from '@mui/material/Popper';
 import useMenuVariant from 'app/_hooks/useMenuVariant';
 import { usePathname } from 'next/navigation';
 import React, { useMemo } from 'react';
-import { NavGroup } from '../../config';
+import { NavGroup } from '../config';
 import MenuItem from '../MenuItem';
 import GroupItem from './GroupItem';
 import useCollapse from './hooks/useCollapse';

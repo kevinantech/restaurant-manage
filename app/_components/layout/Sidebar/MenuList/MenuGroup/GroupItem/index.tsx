@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import useMenuVariant from 'app/_hooks/useMenuVariant';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { NavGroup } from '../../../config';
+import { NavGroup } from '../../config';
 import sxListItemButton from './sx/ListItemButton';
 
 export type GroupItemProps = {

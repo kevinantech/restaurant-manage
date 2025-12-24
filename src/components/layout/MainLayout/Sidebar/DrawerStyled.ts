@@ -20,6 +20,7 @@ const compactVariantMixin = (theme: Theme): CSSObject => ({
 
 const DrawerStyled = styled(Drawer)(({ open, theme }) => ({
   '& > div.MuiDrawer-paper': {
+    zIndex: theme.zIndex.appBar - 1,
     overflowX: 'hidden',
     borderRight: 'none',
     ...defaultVariantMixin(theme),

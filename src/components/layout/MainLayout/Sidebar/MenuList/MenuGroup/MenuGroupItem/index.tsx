@@ -15,7 +15,9 @@ export type GroupItemProps = {
   title: string;
 };
 
-const GroupItemBase: React.FC<GroupItemProps> = (props) => {
+const GroupItemBase: React.FC<GroupItemProps & { className?: string }> = (
+  props
+) => {
   const pathname = usePathname();
 
   return (
@@ -23,6 +25,7 @@ const GroupItemBase: React.FC<GroupItemProps> = (props) => {
       component={Link}
       href={props.href}
       selected={pathname === props.href}
+      className={props.className}
     >
       <ButtonBase disableRipple>
         <ListItemIcon>

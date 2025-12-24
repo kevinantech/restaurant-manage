@@ -30,17 +30,20 @@ export type MenuItemProps = {
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
 };
 
-const MenuItemBase: React.FC<MenuItemProps> = (props) => {
+const MenuItemBase: React.FC<MenuItemProps & { className?: string }> = (
+  props
+) => {
   return (
     <ListItemButton
       {...(props.href && {
-        compenent: Link,
+        component: Link,
         href: props.href,
       })}
       selected={props.selected}
       onClick={props.onClick}
       onMouseEnter={props.onMouseEnter}
       disableRipple={props.size === 'icon'}
+      className={props.className}
     >
       {/* button icon wrapper */}
       <ButtonBase disableRipple={props.size === 'full'}>
@@ -55,7 +58,9 @@ const MenuItemBase: React.FC<MenuItemProps> = (props) => {
       {props.size === 'full' && <ListItemText>{props.title}</ListItemText>}
 
       {/* arrow */}
-      {props.size === 'full' && (props.expanded ? <ArrowUp /> : <ArrowDown />)}
+      {props.size === 'full' &&
+        typeof props.expanded === 'boolean' &&
+        (props.expanded ? <ArrowUp /> : <ArrowDown />)}
     </ListItemButton>
   );
 };
@@ -78,7 +83,7 @@ const activeItemState: CSSObject = {
   backgroundColor: Color.primary[200],
 };
 
-const iconSizeMixin = (): CSSObject => ({
+const fullSizeMixin = (): CSSObject => ({
   '&:hover, &.Mui-selected, &.Mui-selected:hover': activeItemState,
 
   /* Apply styles to ListItemText when MenuItem is selected */
@@ -87,7 +92,7 @@ const iconSizeMixin = (): CSSObject => ({
   },
 });
 
-const fullSizeMixin = (): CSSObject => ({
+const iconSizeMixin = (): CSSObject => ({
   padding: '0 0.625rem 0 1rem' /* 0 10px 0 16px */,
 
   /* Clear ListButtonItem's styles */

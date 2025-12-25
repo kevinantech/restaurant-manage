@@ -2,16 +2,16 @@ import { CSSObject } from '@emotion/styled';
 import Drawer from '@mui/material/Drawer';
 import { styled, Theme } from '@mui/material/styles';
 
-const defaultVariantMixin = (theme: Theme): CSSObject => ({
-  width: 'var(--sidebar-width-default)',
+const expandedMixin = (theme: Theme): CSSObject => ({
+  width: 'var(--sidebar-width-expanded)',
   transition: theme.transitions.create('width', {
     duration: theme.transitions.duration.enteringScreen,
     easing: theme.transitions.easing.easeInOut,
   }),
 });
 
-const compactVariantMixin = (theme: Theme): CSSObject => ({
-  width: 'var(--sidebar-width-compact)',
+const collapsedMixin = (theme: Theme): CSSObject => ({
+  width: 'var(--sidebar-width-collapsed)',
   transition: theme.transitions.create('width', {
     duration: theme.transitions.duration.leavingScreen,
     easing: theme.transitions.easing.easeInOut,
@@ -19,16 +19,16 @@ const compactVariantMixin = (theme: Theme): CSSObject => ({
 });
 
 const DrawerStyled = styled(Drawer)(({ open, theme }) => ({
-  '& > div.MuiDrawer-paper': {
+  '& > .MuiDrawer-paper': {
     zIndex: theme.zIndex.appBar - 1,
     overflowX: 'hidden',
     borderRight: 'none',
-    ...defaultVariantMixin(theme),
+    width: 'var(--sidebar-width-expanded)',
   },
 
   [theme.breakpoints.up('md')]: {
-    '& > div.MuiDrawer-paper': {
-      ...(!open && compactVariantMixin(theme)),
+    '& > .MuiDrawer-paper': {
+      ...(open ? expandedMixin(theme) : collapsedMixin(theme)),
     },
   },
 }));

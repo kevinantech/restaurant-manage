@@ -60,7 +60,11 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Sidebar />
 
         {/* main content */}
-        <MainContentStyled expanded={mainLayoutHook.navigationMenu.isOpen}>
+        <MainContentStyled
+          sidebarSize={
+            mainLayoutHook.navigationMenu.isOpen ? 'expanded' : 'collapsed'
+          }
+        >
           {children}
         </MainContentStyled>
       </SessionProvider>

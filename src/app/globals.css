@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --sidebar-width-default: 16.25rem; /* 260px */
-  --sidebar-width-compact: 4.5rem; /* 72px */
+  --sidebar-width-expanded: 16.25rem; /* 260px */
+  --sidebar-width-collapsed: 4.5rem; /* 72px */
   --header-height: 5rem; /* 80px */
 }

@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
       <Box
         sx={{
           display: 'flex',
-          width: 'calc(var(--sidebar-width-default) - 2rem)',
+          width: 'calc(var(--sidebar-width-expanded) - 2rem)',
         }}
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>

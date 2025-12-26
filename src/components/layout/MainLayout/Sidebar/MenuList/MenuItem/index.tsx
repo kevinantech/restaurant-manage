@@ -93,7 +93,7 @@ const fullSizeMixin = (): CSSObject => ({
 });
 
 const iconSizeMixin = (): CSSObject => ({
-  padding: '0 0.625rem 0 1rem' /* 0 10px 0 16px */,
+  padding: '0 1rem 0 0.625rem ' /* 0 16px 0 10px */,
 
   /* Clear ListButtonItem's styles */
   '&:hover, &.Mui-selected, &.Mui-selected:hover': {

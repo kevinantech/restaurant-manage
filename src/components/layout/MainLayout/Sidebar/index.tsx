@@ -1,6 +1,6 @@
 'use client';
 import useMainLayout from '@/hooks/useMainLayout';
-import useTheme from '@mui/material/styles/useTheme';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DrawerStyled from './DrawerStyled';
 import MenuList from './MenuList';

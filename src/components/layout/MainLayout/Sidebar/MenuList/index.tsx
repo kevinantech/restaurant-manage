@@ -1,7 +1,7 @@
 import { navList } from '@/config/navigation';
 import useMainLayout from '@/hooks/useMainLayout';
 import List from '@mui/material/List';
-import styled from '@mui/material/styles/styled';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';

@@ -1,11 +1,11 @@
 import { Color } from '@/app/styles';
 import CircleIcon from '@mui/icons-material/Circle';
 import ButtonBase from '@mui/material/ButtonBase';
-import grey from '@mui/material/colors/grey';
+import { grey } from '@mui/material/colors';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import styled from '@mui/material/styles/styled';
+import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

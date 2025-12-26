@@ -2,14 +2,15 @@
 import Loader from '@/components/Loader';
 import { MainLayoutContext } from '@/context/MainLayoutContext';
 import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { SessionProvider } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import MainContentStyled from './MainContentStyled';
 import Sidebar from './Sidebar';
-import useTheme from '@mui/material/styles/useTheme';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 const useMounted = () => {
   const [isMounted, setMounted] = useState(false);
@@ -50,7 +51,13 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <MainLayoutContext value={mainLayoutHook}>
       <SessionProvider>
         {/* header */}
-        <AppBar position="fixed" color="transparent" elevation={0}>
+        <AppBar
+          position="fixed"
+          elevation={0}
+          sx={{
+            backgroundColor: 'white',
+          }}
+        >
           <Toolbar sx={{ height: 'var(--header-height)', py: 2 }}>
             <Header />
           </Toolbar>
@@ -65,7 +72,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             mainLayoutHook.navigationMenu.isOpen ? 'expanded' : 'collapsed'
           }
         >
-          {children}
+          <Container>{children}</Container>
         </MainContentStyled>
       </SessionProvider>
     </MainLayoutContext>

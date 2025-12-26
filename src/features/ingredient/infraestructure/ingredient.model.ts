@@ -17,7 +17,7 @@ const schema = new Schema<Omit<Ingredient, 'id' | 'updatedAt'>>(
     },
     category: {
       type: String,
-      enum: IngredientCategory,
+      enum: Object.values(IngredientCategory),
       required: true,
     },
     unit: {
@@ -40,7 +40,7 @@ const schema = new Schema<Omit<Ingredient, 'id' | 'updatedAt'>>(
   },
   {
     versionKey: false,
-    timestamps: true, // Agrega createdAt y updatedAt.
+    timestamps: true, // createdAt, updatedAt.
   }
 );
 

@@ -1,6 +1,5 @@
 import { Color } from '@/app/styles';
-import styled from '@mui/material/styles/styled';
-
+import { styled } from '@mui/material/styles';
 type MainContentStyledProps = { sidebarSize: 'expanded' | 'collapsed' };
 
 const MainContentStyled = styled('main', {
@@ -9,7 +8,8 @@ const MainContentStyled = styled('main', {
   minHeight: 'calc(100vh - var(--header-height))',
   margin: 'var(--header-height) 1.25rem 0',
   padding: '1.25rem' /* 20px */,
-  borderRadius: '1rem' /* 16px */,
+  borderTopLeftRadius: '1rem' /* 16px */,
+  borderTopRightRadius: '1rem' /* 16px */,
   backgroundColor: Color.secondary[200],
 
   [theme.breakpoints.up('md')]: {

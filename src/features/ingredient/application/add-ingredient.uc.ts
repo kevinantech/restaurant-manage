@@ -1,4 +1,4 @@
-import { ResponseBodyFactory } from 'lib/http/response-body.factory';
+import { ResponseBodyFactory } from '@/lib/http/response-body.factory';
 import { InsertIngredient } from '../domain/ingredient.entity';
 import { IIngredientRepository } from '../domain/ingredient.repository.interface';
 export type IAddIngredientUseCase = ReturnType<typeof addIngredientUseCase>;

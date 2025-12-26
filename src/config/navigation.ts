@@ -42,7 +42,12 @@ export const navList: (NavItem | NavGroup)[] = [
       {
         id: crypto.randomUUID(),
         title: 'Lista de Insumos',
-        href: paths.app.inventory,
+        href: paths.app.inventory.root,
+      },
+      {
+        id: crypto.randomUUID(),
+        title: 'Añadir Insumo',
+        href: paths.app.inventory.add,
       },
     ],
   },

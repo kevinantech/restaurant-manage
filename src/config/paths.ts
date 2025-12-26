@@ -5,6 +5,9 @@ export const paths = {
   },
   app: {
     home: '/home',
-    inventory: '/inventory',
+    inventory: {
+      root: '/inventory',
+      add: '/inventory/add',
+    },
   },
 };

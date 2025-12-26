@@ -15,4 +15,5 @@ export const AddIngredientBodySchema = z.object({
   category: z.enum(IngredientCategory, 'Seleccione una categoría válida'),
   unit: z.enum(MeasurementUnit, 'Seleccione una unidad de medida válida'),
   minStock: z.number().positive('El stock mínimo debe ser mayor a cero'),
+  notes: z.string().max(255),
 });

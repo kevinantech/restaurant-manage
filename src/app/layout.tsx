@@ -1,4 +1,4 @@
-import ThemeCustomization from '@/components/theme';
+import ThemeCustomization from '@/theme';
 import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 import './globals.css';

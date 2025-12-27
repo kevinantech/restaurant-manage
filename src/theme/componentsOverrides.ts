@@ -48,6 +48,16 @@ export const outlinedInput: ThemeOptions['components'] = {
       input: {
         fontWeight: 500,
         padding: '1rem 0.875rem' /* 16px 14px */,
+
+        /* amend styles when the input is autofilled. */
+        '&:-webkit-autofill': {
+          WebkitBoxShadow: '0 0 0 1000px white inset',
+          WebkitTextFillColor: 'inherit',
+          caretColor: 'inherit',
+        },
+      },
+      multiline: {
+        '& > textarea': { padding: '0' },
       },
     },
   },

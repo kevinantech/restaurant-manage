@@ -1,4 +1,4 @@
-import { Pagination } from '@/shared/domain/pagination.interface';
+import { Pagination } from '@/features/shared/domain/pagination.interface';
 
 export interface ResponseBody<T = never> {
   status: 'success' | 'error';

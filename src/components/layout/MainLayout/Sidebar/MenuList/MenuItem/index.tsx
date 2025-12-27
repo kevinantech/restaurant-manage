@@ -101,7 +101,11 @@ const iconSizeMixin = (): CSSObject => ({
   },
 
   /* Apply styles to ButtonBase */
-  '& > button.MuiButtonBase-root:hover, &.Mui-selected > button.MuiButtonBase-root':
+  '& > .MuiButtonBase-root': {
+    borderRadius: '0.5rem' /* 8px */,
+  },
+
+  '& > .MuiButtonBase-root:hover, &.Mui-selected > .MuiButtonBase-root':
     activeItemState,
 
   /* Apply styles to ListItemIcon */

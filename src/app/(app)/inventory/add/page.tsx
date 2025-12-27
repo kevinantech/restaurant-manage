@@ -1,2 +1,2 @@
-import AddIngredientPage from '@/features/ingredient/ui/pages/AddIngredientPage';
-export default AddIngredientPage;
+import CreateIngredientPage from '@/features/ingredient/ui/pages/CreateIngredientPage';
+export default CreateIngredientPage;

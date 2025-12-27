@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from 'lib/http/http-status';
+import { HTTP_STATUS } from '../http/http-status';
 import { RouteError } from './route.error';
 
 export class AuthenticationError extends RouteError {

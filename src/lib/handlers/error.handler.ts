@@ -1,6 +1,6 @@
-import { RouteError } from 'lib/errors/route.error';
-import { COMMON_MESSAGE, HTTP_STATUS } from 'lib/http/http-status';
 import { NextResponse } from 'next/server';
+import { RouteError } from '../errors/route.error';
+import { COMMON_MESSAGE, HTTP_STATUS } from '../http/http-status';
 import { ResponseBodyFactory } from '../http/response-body.factory';
 
 interface IErrorHandler {

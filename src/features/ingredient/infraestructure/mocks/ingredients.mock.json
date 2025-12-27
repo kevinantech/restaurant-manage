@@ -1,0 +1,242 @@
+[
+  {
+    "code": "MEAT-001",
+    "name": "Carne de res",
+    "category": "meat",
+    "unit": "KG",
+    "minStock": 10,
+    "notes": "Corte estándar para guisos"
+  },
+  {
+    "code": "POULTRY-001",
+    "name": "Pechuga de pollo",
+    "category": "poultry",
+    "unit": "KG",
+    "minStock": 8,
+    "notes": "Sin piel"
+  },
+  {
+    "code": "SEAFOOD-001",
+    "name": "Filete de salmón",
+    "category": "seafood",
+    "unit": "KG",
+    "minStock": 5,
+    "notes": "Fresco"
+  },
+  {
+    "code": "EGGS-001",
+    "name": "Huevo blanco",
+    "category": "eggs",
+    "unit": "DOZEN",
+    "minStock": 3,
+    "notes": "Tamaño mediano"
+  },
+  {
+    "code": "DAIRY-001",
+    "name": "Leche entera",
+    "category": "dairy",
+    "unit": "L",
+    "minStock": 20,
+    "notes": "Refrigerada"
+  },
+  {
+    "code": "VEG-001",
+    "name": "Tomate chonto",
+    "category": "vegetables",
+    "unit": "KG",
+    "minStock": 6,
+    "notes": "Para ensaladas"
+  },
+  {
+    "code": "FRUIT-001",
+    "name": "Banano",
+    "category": "fruits",
+    "unit": "KG",
+    "minStock": 4,
+    "notes": "Maduración media"
+  },
+  {
+    "code": "LEG-001",
+    "name": "Lenteja",
+    "category": "legumes",
+    "unit": "KG",
+    "minStock": 7,
+    "notes": "Grano seco"
+  },
+  {
+    "code": "GRAIN-001",
+    "name": "Arroz blanco",
+    "category": "grains",
+    "unit": "KG",
+    "minStock": 15,
+    "notes": "Grano largo"
+  },
+  {
+    "code": "FLOUR-001",
+    "name": "Harina de trigo",
+    "category": "flour",
+    "unit": "KG",
+    "minStock": 10,
+    "notes": "Todo uso"
+  },
+  {
+    "code": "BAKERY-001",
+    "name": "Pan francés",
+    "category": "bread_bakery",
+    "unit": "UNIT",
+    "minStock": 20,
+    "notes": "Producción diaria"
+  },
+  {
+    "code": "SPICE-001",
+    "name": "Pimienta negra",
+    "category": "herbs_spices",
+    "unit": "G",
+    "minStock": 200,
+    "notes": "Molida"
+  },
+  {
+    "code": "SPICE-002",
+    "name": "Orégano seco",
+    "category": "herbs_spices",
+    "unit": "G",
+    "minStock": 150,
+    "notes": "Hojas secas"
+  },
+  {
+    "code": "SAUCE-001",
+    "name": "Salsa de tomate",
+    "category": "sauces_condiments",
+    "unit": "L",
+    "minStock": 5,
+    "notes": "Base italiana"
+  },
+  {
+    "code": "OIL-001",
+    "name": "Aceite vegetal",
+    "category": "oils_fats",
+    "unit": "L",
+    "minStock": 12,
+    "notes": "Uso general"
+  },
+  {
+    "code": "OIL-002",
+    "name": "Aceite de oliva",
+    "category": "oils_fats",
+    "unit": "L",
+    "minStock": 6,
+    "notes": "Extra virgen"
+  },
+  {
+    "code": "BEV-001",
+    "name": "Agua potable",
+    "category": "beverages",
+    "unit": "L",
+    "minStock": 30,
+    "notes": "Botella"
+  },
+  {
+    "code": "BEV-002",
+    "name": "Jugo de naranja",
+    "category": "beverages",
+    "unit": "L",
+    "minStock": 10,
+    "notes": "Natural"
+  },
+  {
+    "code": "ALC-001",
+    "name": "Vino tinto",
+    "category": "alcoholic",
+    "unit": "L",
+    "minStock": 8,
+    "notes": "Cocina"
+  },
+  {
+    "code": "FROZEN-001",
+    "name": "Papas congeladas",
+    "category": "frozen",
+    "unit": "KG",
+    "minStock": 10,
+    "notes": "Corte recto"
+  },
+  {
+    "code": "CANNED-001",
+    "name": "Atún en lata",
+    "category": "canned",
+    "unit": "UNIT",
+    "minStock": 25,
+    "notes": "En agua"
+  },
+  {
+    "code": "CANNED-002",
+    "name": "Maíz dulce",
+    "category": "canned",
+    "unit": "UNIT",
+    "minStock": 20,
+    "notes": "Grano entero"
+  },
+  {
+    "code": "DESSERT-001",
+    "name": "Chocolate de mesa",
+    "category": "dessert_sweets",
+    "unit": "G",
+    "minStock": 500,
+    "notes": "70% cacao"
+  },
+  {
+    "code": "DESSERT-002",
+    "name": "Azúcar blanca",
+    "category": "dessert_sweets",
+    "unit": "KG",
+    "minStock": 12,
+    "notes": "Refinada"
+  },
+  {
+    "code": "DAIRY-002",
+    "name": "Queso mozzarella",
+    "category": "dairy",
+    "unit": "KG",
+    "minStock": 6,
+    "notes": "Para pizzas"
+  },
+  {
+    "code": "VEG-002",
+    "name": "Cebolla cabezona",
+    "category": "vegetables",
+    "unit": "KG",
+    "minStock": 9,
+    "notes": "Blanca"
+  },
+  {
+    "code": "VEG-003",
+    "name": "Ajo",
+    "category": "vegetables",
+    "unit": "KG",
+    "minStock": 3,
+    "notes": "Bulbo seco"
+  },
+  {
+    "code": "GRAIN-002",
+    "name": "Avena en hojuelas",
+    "category": "grains",
+    "unit": "KG",
+    "minStock": 5,
+    "notes": "Integral"
+  },
+  {
+    "code": "OTHER-001",
+    "name": "Levadura seca",
+    "category": "other",
+    "unit": "G",
+    "minStock": 200,
+    "notes": "Panadería"
+  },
+  {
+    "code": "OTHER-002",
+    "name": "Sal refinada",
+    "category": "other",
+    "unit": "KG",
+    "minStock": 8,
+    "notes": "Uso general"
+  }
+]

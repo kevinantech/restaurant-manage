@@ -10,5 +10,5 @@ export enum HTTP_STATUS {
 }
 
 export const COMMON_MESSAGE = {
-  INTERNAL_SERVER_ERROR: '¡Ups! Algo salió mal',
+  [HTTP_STATUS.INTERNAL_SERVER_ERROR]: '¡Ups! Algo salió mal',
 };

@@ -1,7 +1,6 @@
 import { IngredientCategory } from './enums/ingredient-category.enum';
 import { MeasurementUnit } from './enums/measurement-unit.enum';
 
-// Insumo (timestamps)
 export interface Ingredient {
   id: string;
   code: string;
@@ -11,6 +10,7 @@ export interface Ingredient {
   currentStock: number;
   minStock: number;
   averageCost: number;
+  isPerishable: boolean;
   updatedAt: string;
 }
 
@@ -20,4 +20,5 @@ export interface InsertIngredient {
   category: IngredientCategory;
   unit: MeasurementUnit;
   minStock: number;
+  isPerishable: boolean;
 }

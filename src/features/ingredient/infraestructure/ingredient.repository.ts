@@ -3,7 +3,7 @@ import { IIngredientRepository } from '../domain/ingredient.repository.interface
 import { ingredientModel } from './ingredient.model';
 
 export class IngredientRepository implements IIngredientRepository {
-  async saveIngredient(input: InsertIngredient): Promise<void> {
+  async insertIngredient(input: InsertIngredient): Promise<void> {
     await new ingredientModel(input).save();
   }
 
